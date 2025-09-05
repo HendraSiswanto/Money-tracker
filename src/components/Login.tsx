@@ -1,15 +1,30 @@
 "use client";
 
-import { Box, HStack, Image, Link, Stack, Text, Input } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  Image,
+  Link,
+  Stack,
+  Text,
+  Input,
+  Button,
+} from "@chakra-ui/react";
 import Vector1 from "../assets/Vector.svg";
 import Vector2 from "../assets/Vector1.svg";
+import { useState } from "react";
 
 interface FormValues {
+  email: string;
   username: string;
   password: string;
 }
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+
+  const onSubmit = () => {};
+
   return (
     <Box
       textAlign="center"
@@ -24,7 +39,6 @@ const Login = () => {
         <Text
           fontSize="46px"
           color="#1C4532"
-          fontFamily="Inter"
           fontWeight="900"
           letterSpacing={2}
         >
@@ -54,7 +68,6 @@ const Login = () => {
           ml="7"
           fontSize="46px"
           color="#1C4532"
-          fontFamily="Inter"
           fontWeight="900"
           letterSpacing={2}
         >
@@ -62,17 +75,11 @@ const Login = () => {
         </Text>
       </HStack>
 
-      <Text
-        fontSize="48px"
-        color="#171923"
-        fontFamily="Inter"
-        fontWeight="750"
-        pb={3}
-      >
+      <Text fontSize="48px" color="#171923" fontWeight="750" pb={3}>
         Sign in
       </Text>
 
-      <Text fontSize="18px" color="#718096" fontFamily="Inter" pb={5}>
+      <Text fontSize="18px" color="#718096" pb={5}>
         Don't have an account?{" "}
         <Link fontWeight="500" color="#1C4532" textDecoration="underline">
           Create Now
@@ -80,10 +87,11 @@ const Login = () => {
       </Text>
       <form>
         <Stack gap="2" align="flex-start" maxW="sm" color="#718096">
-          <Text fontFamily="Inter" fontSize="16px" ml="70px">
+          <Text fontSize="16px" ml="70px">
             E-mail
           </Text>
           <Input
+            _placeholder={{ color: "#4A5568" }}
             _hover={{ borderColor: "#CBD5E0" }}
             ml="73px"
             bgColor="#F7FAFC"
@@ -95,11 +103,11 @@ const Login = () => {
             height="50px"
             width="528px"
           />
-          <Text fontFamily="Inter" fontSize="16px" ml="70px">
+          <Text fontSize="16px" ml="70px">
             Password
           </Text>
           <Input
-            _placeholder={{color:"#4A5568"}}
+            _placeholder={{ color: "#4A5568" }}
             _hover={{ borderColor: "#CBD5E0" }}
             ml="73px"
             bgColor="#F7FAFC"
@@ -107,10 +115,14 @@ const Login = () => {
             textColor="#4A5568"
             type="password"
             borderRadius="12px"
-            placeholder="me@example.com"
+            placeholder="@#*%"
             height="50px"
             width="528px"
           />
+
+          <Button mt={4} borderRadius="20px" width="528px" height="50px" ml="73px" bgColor="#1C4532" color="#F7FAFC">
+            Sign In
+          </Button>
         </Stack>
       </form>
     </Box>
