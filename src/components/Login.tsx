@@ -22,8 +22,11 @@ interface FormValues {
 
 const Login = () => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const onSubmit = () => {};
+  const onSubmit = () => {
+    console.log(email, password);
+  };
 
   return (
     <Box
@@ -85,7 +88,7 @@ const Login = () => {
           Create Now
         </Link>
       </Text>
-      <form>
+      <form onSubmit={onSubmit}>
         <Stack gap="2" align="flex-start" maxW="sm" color="#718096">
           <Text fontSize="16px" ml="70px">
             E-mail
@@ -102,6 +105,8 @@ const Login = () => {
             placeholder="me@example.com"
             height="50px"
             width="528px"
+            value={email}
+            onChange={(e)=> setEmail(e.target.value)}
           />
           <Text fontSize="16px" ml="70px">
             Password
@@ -118,9 +123,20 @@ const Login = () => {
             placeholder="@#*%"
             height="50px"
             width="528px"
+            value={password}
+            onChange={(e)=> setPassword(e.target.value)}
           />
 
-          <Button mt={4} borderRadius="20px" width="528px" height="50px" ml="73px" bgColor="#1C4532" color="#F7FAFC">
+          <Button
+            onClick={onSubmit}
+            mt={4}
+            borderRadius="20px"
+            width="528px"
+            height="50px"
+            ml="73px"
+            bgColor="#1C4532"
+            color="#F7FAFC"
+          >
             Sign In
           </Button>
         </Stack>
