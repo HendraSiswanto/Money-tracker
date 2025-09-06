@@ -112,6 +112,7 @@ const Login = () => {
             Password
           </Text>
           <Input
+            
             _placeholder={{ color: "#4A5568" }}
             _hover={{ borderColor: "#CBD5E0" }}
             ml="73px"
