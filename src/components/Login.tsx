@@ -9,16 +9,14 @@ import {
   Text,
   Input,
   Button,
+  InputGroup,
+  InputRightElement,
+  Icon,
 } from "@chakra-ui/react";
 import Vector1 from "../assets/Vector.svg";
 import Vector2 from "../assets/Vector1.svg";
 import { useState } from "react";
-
-interface FormValues {
-  email: string;
-  username: string;
-  password: string;
-}
+import { BsEyeFill } from "react-icons/bs";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -84,7 +82,7 @@ const Login = () => {
 
       <Text fontSize="18px" color="#718096" pb={5}>
         Don't have an account?{" "}
-        <Link fontWeight="500" color="#1C4532" textDecoration="underline">
+        <Link fontWeight="500" color="#1C4532">
           Create Now
         </Link>
       </Text>
@@ -106,31 +104,43 @@ const Login = () => {
             height="50px"
             width="528px"
             value={email}
-            onChange={(e)=> setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <Text fontSize="16px" ml="70px">
             Password
           </Text>
-          <Input
-            
-            _placeholder={{ color: "#4A5568" }}
-            _hover={{ borderColor: "#CBD5E0" }}
+          <InputGroup
             ml="73px"
             bgColor="#F7FAFC"
             borderColor="#CBD5E0"
             textColor="#4A5568"
-            type="password"
-            borderRadius="12px"
-            placeholder="@#*%"
-            height="50px"
             width="528px"
-            value={password}
-            onChange={(e)=> setPassword(e.target.value)}
-          />
+          >
+            <InputRightElement
+              pl={2}
+              mr={4}
+              
+              borderLeftWidth="2px"
+              fontSize={20}
+              height="50px"
+              children={<Icon as={BsEyeFill as React.ElementType} />}
+            />
 
+            <Input
+              borderRadius="12px"
+              _placeholder={{ color: "#4A5568" }}
+              _hover={{ borderColor: "#CBD5E0" }}
+              height="50px"
+              type="password"
+              placeholder="@#*%"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </InputGroup>
           <Button
+            _hover={{ bgColor: "#173929ff", color: "#F7FAFC" }}
             onClick={onSubmit}
-            mt={4}
+            mt={5}
             borderRadius="20px"
             width="528px"
             height="50px"
