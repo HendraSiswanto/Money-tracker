@@ -119,8 +119,7 @@ const Login = () => {
             <InputRightElement
               pl={2}
               mr={4}
-              
-              borderLeftWidth="2px"
+              borderLeft="1px solid #CBD5E0"
               fontSize={20}
               height="50px"
               children={<Icon as={BsEyeFill as React.ElementType} />}
