@@ -11,16 +11,17 @@ import {
   Button,
   InputGroup,
   InputRightElement,
-  Icon,
+  IconButton,
 } from "@chakra-ui/react";
 import Vector1 from "../assets/Vector.svg";
 import Vector2 from "../assets/Vector1.svg";
 import { useState } from "react";
-import { BsEyeFill } from "react-icons/bs";
+import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [show, setShow] = useState(false);
 
   const onSubmit = () => {
     console.log(email, password);
@@ -118,19 +119,26 @@ const Login = () => {
           >
             <InputRightElement
               pl={2}
-              mr={4}
-              borderLeft="1px solid #CBD5E0"
+              mr={5}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
               fontSize={20}
-              height="50px"
-              children={<Icon as={BsEyeFill as React.ElementType} />}
-            />
-
+              height="100%"
+            >
+              <Box h="35px" mr={2} borderLeft="1px solid #CBD5E0" />
+              <IconButton
+                aria-label={show ? "Hide Password" : "Show Password"}
+                icon={show? <BsEyeFill size="20px" color="#718096"/> : <BsEyeSlashFill size="20px" color="#718096"/>}
+                onClick={() => setShow(!show)}
+              />
+            </InputRightElement>
             <Input
               borderRadius="12px"
               _placeholder={{ color: "#4A5568" }}
               _hover={{ borderColor: "#CBD5E0" }}
               height="50px"
-              type="password"
+              type={show ? "text" : "password"}
               placeholder="@#*%"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
