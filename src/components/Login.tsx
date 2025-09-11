@@ -12,6 +12,7 @@ import {
   InputGroup,
   InputRightElement,
   IconButton,
+  Card,
 } from "@chakra-ui/react";
 import Vector1 from "../assets/Vector.svg";
 import Vector2 from "../assets/Vector1.svg";
@@ -28,6 +29,7 @@ const Login = () => {
   };
 
   return (
+    <>
     <Box
       textAlign="center"
       bgColor="#F7FAFC"
@@ -159,7 +161,14 @@ const Login = () => {
           </Button>
         </Stack>
       </form>
+       
     </Box>
+
+   
+<Box position="absolute" bgColor="#F7FAFC" textAlign="center" width="525px" height="334px" display="flex" right="100px">
+    
+    </Box>
+    </>
   );
 };
 
