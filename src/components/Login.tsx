@@ -12,9 +12,11 @@ import {
   InputGroup,
   InputRightElement,
   IconButton,
+  VStack,
 } from "@chakra-ui/react";
 import Vector1 from "../assets/Vector.svg";
 import Vector2 from "../assets/Vector1.svg";
+import Icon from "../assets/Icon.svg"
 import { useState } from "react";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 
@@ -178,7 +180,7 @@ const Login = () => {
         height="335px"
         display="inline-block"
         right="110px"
-        mt={200}
+        mt={145}
         borderRadius="10px"
       >
         <Text
@@ -191,7 +193,30 @@ const Login = () => {
           Reach financial <br />
           goals faster
         </Text>
-        <Text color="#718096">reach your financial freedom using this money tracker!</Text>
+        <Text pt={10} fontSize="14px" fontWeight="550" color="#718096" lineHeight="25px" pb={10}>reach your financial freedom <br/>using this money tracker!</Text>
+        <Button  _hover={{ bgColor: "#173929ff", color: "#F7FAFC" }} fontSize="14px" fontWeight="medium" color="#F7FAFC" width="168px" height="46px" bgColor="#1C4532" borderRadius="70px">Learn More</Button>          
+
+      </Box>
+       <Box        
+        position="absolute"
+        bgColor="#F7FAFC"
+        textAlign="center"
+        width="275px"
+        height="85px"
+        display="inline"
+        right="242px"
+        mt={497}
+        alignContent="center"
+        borderRadius="10px"
+      >
+        <Box pl={7} display="flex" flex="inline" alignItems="center">
+        <Image src={Icon}/>
+                  <Box display="flex" flex="inline-bl" alignItems="center">
+                  <Text fontSize="14px" fontWeight="medium" color="#1C4532">Earning</Text>
+                  <Text fontWeight="bold" fontSize="24px" color="#1C4532">$999.99</Text>
+                  </Box>
+       </Box>
+
       </Box>
     </>
   );
