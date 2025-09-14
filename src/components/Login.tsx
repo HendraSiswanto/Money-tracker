@@ -12,11 +12,10 @@ import {
   InputGroup,
   InputRightElement,
   IconButton,
-  VStack,
 } from "@chakra-ui/react";
 import Vector1 from "../assets/Vector.svg";
 import Vector2 from "../assets/Vector1.svg";
-import Icon from "../assets/Icon.svg"
+import Icon from "../assets/Icon.svg";
 import { useState } from "react";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 
@@ -171,7 +170,6 @@ const Login = () => {
       </Box>
 
       <Box
-
         justifyContent="center"
         position="absolute"
         bgColor="#F7FAFC"
@@ -193,11 +191,31 @@ const Login = () => {
           Reach financial <br />
           goals faster
         </Text>
-        <Text pt={10} fontSize="14px" fontWeight="550" color="#718096" lineHeight="25px" pb={10}>reach your financial freedom <br/>using this money tracker!</Text>
-        <Button  _hover={{ bgColor: "#173929ff", color: "#F7FAFC" }} fontSize="14px" fontWeight="medium" color="#F7FAFC" width="168px" height="46px" bgColor="#1C4532" borderRadius="70px">Learn More</Button>          
-
+        <Text
+          pt={10}
+          fontSize="14px"
+          fontWeight="550"
+          color="#718096"
+          lineHeight="25px"
+          pb={10}
+        >
+          reach your financial freedom <br />
+          using this money tracker!
+        </Text>
+        <Button
+          _hover={{ bgColor: "#173929ff", color: "#F7FAFC" }}
+          fontSize="14px"
+          fontWeight="medium"
+          color="#F7FAFC"
+          width="168px"
+          height="46px"
+          bgColor="#1C4532"
+          borderRadius="70px"
+        >
+          Learn More
+        </Button>
       </Box>
-       <Box        
+      <Box
         position="absolute"
         bgColor="#F7FAFC"
         textAlign="center"
@@ -210,13 +228,25 @@ const Login = () => {
         borderRadius="10px"
       >
         <Box pl={7} display="flex" flex="inline" alignItems="center">
-        <Image src={Icon}/>
-                  <Box display="flex" flex="inline-bl" alignItems="center">
-                  <Text fontSize="14px" fontWeight="medium" color="#1C4532">Earning</Text>
-                  <Text fontWeight="bold" fontSize="24px" color="#1C4532">$999.99</Text>
-                  </Box>
-       </Box>
-
+          <Image src={Icon} />
+          <Box display="inline-block" ml="30px" justifyItems="left">
+            <Text fontSize="14px" fontWeight="medium" color="#1C4532">
+              Earning
+            </Text>
+            <Text fontWeight="bold" fontSize="24px" color="#1C4532">
+              $999.99
+            </Text>
+          </Box>
+        </Box>
+        <Text
+          color="#CFD9E0"
+          position="absolute"
+          mt={10}
+          width="450px"
+          fontSize="20px"
+      >
+          Analyzing your money expense and track it for comfortable money
+        </Text>
       </Box>
     </>
   );
