@@ -238,15 +238,21 @@ const Login = () => {
             </Text>
           </Box>
         </Box>
-        <Text
-          color="#CFD9E0"
+        <Box
           position="absolute"
-          mt={10}
-          width="450px"
-          fontSize="20px"
-      >
-          Analyzing your money expense and track it for comfortable money
-        </Text>
+          textAlign="center"
+          width="275px"
+          height="85px"
+          display="inline"
+          right="88px"
+          mt={5}
+          alignContent="center"
+          borderRadius="10px"
+        >
+          <Text color="#a2acbaff" width="450px" fontSize="20px">
+            Analyzing your money expense and track it for comfortable money
+          </Text>
+        </Box>
       </Box>
     </>
   );
