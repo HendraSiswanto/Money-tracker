@@ -12,10 +12,16 @@ import Logo from "../assets/Vector2.svg";
 import Dompet from "../assets/Dompet.svg";
 import { useState } from "react";
 
-
 const MainPage = () => {
+  const [click, setClick] = useState(false);
+  function handleClick() {
+    if (!click) {
+      setClick(true);
+    } else {
+      setClick(false);
+    }
+  }
 
-  const [transaction,setTransaction] = useState(false)
   return (
     <>
       <Flex
@@ -30,13 +36,15 @@ const MainPage = () => {
         <List paddingY="5px">
           <ListItem>
             <Button
+              width="100px"
               borderRadius={0}
-              bgColor={transaction? "#947f7f4b" : "#1C4532"}
+              bgColor={click ? "#947f7f4b" : "#1C4532"}
+              borderRight={click ? "4px solid #947F7F" : ""}
+              borderLeft={click? "4px solid" :""}
               height="80px"
-              onClick={() => setTransaction(true)}
+              onClick={() => handleClick()}
               _hover={{
                 borderLeft: "4px",
-                justifyContent: "center",
                 bgColor: "#947f7f4b",
                 width: "100px",
                 borderRight: "4px",
