@@ -9,7 +9,12 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Logo from "../assets/Vector2.svg";
-import Dompet from "../assets/Dompet.svg";
+import Bayar from "../assets/Payments.svg"
+
+interface Props{
+
+}
+
 import { useState } from "react";
 
 const MainPage = () => {
@@ -52,7 +57,7 @@ const MainPage = () => {
               }}
             >
               <VStack>
-                <Image src={Dompet} />
+                <Image src={Bayar} />
                 <Text color="#a2acbaff" fontWeight="medium" fontSize="12px">
                   Transactions
                 </Text>
