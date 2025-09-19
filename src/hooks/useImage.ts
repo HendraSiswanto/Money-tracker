@@ -1,7 +1,8 @@
 import image from "../data/image";
 
-export interface Image{
-    image:object,
+export interface Sided{
+    id:string,
+    image:string,
     name:string
 
 }

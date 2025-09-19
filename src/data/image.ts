@@ -5,19 +5,23 @@ import History from "../assets/History.svg"
 
 export default[
     {
-        "image":{Bayar},
+        "id":"bayar",
+        "image":'{Bayar}',
         "name":"Transaction"
     },
     {
-       "image": {Dompet},
+       "id":"dompet",
+       "image": "{Dompet}",
        "name": "Balance"
     },
     {
-       "image": {Kategory},
+       "id":"kategory",
+       "image": "{Kategory}",
        "name": "Category"
     },
     {
-       "image": {History},
+       "id":"history",
+       "image": "{History}",
        "name": "History"
     },
 ]
