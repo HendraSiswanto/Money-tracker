@@ -12,7 +12,7 @@ import useImage, {type Sided} from "../hooks/useImage";
 import Logo from "../assets/Vector2.svg";
 
 interface Props{
-  onSelectImage: (image: Sided) => void
+  onSelectImage: (imageData: Sided) => void
   selectedImage: Sided | null
 }
 
@@ -20,14 +20,6 @@ import { useState } from "react";
 
 const MainPage = ({onSelectImage,selectedImage}:Props) => {
   const {data} = useImage();
-  const [click, setClick] = useState(false);
-  function handleClick() {
-    if (!click) {
-      setClick(true);
-    } else {
-      setClick(false);
-    }
-  }
 
   return (
     <>
@@ -42,8 +34,8 @@ const MainPage = ({onSelectImage,selectedImage}:Props) => {
         <Image boxSize="28px" src={Logo} />
         <List paddingY="5px">
 
-        {data.map((image) => (
-          <ListItem key={image.id}>
+        {data.map((imageData) => (
+          <ListItem key={imageData.id}>
             <Button
               width="100px"
               borderRadius={0}
@@ -51,7 +43,7 @@ const MainPage = ({onSelectImage,selectedImage}:Props) => {
               borderRight={selectedImage?.id ? "4px solid #947F7F" : ""}
               borderLeft={selectedImage?.id? "4px solid" :""}
               height="80px"
-              onClick={() => onSelectImage(image)}
+              onClick={() => onSelectImage(imageData)}
               _hover={{
                 borderLeft: "4px",
                 bgColor: "#947f7f4b",
@@ -61,9 +53,9 @@ const MainPage = ({onSelectImage,selectedImage}:Props) => {
               }}
             >
               <VStack>
-                <Image src={image.image} />
+                <Image src={imageData.imageUrl} />
                 <Text color="#a2acbaff" fontWeight="medium" fontSize="12px">
-                  {image.name}
+                  {imageData.name}
                 </Text>
               </VStack>
             </Button>

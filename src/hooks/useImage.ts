@@ -1,12 +1,11 @@
-import image from "../data/image";
+import { imageData } from "../data/imageData";
 
-export interface Sided{
-    id:string,
-    image:string,
-    name:string
-
+export interface Sided {
+  id: string;
+  imageUrl: string;
+  name: string;
 }
 
-const useImage = () => ({data:image})
+const useImage = () => ({ data: imageData });
 
-export default useImage
+export default useImage;
