@@ -11,15 +11,12 @@ import {
 import useImage, {type Sided} from "../hooks/useImage";
 import Logo from "../assets/Vector2.svg";
 
-interface Props{
-  onSelectImage: (imageData: Sided) => void
-  selectedImage: Sided | null
-}
+const MainPage = () => {
+  const {data,setImageData} = useImage();
+  const handleClick = (id: number) =>{
+    setImageData(data.map(imageData => imageData.id === id ? { ...imageData, clicked: !imageData.clicked } : imageData))
+  }
 
-import { useState } from "react";
-
-const MainPage = ({onSelectImage,selectedImage}:Props) => {
-  const {data} = useImage();
 
   return (
     <>
@@ -39,11 +36,11 @@ const MainPage = ({onSelectImage,selectedImage}:Props) => {
             <Button
               width="100px"
               borderRadius={0}
-              bgColor={selectedImage?.id? "#947f7f4b" : "#1C4532"}
-              borderRight={selectedImage?.id ? "4px solid #947F7F" : ""}
-              borderLeft={selectedImage?.id? "4px solid" :""}
+              bgColor={imageData.clicked? "#947f7f4b" : "#1C4532"}
+              borderRight={imageData.clicked? "4px solid #947F7F" : ""}
+              borderLeft={imageData.clicked? "4px solid" :""}
               height="80px"
-              onClick={() => onSelectImage(imageData)}
+              onClick={() => handleClick(imageData.id)}
               _hover={{
                 borderLeft: "4px",
                 bgColor: "#947f7f4b",

@@ -2,26 +2,31 @@ import Dompet from "../assets/Dompet.svg";
 import Bayar from "../assets/Transfers.svg";
 import Kategory from "../assets/Payments.svg";
 import History from "../assets/History.svg";
+import { useState } from "react";
 
-export const imageData = [
+export const [imageData,setImageData] = useState([
   {
-    id: "bayar",
+    id: 1,
     imageUrl: Bayar,
     name: "Transaction",
+    clicked: false
   },
   {
-    id: "dompet",
+    id: 2,
     imageUrl: Dompet,
     name: "Balance",
+    clicked: false
   },
   {
-    id: "kategory",
+    id: 3,
     imageUrl: Kategory,
     name: "Category",
+    clicked: false
   },
   {
-    id: "history",
+    id: 4,
     imageUrl: History,
     name: "History",
+    clicked: false
   },
-];
+]);

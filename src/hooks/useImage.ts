@@ -1,11 +1,12 @@
-import { imageData } from "../data/imageData";
+import { imageData,setImageData } from "../data/imageData";
 
 export interface Sided {
-  id: string;
+  id: number;
   imageUrl: string;
   name: string;
+  clicked: boolean
 }
 
-const useImage = () => ({ data: imageData });
+const useImage = () => ({ data: imageData,setImageData });
 
 export default useImage;
