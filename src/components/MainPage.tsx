@@ -7,6 +7,7 @@ import {
   List,
   ListItem,
   VStack,
+  Box,
 } from "@chakra-ui/react";
 import useImage, {type Sided} from "../hooks/useImage";
 import Logo from "../assets/Vector2.svg";
@@ -22,24 +23,27 @@ const MainPage = ({onSelectImage,selectImage}:Props) => {
   return (
     <>
       <Flex
+      h="100vh" w="100%"
+      >
+        <Box 
+        maxWidth="7%"
+        justifyItems="center"
+        flex="1"
         gap={5}
         flexDirection="column"
-        width="90px"
         alignItems="center"
-        position="fixed"
-        mt="20px"
-      >
+        mt="20px">
         <Image boxSize="28px" src={Logo} />
         <List paddingY="5px">
 
         {data.map((imageData) => (
           <ListItem key={imageData.id}>
             <Button
-              width="100px"
+              width="100%"
               borderRadius={0}
               bgColor={imageData.id === selectImage?.id? "#947f7f4b" : "#1C4532"}
               borderRight={imageData.id === selectImage?.id? "4px solid #947F7F" : ""}
-              borderLeft={imageData.id === selectImage?.id? "4px solid" :""}
+              
               height="80px"
               onClick={() => onSelectImage(imageData)}
               _hover={{
@@ -59,8 +63,10 @@ const MainPage = ({onSelectImage,selectImage}:Props) => {
           </ListItem>
         ))}
         </List>
+        </Box>
+         <Box flex={1} bgColor="#F2F2F6" maxWidth="100%">tes</Box>
       </Flex>
-      <Container></Container>
+     
     </>
   );
 };
