@@ -1,16 +1,25 @@
-import Login from "./components/Login"
-import MainPage from "./components/MainPage"
+import { useState } from "react";
+import Login from "./components/Login";
+import MainPage from "./components/MainPage";
+import type { Sided } from "./hooks/useImage";
 
-
-
+export interface moneyQuery {
+  imageData: Sided | null;
+}
 
 function App() {
+  const [moneyQuery, setMoneyQuery] = useState<moneyQuery>({} as moneyQuery);
 
   return (
     <>
-      <MainPage></MainPage>
+      <MainPage
+        selectImage={moneyQuery.imageData}
+        onSelectImage={(imageData) =>
+          setMoneyQuery({ ...moneyQuery, imageData })
+        }
+      ></MainPage>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

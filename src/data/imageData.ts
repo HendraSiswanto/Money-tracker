@@ -2,9 +2,9 @@ import Dompet from "../assets/Dompet.svg";
 import Bayar from "../assets/Transfers.svg";
 import Kategory from "../assets/Payments.svg";
 import History from "../assets/History.svg";
-import { useState } from "react";
 
-export const [imageData,setImageData] = useState([
+
+export const imageData=[
   {
     id: 1,
     imageUrl: Bayar,
@@ -29,4 +29,4 @@ export const [imageData,setImageData] = useState([
     name: "History",
     clicked: false
   },
-]);
+];
