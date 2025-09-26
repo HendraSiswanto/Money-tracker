@@ -1,7 +1,11 @@
-import { Container } from "@chakra-ui/react";
+import { Container, Input } from "@chakra-ui/react";
 
 const Transaction = () => {
-  return (<Container  bgColor="#F2F2F6"></Container>);
+  return (
+  <Container bg="black">
+    <Input placeholder="Date">
+    </Input>
+  </Container>);
 };
 
 export default Transaction;
