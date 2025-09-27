@@ -1,7 +1,6 @@
 import {
   Button,
   Text,
-  Container,
   Flex,
   Image,
   List,
@@ -11,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import useImage, { type Sided } from "../hooks/useImage";
 import Logo from "../assets/Vector2.svg";
-import Transaction from "./Transaction";
+import Expense from "./Expense";
 
 interface Props {
   onSelectImage: (imageData: Sided) => void;
@@ -69,7 +68,7 @@ const MainPage = ({ onSelectImage, selectImage }: Props) => {
         </Box>
         <Box flex={1} bgColor="#f2f2f6fa" maxWidth="100%">
            
-    <Transaction />
+    <Expense />
         </Box>
       </Flex>
     </>
