@@ -1,11 +1,16 @@
-import { Container, Input } from "@chakra-ui/react";
+import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 
 const Transaction = () => {
   return (
-  <Container bg="black">
-    <Input placeholder="Date">
-    </Input>
-  </Container>);
+    <Menu>
+      <MenuButton as={Button}>
+      </MenuButton>
+      <MenuList>
+        <MenuItem>tes</MenuItem>
+        <MenuItem>tes</MenuItem>
+      </MenuList>
+    </Menu>
+  );
 };
 
 export default Transaction;
