@@ -24,17 +24,19 @@ const Expense = ({onSelectType,selectedType}: Props) => {
     <>
       <Menu>
         <MenuButton
+        _active={{bgColor:"#323439ff" }}
+        _hover={{bgColor:"#323439ff"}}
           bgColor="#43464cff"
           as={Button}
           rightIcon={
             <Icon boxSize={5} as={BsArrowDownCircleFill as React.ElementType} />
           }
         >
-          {selectedType?.out || "tes"}
+          {selectedType?.out || "Select Type Of Expense"}
         </MenuButton>
         <MenuList>
           {data.map((tipe) => (
-            <MenuItem key={tipe.id} onClick={() => onSelectType(tipe)}>
+            <MenuItem bgColor="#323439ff" key={tipe.id} onClick={() => onSelectType(tipe)}>
               {tipe.out}
             </MenuItem>
           ))}
