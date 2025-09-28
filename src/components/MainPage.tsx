@@ -11,13 +11,17 @@ import {
 import useImage, { type Sided } from "../hooks/useImage";
 import Logo from "../assets/Vector2.svg";
 import Expense from "./Expense";
+import type { Type } from "../hooks/useType";
+import { useState } from "react";
 
 interface Props {
   onSelectImage: (imageData: Sided) => void;
   selectImage: Sided | null;
+  tipe: Type | null;
 }
 
-const MainPage = ({ onSelectImage, selectImage }: Props) => {
+const MainPage = ({ onSelectImage, selectImage}: Props) => {
+  const [changeTipe,setTipe] = useState<Props>({} as Props)
   const { data } = useImage();
 
   return (
@@ -67,8 +71,7 @@ const MainPage = ({ onSelectImage, selectImage }: Props) => {
           </List>
         </Box>
         <Box flex={1} bgColor="#f2f2f6fa" maxWidth="100%">
-           
-    <Expense />
+          <Expense selectedType={changeTipe.tipe} onSelectType={(tipe) => setTipe({...changeTipe,tipe})} />
         </Box>
       </Flex>
     </>
