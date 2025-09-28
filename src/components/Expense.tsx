@@ -7,7 +7,7 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { BsArrowDownShort } from "react-icons/bs";
+import { BsArrowDownCircleFill } from "react-icons/bs";
 
 const Expense = () => {
   const [type, setType] = useState([
@@ -18,18 +18,24 @@ const Expense = () => {
     { out: "Entertainment", money: 0 },
   ]);
 
+
   return (
+  
+    <>
+
     <Menu>
       <MenuButton
+        bgColor="#43464cff"
         as={Button}
-        rightIcon={<Icon as={BsArrowDownShort as React.ElementType} />}
-      ></MenuButton>
+        rightIcon={<Icon boxSize={5} as={BsArrowDownCircleFill as React.ElementType} />}
+      >{  }</MenuButton>
       <MenuList>
         {type.map((type) => (
-          <MenuItem>{type.out}</MenuItem>
+          <MenuItem value={type.out}>{type.out}</MenuItem>
         ))}
       </MenuList>
     </Menu>
+    </>
   );
 };
 
