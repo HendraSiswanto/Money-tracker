@@ -13,7 +13,7 @@ import useType from "../hooks/useType";
 
 interface Props {
   onSelectType: (tipe: Type) => void;
-  selectedType: Type | null;
+  selectedType: Type ;
 }
 
 const Expense = ({ onSelectType, selectedType }: Props) => {
@@ -32,7 +32,7 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
           }
           width="260px"
         >
-          {selectedType?.emote || "Select Type Of Expense"}
+          <Box display="flex">{selectedType?.out + selectedType?.emote|| "Select Type Of Expense"}</Box>
         </MenuButton>
         <MenuList>
           {data.map((tipe) => (
