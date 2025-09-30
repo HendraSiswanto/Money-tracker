@@ -2,7 +2,8 @@ import tipe from "../data/tipe";
 
 export interface Type {
     id: number;
-    out: string
+    out: string;
+    emote: string;
 }
 
 const useType = () =>({data: tipe})

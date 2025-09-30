@@ -1,8 +1,14 @@
 import {
+  Box,
   Button,
+  Flex,
   Icon,
+  InputGroup,
+  InputRightElement,
   Menu,
   MenuButton,
+  MenuGroup,
+  MenuIcon,
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
@@ -36,8 +42,12 @@ const Expense = ({onSelectType,selectedType}: Props) => {
         </MenuButton>
         <MenuList>
           {data.map((tipe) => (
-            <MenuItem bgColor="#323439ff" key={tipe.id} onClick={() => onSelectType(tipe)}>
+            <MenuItem  display="flex"  bgColor="#323439ff" key={tipe.id} onClick={() => onSelectType(tipe)} >
+            
               {tipe.out}
+            <Flex flex="flex-end">
+              {tipe.emote}
+            </Flex>
             </MenuItem>
           ))}
         </MenuList>
