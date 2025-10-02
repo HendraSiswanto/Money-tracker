@@ -1,7 +1,9 @@
 import {
   Box,
   Button,
+  Flex,
   Icon,
+  Input,
   Menu,
   MenuButton,
   MenuItem,
@@ -13,7 +15,7 @@ import useType from "../hooks/useType";
 
 interface Props {
   onSelectType: (tipe: Type) => void;
-  selectedType: Type ;
+  selectedType: Type;
 }
 
 const Expense = ({ onSelectType, selectedType }: Props) => {
@@ -21,35 +23,47 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
 
   return (
     <>
-      <Menu>
-        <MenuButton
-          _active={{ bgColor: "#323439ff" }}
-          _hover={{ bgColor: "#323439ff" }}
-          bgColor="#43464cff"
-          as={Button}
-          rightIcon={
-            <Icon boxSize={5} as={BsArrowDownCircleFill as React.ElementType} />
-          }
-          width="260px"
-        >
-          <Box display="flex">{selectedType?.out+ <br></br> + selectedType?.emote|| "Select Type Of Expense"}</Box>
-        </MenuButton>
-        <MenuList>
-          {data.map((tipe) => (
-            <MenuItem
-              justifyContent="space-between"
-              bgColor="#323439ff"
-              key={tipe.id}
-              onClick={() => onSelectType(tipe)}
-              width="258px"
-              pl={3}
-            >
-              {tipe.out}
-              <Box>{tipe.emote}</Box>
-            </MenuItem>
-          ))}
-        </MenuList>
-      </Menu>
+      <Flex flexDirection="column">
+        <Menu>
+          <MenuButton
+            _active={{ bgColor: "#878787ff" }}
+            _hover={{ bgColor: "#878787ff" }}
+            bgColor="#999ca2ff"
+            as={Button}
+            width="260px"
+          >
+            <Box display="flex" justifyContent="space-between">
+              {selectedType?.out || "Select Type Of Expense"}{" "}
+              <Box>
+                {selectedType?.emote || (
+                  <Icon
+                    boxSize={5}
+                    as={BsArrowDownCircleFill as React.ElementType}
+                  />
+                )}
+              </Box>
+            </Box>
+          </MenuButton>
+          <MenuList>
+            {data.map((tipe) => (
+              <MenuItem
+                justifyContent="space-between"
+                bgColor="#323439ff"
+                key={tipe.id}
+                onClick={() => onSelectType(tipe)}
+                width="258px"
+                pl={3}
+              >
+                {tipe.out}
+                <Box>{tipe.emote}</Box>
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
+
+        <Input width="260px" bgColor="#999ca2ff" type="number" placeholder="Rp.">
+        </Input>
+      </Flex>
     </>
   );
 };
