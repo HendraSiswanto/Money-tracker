@@ -32,7 +32,7 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
           }
           width="260px"
         >
-          <Box display="flex">{selectedType?.out + selectedType?.emote|| "Select Type Of Expense"}</Box>
+          <Box display="flex">{selectedType?.out+ <br></br> + selectedType?.emote|| "Select Type Of Expense"}</Box>
         </MenuButton>
         <MenuList>
           {data.map((tipe) => (
