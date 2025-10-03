@@ -12,6 +12,7 @@ import {
 import { BsArrowDownCircleFill } from "react-icons/bs";
 import type { Type } from "../hooks/useType";
 import useType from "../hooks/useType";
+import { useState } from "react";
 
 interface Props {
   onSelectType: (tipe: Type) => void;
@@ -20,6 +21,23 @@ interface Props {
 
 const Expense = ({ onSelectType, selectedType }: Props) => {
   const { data } = useType();
+  const [inputValue, setInputValue] = useState<string>("");
+  const Rupiah = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits:10
+  });
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = event.target.value;
+    const numericValue = parseFloat(rawValue.replace(/[^0-9.-]/g, ""));
+
+    if (isNaN(numericValue)) {
+      setInputValue("");
+    } else {
+      setInputValue(Rupiah.format(numericValue));
+    }
+  };
 
   return (
     <>
@@ -61,8 +79,14 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
           </MenuList>
         </Menu>
 
-        <Input width="260px" bgColor="#999ca2ff" type="number" placeholder="Rp.">
-        </Input>
+        <Input
+          width="260px"
+          bgColor="#999ca2ff"
+          type="text"
+          value={inputValue}
+          placeholder="Rp."
+          onChange={handleChange}
+        ></Input>
       </Flex>
     </>
   );
