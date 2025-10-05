@@ -21,22 +21,20 @@ interface Props {
 
 const Expense = ({ onSelectType, selectedType }: Props) => {
   const { data } = useType();
-  const [inputValue, setInputValue] = useState<string>("");
-  const Rupiah = new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    maximumFractionDigits:10
-  });
+  const [inputValue, setInputValue] = useState("");
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const rawValue = event.target.value;
-    const numericValue = parseFloat(rawValue.replace(/[^0-9.-]/g, ""));
+  function Rupiah(num: bigint): string {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      maximumFractionDigits: 0,
+    }).format(num);
+  }
 
-    if (isNaN(numericValue)) {
-      setInputValue("");
-    } else {
-      setInputValue(Rupiah.format(numericValue));
-    }
+  const handleChange = (e:  React.ChangeEvent<HTMLInputElement>)  => {
+    const raw = e.target.value.replace(/[^0-9]/g, "");
+    const numeric = raw ? BigInt(raw) : BigInt(0);
+     setInputValue(raw ? Rupiah(numeric) : "");
   };
 
   return (
@@ -85,6 +83,7 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
           type="text"
           value={inputValue}
           placeholder="Rp."
+          
           onChange={handleChange}
         ></Input>
       </Flex>
