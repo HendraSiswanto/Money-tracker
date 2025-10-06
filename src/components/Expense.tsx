@@ -15,7 +15,7 @@ import useType from "../hooks/useType";
 import { useState } from "react";
 
 interface Props {
-  onSelectType: (tipe: Type) => void;
+  onSelectType: (dataExpense: Type) => void;
   selectedType: Type;
 }
 
@@ -31,62 +31,63 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
     }).format(num);
   }
 
-  const handleChange = (e:  React.ChangeEvent<HTMLInputElement>)  => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/[^0-9]/g, "");
     const numeric = raw ? BigInt(raw) : BigInt(0);
-     setInputValue(raw ? Rupiah(numeric) : "");
+    setInputValue(raw ? Rupiah(numeric) : "");
   };
 
   return (
     <>
-      <Flex flexDirection="column">
-        <Menu>
-          <MenuButton
-            _active={{ bgColor: "#878787ff" }}
-            _hover={{ bgColor: "#878787ff" }}
-            bgColor="#999ca2ff"
-            as={Button}
-            width="260px"
-          >
-            <Box display="flex" justifyContent="space-between">
-              {selectedType?.out || "Select Type Of Expense"}{" "}
-              <Box>
-                {selectedType?.emote || (
-                  <Icon
-                    boxSize={5}
-                    as={BsArrowDownCircleFill as React.ElementType}
-                  />
-                )}
-              </Box>
-            </Box>
-          </MenuButton>
-          <MenuList>
-            {data.map((tipe) => (
-              <MenuItem
-                justifyContent="space-between"
-                bgColor="#323439ff"
-                key={tipe.id}
-                onClick={() => onSelectType(tipe)}
-                width="258px"
-                pl={3}
-              >
-                {tipe.out}
-                <Box>{tipe.emote}</Box>
-              </MenuItem>
-            ))}
-          </MenuList>
-        </Menu>
+        <Flex flexDirection="column">
+        
 
-        <Input
-          width="260px"
-          bgColor="#999ca2ff"
-          type="text"
-          value={inputValue}
-          placeholder="Rp."
-          
-          onChange={handleChange}
-        ></Input>
-      </Flex>
+          <Menu>
+            <MenuButton
+              _active={{ bgColor: "#878787ff" }}
+              _hover={{ bgColor: "#878787ff" }}
+              bgColor="#999ca2ff"
+              as={Button}
+              width="260px"
+            >
+              <Box display="flex" justifyContent="space-between">
+                {selectedType?.out || "Select Type Of Expense"}{" "}
+                <Box>
+                  {selectedType?.emote || (
+                    <Icon
+                      boxSize={5}
+                      as={BsArrowDownCircleFill as React.ElementType}
+                    />
+                  )}
+                </Box>
+              </Box>
+            </MenuButton>
+            <MenuList>
+              {data.map((dataExpense) => (
+                <MenuItem
+                  justifyContent="space-between"
+                  bgColor="#323439ff"
+                  key={dataExpense.id}
+                  onClick={() => onSelectType(dataExpense)}
+                  width="258px"
+                  pl={3}
+                >
+                  {dataExpense.out}
+                  <Box>{dataExpense.emote}</Box>
+                </MenuItem>
+              ))}
+            </MenuList>
+          </Menu>
+
+          <Input
+            width="260px"
+            bgColor="#999ca2ff"
+            type="text"
+            value={inputValue}
+            placeholder="Rp."
+            onChange={handleChange}
+          ></Input>
+        </Flex>
     </>
   );
 };

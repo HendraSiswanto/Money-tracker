@@ -1,4 +1,4 @@
-import tipe from "../data/tipe";
+import dataExpense from "../data/dataExpense";
 
 export interface Type {
     id: number;
@@ -6,6 +6,6 @@ export interface Type {
     emote: string;
 }
 
-const useType = () =>({data: tipe})
+const useType = () =>({data: dataExpense})
 
 export default useType
