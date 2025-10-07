@@ -39,55 +39,66 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
 
   return (
     <>
-        <Flex flexDirection="column">
-        
-
-          <Menu>
-            <MenuButton
-              _active={{ bgColor: "#878787ff" }}
-              _hover={{ bgColor: "#878787ff" }}
-              bgColor="#999ca2ff"
-              as={Button}
-              width="260px"
-            >
-              <Box display="flex" justifyContent="space-between">
-                {selectedType?.out || "Select Type Of Expense"}{" "}
-                <Box>
-                  {selectedType?.emote || (
-                    <Icon
-                      boxSize={5}
-                      as={BsArrowDownCircleFill as React.ElementType}
-                    />
-                  )}
-                </Box>
-              </Box>
-            </MenuButton>
-            <MenuList>
-              {data.map((dataExpense) => (
-                <MenuItem
-                  justifyContent="space-between"
-                  bgColor="#323439ff"
-                  key={dataExpense.id}
-                  onClick={() => onSelectType(dataExpense)}
-                  width="258px"
-                  pl={3}
-                >
-                  {dataExpense.out}
-                  <Box>{dataExpense.emote}</Box>
-                </MenuItem>
-              ))}
-            </MenuList>
-          </Menu>
-
-          <Input
+      <Flex flexDirection="column" gap={2}>
+        <Menu>
+          <MenuButton
+            _active={{ bgColor: "#45241cd4" }}
+            _hover={{ bgColor: "#45241cd4" }}
+            bgColor="#45241cff"
+            as={Button}
             width="260px"
-            bgColor="#999ca2ff"
-            type="text"
-            value={inputValue}
-            placeholder="Rp."
-            onChange={handleChange}
-          ></Input>
-        </Flex>
+          >
+            <Box display="flex" justifyContent="space-between">
+              {selectedType?.out || "Select Type Of Expense"}{" "}
+              <Box>
+                {selectedType?.emote || (
+                  <Icon
+                    boxSize={5}
+                    as={BsArrowDownCircleFill as React.ElementType}
+                  />
+                )}
+              </Box>
+            </Box>
+          </MenuButton>
+          <MenuList bg="#45241cff">
+            {data.map((dataExpense) => (
+              <MenuItem
+                justifyContent="space-between"
+                bg="#45241cd4"
+                key={dataExpense.id}
+                onClick={() => onSelectType(dataExpense)}
+                width="258px"
+                pl={3}
+              >
+                {dataExpense.out}
+                <Box>{dataExpense.emote}</Box>
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
+
+
+        <Box mb={5} width="fit-content" display="flex" flexDirection="row">    
+        <Input
+          width="260px"
+          bgColor="transparent"
+          color="black"
+          border="0.5px solid #969696ff"
+          type="text"
+          _focus={{
+            outline: "none",
+            borderColor: "#9ecaed",
+            boxShadow: "0 0 10px #9ecaed",
+          }}
+          _hover={{ borderColor: "#b0adadff" }}
+          value={inputValue}
+          placeholder="Rp."
+          _placeholder={{ color: "#615e5e4a" }}
+          onChange={handleChange}
+        ></Input>
+        <Input _placeholder={{ color: "#615e5e4a" }} type="date"></Input>
+      </Box>
+      </Flex>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Heading } from "@chakra-ui/react";
+import { Box, Button, Card, Grid, Heading } from "@chakra-ui/react";
 import Expense from "./Expense";
 import { useState } from "react";
 import type { Type } from "../hooks/useType";
@@ -10,18 +10,28 @@ interface Props {
 const Transaction = () => {
   const [changeTipe, setTipe] = useState<Props>({} as Props);
   return (
-   <>
+    <Card
+      ml={2}
+      width="fit-content"
+      mt={10}
+      bgColor="transparent"
+      border="1px solid #605f5f37"
+      boxShadow="5px 5px 10px #605f5f37"
+      alignItems="center"
+      gap={2}
+    >
       <Heading
         size="md"
         mb={4}
         textAlign="center"
         color="#1C4532"
         fontWeight="bold"
+        mt={5}
       >
         START TRACKING
       </Heading>
 
-      <Box display="flex" flexDirection="row" justifyContent="space-between">
+      <Box display="flex" flexDirection="row" width="fit-content" gap={10}>
         <Button
           ml="110px"
           px="70px"
@@ -46,7 +56,7 @@ const Transaction = () => {
         selectedType={changeTipe.dataExpense}
         onSelectType={(dataExpense) => setTipe({ ...changeTipe, dataExpense })}
       />
-      </>
+    </Card>
   );
 };
 
