@@ -77,27 +77,40 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
           </MenuList>
         </Menu>
 
+        <Box
+          mb={5}
+          width="fit-content"
+          display="flex"
+          flexDirection="column"
+          gap={2}
+        >
+          <Input
+            width="260px"
+            bgColor="transparent"
+            color="black"
+            border="0.5px solid #969696ff"
+            type="text"
+            _focus={{
+              outline: "none",
+              borderColor: "#9ecaed",
+              boxShadow: "0 0 10px #9ecaed",
+            }}
+            _hover={{ borderColor: "#b0adadff" }}
+            value={inputValue}
+            placeholder="Rp."
+            _placeholder={{ color: "#615e5e4a" }}
+            onChange={handleChange}
+          ></Input>
+          <Input
+          className="dateInput"
+            type="date"
+            border="0.5px solid #969696ff"
+            width="-moz-fit-content"
+            placeholder="DD-MM-YYYY"
+            color="#101010"
 
-        <Box mb={5} width="fit-content" display="flex" flexDirection="row">    
-        <Input
-          width="260px"
-          bgColor="transparent"
-          color="black"
-          border="0.5px solid #969696ff"
-          type="text"
-          _focus={{
-            outline: "none",
-            borderColor: "#9ecaed",
-            boxShadow: "0 0 10px #9ecaed",
-          }}
-          _hover={{ borderColor: "#b0adadff" }}
-          value={inputValue}
-          placeholder="Rp."
-          _placeholder={{ color: "#615e5e4a" }}
-          onChange={handleChange}
-        ></Input>
-        <Input _placeholder={{ color: "#615e5e4a" }} type="date"></Input>
-      </Box>
+          ></Input>
+        </Box>
       </Flex>
     </>
   );
