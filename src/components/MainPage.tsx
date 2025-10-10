@@ -7,13 +7,9 @@ import {
   ListItem,
   VStack,
   Box,
-  Grid,
 } from "@chakra-ui/react";
 import useImage, { type Sided } from "../hooks/useImage";
 import Logo from "../assets/Vector2.svg";
-import Expense from "./Expense";
-import type { Type } from "../hooks/useType";
-import { useState } from "react";
 import Transaction from "./Transaction";
 
 interface Props {

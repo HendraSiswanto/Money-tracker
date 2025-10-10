@@ -1,14 +1,17 @@
-import { Box, Button, Card, Grid, Heading } from "@chakra-ui/react";
+import { Box, Button, Card, Heading } from "@chakra-ui/react";
 import Expense from "./Expense";
 import { useState } from "react";
-import type { Type } from "../hooks/useType";
-
+import type { TypeExpense } from "../hooks/useExpense";
+import type { TypeIncome } from "../hooks/useIncome";
 interface Props {
-  dataExpense: Type;
+  dataExpense: TypeExpense;
+  dataIncome: TypeIncome;
 }
 
 const Transaction = () => {
   const [changeTipe, setTipe] = useState<Props>({} as Props);
+
+
   return (
     <Card
       ml={2}
@@ -20,6 +23,7 @@ const Transaction = () => {
       alignItems="center"
       gap={2}
     >
+      
       <Heading
         size="md"
         mb={4}
@@ -38,6 +42,7 @@ const Transaction = () => {
           bgColor="#1C4532"
           _active={{ bgColor: "#1c4532db" }}
           _hover={{ bgColor: "#1c4532db" }}
+          
         >
           Income 💰
         </Button>

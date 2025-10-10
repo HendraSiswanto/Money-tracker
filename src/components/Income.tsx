@@ -10,19 +10,19 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { BsArrowDownCircleFill } from "react-icons/bs";
-import type { Type } from "../hooks/useType";
-import useType from "../hooks/useType";
+import type { TypeIncome } from "../hooks/useIncome";
+import useType from "../hooks/useIncome";
 import { useState } from "react";
 
 interface Props {
-  onSelectType: (dataExpense: Type) => void;
-  selectedType: Type;
+  onSelectType: (dataIncome: TypeIncome) => void;
+  selectedType: TypeIncome;
 }
 
 const Expense = ({ onSelectType, selectedType }: Props) => {
   const { data } = useType();
   const [inputValue, setInputValue] = useState("");
-  const [inputNote,setInputNote] = useState("")
+  const [inputNote, setInputNote] = useState("");
   function Rupiah(num: bigint): string {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -36,9 +36,9 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
     const numeric = raw ? BigInt(raw) : BigInt(0);
     setInputValue(raw ? Rupiah(numeric) : "");
   };
-  const handleNote = (e:React.ChangeEvent<HTMLInputElement>) =>{
-    setInputNote(e.target.value)
-  }
+  const handleNote = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputNote(e.target.value);
+  };
 
   return (
     <>
@@ -52,7 +52,7 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
             width="260px"
           >
             <Box display="flex" justifyContent="space-between">
-              {selectedType?.out || "Select Type Of Expense"}{" "}
+              {selectedType?.in || "Select Type Of Income"}{" "}
               <Box>
                 {selectedType?.emote || (
                   <Icon
@@ -64,17 +64,17 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
             </Box>
           </MenuButton>
           <MenuList bg="#45241cff">
-            {data.map((dataExpense) => (
+            {data.map((dataIncome) => (
               <MenuItem
                 justifyContent="space-between"
                 bg="#45241cd4"
-                key={dataExpense.id}
-                onClick={() => onSelectType(dataExpense)}
+                key={dataIncome.id}
+                onClick={() => onSelectType(dataIncome)}
                 width="258px"
                 pl={3}
               >
-                {dataExpense.out}
-                <Box>{dataExpense.emote}</Box>
+                {dataIncome.in}
+                <Box>{dataIncome.emote}</Box>
               </MenuItem>
             ))}
           </MenuList>
@@ -119,8 +119,8 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
                 cursor: "pointer",
               },
             }}
-            _hover={{borderColor: "#969696ff"}}
-             _focus={{
+            _hover={{ borderColor: "#969696ff" }}
+            _focus={{
               outline: "none",
               borderColor: "#9ecaed",
               boxShadow: "0 0 10px #9ecaed",

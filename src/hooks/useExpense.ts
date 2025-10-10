@@ -1,6 +1,7 @@
 import dataExpense from "../data/dataExpense";
 
-export interface Type {
+
+export interface TypeExpense {
     id: number;
     out: string;
     emote: string;

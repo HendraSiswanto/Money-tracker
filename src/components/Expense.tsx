@@ -10,19 +10,19 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { BsArrowDownCircleFill } from "react-icons/bs";
-import type { Type } from "../hooks/useType";
-import useType from "../hooks/useType";
+import type { TypeExpense } from "../hooks/useExpense";
+import useType from "../hooks/useExpense";
 import { useState } from "react";
 
 interface Props {
-  onSelectType: (dataExpense: Type) => void;
-  selectedType: Type;
+  onSelectType: (dataExpense: TypeExpense) => void;
+  selectedType: TypeExpense;
 }
 
 const Expense = ({ onSelectType, selectedType }: Props) => {
   const { data } = useType();
   const [inputValue, setInputValue] = useState("");
-  const [inputNote,setInputNote] = useState("")
+  const [inputNote, setInputNote] = useState("");
   function Rupiah(num: bigint): string {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -36,9 +36,9 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
     const numeric = raw ? BigInt(raw) : BigInt(0);
     setInputValue(raw ? Rupiah(numeric) : "");
   };
-  const handleNote = (e:React.ChangeEvent<HTMLInputElement>) =>{
-    setInputNote(e.target.value)
-  }
+  const handleNote = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputNote(e.target.value);
+  };
 
   return (
     <>
@@ -119,8 +119,8 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
                 cursor: "pointer",
               },
             }}
-            _hover={{borderColor: "#969696ff"}}
-             _focus={{
+            _hover={{ borderColor: "#969696ff" }}
+            _focus={{
               outline: "none",
               borderColor: "#9ecaed",
               boxShadow: "0 0 10px #9ecaed",

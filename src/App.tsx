@@ -2,7 +2,7 @@ import { useState } from "react";
 import Login from "./components/Login";
 import MainPage from "./components/MainPage";
 import type { Sided } from "./hooks/useImage";
-import type { Type } from "./hooks/useType";
+import type { Type } from "./hooks/useExpense";
 
 export interface moneyQuery {
   imageData: Sided | null;
