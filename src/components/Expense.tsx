@@ -63,11 +63,12 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
               </Box>
             </Box>
           </MenuButton>
-          <MenuList bg="#45241cff">
+          <MenuList bg="#45241cff" >
             {data.map((dataExpense) => (
               <MenuItem
+               _hover={{ bgColor: "#584642d4" }}
                 justifyContent="space-between"
-                bg="#45241cd4"
+                bg="#45241cff"
                 key={dataExpense.id}
                 onClick={() => onSelectType(dataExpense)}
                 width="258px"

@@ -3,6 +3,8 @@ import Expense from "./Expense";
 import { useState } from "react";
 import type { TypeExpense } from "../hooks/useExpense";
 import type { TypeIncome } from "../hooks/useIncome";
+
+import Income from "./Income";
 interface Props {
   dataExpense: TypeExpense;
   dataIncome: TypeIncome;
@@ -10,7 +12,7 @@ interface Props {
 
 const Transaction = () => {
   const [changeTipe, setTipe] = useState<Props>({} as Props);
-
+  const [selected,setSelected] = useState('')
 
   return (
     <Card
@@ -42,7 +44,7 @@ const Transaction = () => {
           bgColor="#1C4532"
           _active={{ bgColor: "#1c4532db" }}
           _hover={{ bgColor: "#1c4532db" }}
-          
+          onClick={() => setSelected('income')}
         >
           Income 💰
         </Button>
@@ -53,14 +55,19 @@ const Transaction = () => {
           bgColor="#45241cff"
           _active={{ bgColor: "#45241cd4" }}
           _hover={{ bgColor: "#45241cd4" }}
+          onClick={()=> setSelected('expense')}
         >
           Expense 💸
         </Button>
       </Box>
-      <Expense
+
+      {selected === 'income' ?
+      <Income selectedType={changeTipe.dataIncome}
+        onSelectType={(dataIncome) => setTipe({ ...changeTipe, dataIncome })} />
+     : <Expense
         selectedType={changeTipe.dataExpense}
         onSelectType={(dataExpense) => setTipe({ ...changeTipe, dataExpense })}
-      />
+      />}
     </Card>
   );
 };

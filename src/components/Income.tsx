@@ -45,9 +45,9 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
       <Flex flexDirection="column" gap={2}>
         <Menu>
           <MenuButton
-            _active={{ bgColor: "#45241cd4" }}
-            _hover={{ bgColor: "#45241cd4" }}
-            bgColor="#45241cff"
+            _active={{ bgColor: "#1c4532db" }}
+            _hover={{ bgColor: "#1c4532db" }}
+            bgColor="#1C4532"
             as={Button}
             width="260px"
           >
@@ -63,11 +63,12 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
               </Box>
             </Box>
           </MenuButton>
-          <MenuList bg="#45241cff">
+          <MenuList bg="#1C4532">
             {data.map((dataIncome) => (
               <MenuItem
+               _hover={{ bgColor: "#1c4532db" }}
                 justifyContent="space-between"
-                bg="#45241cd4"
+                bg="#1C4532"
                 key={dataIncome.id}
                 onClick={() => onSelectType(dataIncome)}
                 width="258px"
