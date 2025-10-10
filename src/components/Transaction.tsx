@@ -12,7 +12,7 @@ interface Props {
 
 const Transaction = () => {
   const [changeTipe, setTipe] = useState<Props>({} as Props);
-  const [selected,setSelected] = useState('')
+  const [selected,setSelected] = useState('income')
 
   return (
     <Card

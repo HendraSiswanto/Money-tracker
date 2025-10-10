@@ -21,6 +21,7 @@ interface Props {
 
 const Expense = ({ onSelectType, selectedType }: Props) => {
   const { data } = useType();
+  const [value, setValue] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [inputNote, setInputNote] = useState("");
   function Rupiah(num: bigint): string {
@@ -66,7 +67,7 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
           <MenuList bg="#1C4532">
             {data.map((dataIncome) => (
               <MenuItem
-               _hover={{ bgColor: "#1c4532db" }}
+                _hover={{ bgColor: "#94b0a3db" }}
                 justifyContent="space-between"
                 bg="#1C4532"
                 key={dataIncome.id}
@@ -109,9 +110,9 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
             className="dateInput"
             type="date"
             border="0.5px solid #969696ff"
-            width="-moz-fit-content"
-            placeholder="DD-MM-YYYY"
-            color="#615e5e4a"
+            color={value ? "black" : "#615e5e4a"}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
             sx={{
               "::-webkit-calendar-picker-indicator": {
                 color: "#615e5e4a",

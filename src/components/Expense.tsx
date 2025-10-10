@@ -21,6 +21,7 @@ interface Props {
 
 const Expense = ({ onSelectType, selectedType }: Props) => {
   const { data } = useType();
+  const [value,setValue] = useState('')
   const [inputValue, setInputValue] = useState("");
   const [inputNote, setInputNote] = useState("");
   function Rupiah(num: bigint): string {
@@ -109,9 +110,9 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
             className="dateInput"
             type="date"
             border="0.5px solid #969696ff"
-            width="-moz-fit-content"
-            placeholder="DD-MM-YYYY"
-            color="#615e5e4a"
+           color={value ? "black" : "#615e5e4a"}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
             sx={{
               "::-webkit-calendar-picker-indicator": {
                 color: "#615e5e4a",
