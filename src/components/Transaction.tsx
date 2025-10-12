@@ -5,6 +5,7 @@ import type { TypeExpense } from "../hooks/useExpense";
 import type { TypeIncome } from "../hooks/useIncome";
 
 import Income from "./Income";
+import dataIncome from "../data/dataIncome";
 interface Props {
   dataExpense: TypeExpense;
   dataIncome: TypeIncome;
@@ -72,14 +73,19 @@ const Transaction = () => {
 
     </Card>
 
-    <TableContainer color="black">
+    <TableContainer>
           <Table>
             <Thead>
               <Th>Income/Expense</Th>
               <Th>Type</Th>
+              <Th>Amount</Th>
+              <Th>Date</Th>
+              <Th>Note</Th>
             </Thead>
             <Tbody>
-
+              {dataIncome.map((dataIncome) => (
+                <Tr key={dataIncome.id}>{dataIncome.in}</Tr>
+              ))}
             </Tbody>
           </Table>
 

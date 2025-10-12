@@ -53,7 +53,7 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
             width="260px"
           >
             <Box display="flex" justifyContent="space-between">
-              {selectedType?.out || "Select Type Of Expense"}{" "}
+              {selectedType?.out || "Select Type Of Expense"}
               <Box>
                 {selectedType?.emote || (
                   <Icon

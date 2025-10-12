@@ -40,6 +40,13 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
   const handleNote = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputNote(e.target.value);
   };
+  const handleReset = ()=>{
+   
+    setValue("")
+    setInputValue("")
+    setInputNote("")
+  }
+
 
   return (
     <>
@@ -53,7 +60,7 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
             width="260px"
           >
             <Box display="flex" justifyContent="space-between">
-              {selectedType?.in || "Select Type Of Income"}{" "}
+              {selectedType?.in || "Select Type Of Income"}
               <Box>
                 {selectedType?.emote || (
                   <Icon
@@ -145,6 +152,11 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
             _placeholder={{ color: "#615e5e4a" }}
             onChange={handleNote}
           ></Input>
+
+          <Box display="flex" justifyContent="center" gap={3} >
+            <Button bgColor="#45241cff" _hover={{ bgColor: "#45241cd4" }} onClick={handleReset}  >Reset</Button>
+            <Button bgColor="#1C4532"  _hover={{ bgColor: "#1c4532db" }}>Save</Button>
+          </Box>
         </Box>
       </Flex>
     </>
