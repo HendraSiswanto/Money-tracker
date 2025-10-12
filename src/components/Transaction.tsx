@@ -1,4 +1,4 @@
-import { Box, Button, Card, Heading } from "@chakra-ui/react";
+import { Box, Button, Card, Heading, Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
 import Expense from "./Expense";
 import { useState } from "react";
 import type { TypeExpense } from "../hooks/useExpense";
@@ -15,6 +15,7 @@ const Transaction = () => {
   const [selected,setSelected] = useState('income')
 
   return (
+    <>
     <Card
       ml={2}
       width="fit-content"
@@ -68,7 +69,23 @@ const Transaction = () => {
         selectedType={changeTipe.dataExpense}
         onSelectType={(dataExpense) => setTipe({ ...changeTipe, dataExpense })}
       />}
+
     </Card>
+
+    <TableContainer color="black">
+          <Table>
+            <Thead>
+              <Th>Income/Expense</Th>
+              <Th>Type</Th>
+            </Thead>
+            <Tbody>
+
+            </Tbody>
+          </Table>
+
+    </TableContainer>   
+  
+  </>
   );
 };
 
