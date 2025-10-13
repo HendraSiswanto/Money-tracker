@@ -19,7 +19,7 @@ interface Props {
   selectedType: TypeIncome;
 }
 
-const Expense = ({ onSelectType, selectedType }: Props) => {
+const Income = ({ onSelectType, selectedType }: Props) => {
   const { data } = useType();
   const [value, setValue] = useState("");
   const [inputValue, setInputValue] = useState("");
@@ -40,13 +40,12 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
   const handleNote = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputNote(e.target.value);
   };
-  const handleReset = ()=>{
-   
-    setValue("")
-    setInputValue("")
-    setInputNote("")
-  }
-
+  const handleReset = () => {
+    setValue("");
+    setInputValue("");
+    setInputNote("");
+    onSelectType({ id: 0, in: "", emote: "" });
+  };
 
   return (
     <>
@@ -153,9 +152,21 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
             onChange={handleNote}
           ></Input>
 
-          <Box display="flex" justifyContent="center" gap={3} >
-            <Button bgColor="#45241cff" _hover={{ bgColor: "#45241cd4" }} onClick={handleReset}  >Reset</Button>
-            <Button bgColor="#1C4532"  _hover={{ bgColor: "#1c4532db" }}>Save</Button>
+          <Box display="flex" justifyContent="center" gap={3}>
+            <Button
+              bgColor="#45241cff"
+              _hover={{ bgColor: "#45241cd4" }}
+              onClick={handleReset}
+            >
+              Reset
+            </Button>
+            <Button
+              bgColor="#1C4532"
+              _hover={{ bgColor: "#1c4532db" }}
+              isDisabled={!selectedType?.in || !inputValue || !value}
+            >
+              Save
+            </Button>
           </Box>
         </Box>
       </Flex>
@@ -163,4 +174,4 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
   );
 };
 
-export default Expense;
+export default Income;

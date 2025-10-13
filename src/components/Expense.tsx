@@ -21,7 +21,7 @@ interface Props {
 
 const Expense = ({ onSelectType, selectedType }: Props) => {
   const { data } = useType();
-  const [value,setValue] = useState('')
+  const [value, setValue] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [inputNote, setInputNote] = useState("");
   function Rupiah(num: bigint): string {
@@ -41,6 +41,12 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
     setInputNote(e.target.value);
   };
 
+  const handleReset = () => {
+    setValue("");
+    setInputValue("");
+    setInputNote("");
+    onSelectType({ id: 0, out: "", emote: "" });
+  };
   return (
     <>
       <Flex flexDirection="column" gap={2}>
@@ -64,10 +70,10 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
               </Box>
             </Box>
           </MenuButton>
-          <MenuList bg="#45241cff" >
+          <MenuList bg="#45241cff">
             {data.map((dataExpense) => (
               <MenuItem
-               _hover={{ bgColor: "#584642d4" }}
+                _hover={{ bgColor: "#584642d4" }}
                 justifyContent="space-between"
                 bg="#45241cff"
                 key={dataExpense.id}
@@ -110,7 +116,7 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
             className="dateInput"
             type="date"
             border="0.5px solid #969696ff"
-           color={value ? "black" : "#615e5e4a"}
+            color={value ? "black" : "#615e5e4a"}
             value={value}
             onChange={(e) => setValue(e.target.value)}
             sx={{
@@ -145,6 +151,22 @@ const Expense = ({ onSelectType, selectedType }: Props) => {
             _placeholder={{ color: "#615e5e4a" }}
             onChange={handleNote}
           ></Input>
+          <Box display="flex" justifyContent="center" gap={3}>
+            <Button
+              bgColor="#45241cff"
+              _hover={{ bgColor: "#45241cd4" }}
+              onClick={handleReset}
+            >
+              Reset
+            </Button>
+            <Button
+              bgColor="#1C4532"
+              _hover={{ bgColor: "#1c4532db" }}
+              isDisabled={!selectedType?.out || !inputValue || !value}
+            >
+              Save
+            </Button>
+          </Box>
         </Box>
       </Flex>
     </>
