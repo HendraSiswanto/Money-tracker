@@ -17,10 +17,11 @@ import { useState } from "react";
 interface Props {
   onSelectType: (dataIncome: TypeIncome) => void;
   selectedType: TypeIncome;
+  
 }
 
-const Income = ({ onSelectType, selectedType }: Props) => {
-  const { data } = useType();
+const Income = ({ onSelectType, selectedType}: Props) => {
+  const { data } = useType(); 
   const [value, setValue] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [inputNote, setInputNote] = useState("");
@@ -46,6 +47,19 @@ const Income = ({ onSelectType, selectedType }: Props) => {
     setInputNote("");
     onSelectType({ id: 0, in: "", emote: "" });
   };
+
+  const handleSave = () =>{
+    handleReset()
+    const savedData = {
+      value,
+      inputValue,
+      inputNote
+      }
+      setAllData(allData =>({
+        ...savedData,allData
+      }))
+  }
+  
 
   return (
     <>
@@ -164,6 +178,7 @@ const Income = ({ onSelectType, selectedType }: Props) => {
               bgColor="#1C4532"
               _hover={{ bgColor: "#1c4532db" }}
               isDisabled={!selectedType?.in || !inputValue || !value}
+              onClick={handleSave}
             >
               Save
             </Button>
