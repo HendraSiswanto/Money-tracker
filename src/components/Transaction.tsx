@@ -22,15 +22,20 @@ interface Props {
   dataIncome: TypeIncome;
 }
 interface Income1 {
-  value: string;
-  inputValue: string;
-  inputNote: string;
+  type: string;
+  amount: string;
+  date: string;
+  note: string
 }
 
 const Transaction: React.FC = () => {
   const [changeTipe, setTipe] = useState<Props>({} as Props);
   const [selected, setSelected] = useState("income");
-  const [allDataIncome, setAllDataIncome] = useState<Income1>({} as Income1);
+  const [allDataIncome, setAllDataIncome] = useState<Income1[]>([]);
+
+    const handleSave = (newDataIncome: Income1) => {
+    setAllDataIncome((prev) => [...prev, newDataIncome]);
+  };
   return (
     <>
       <Card
@@ -84,8 +89,7 @@ const Transaction: React.FC = () => {
             onSelectType={(dataIncome) =>
               setTipe({ ...changeTipe, dataIncome })
             }
-            allDataIncome={allDataIncome}
-            setAllData={setAllDataIncome}
+           saveIncome={handleSave}
           />
         ) : (
           <Expense

@@ -17,11 +17,16 @@ import { useState } from "react";
 interface Props {
   onSelectType: (dataIncome: TypeIncome) => void;
   selectedType: TypeIncome;
-  
+  saveIncome: (data: {
+    type: string;
+    amount: string;
+    date: string;
+    note: string;
+  }) => void;
 }
 
-const Income = ({ onSelectType, selectedType}: Props) => {
-  const { data } = useType(); 
+const Income = ({ onSelectType, selectedType,saveIncome }: Props) => {
+  const { data } = useType();
   const [value, setValue] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [inputNote, setInputNote] = useState("");
@@ -48,19 +53,16 @@ const Income = ({ onSelectType, selectedType}: Props) => {
     onSelectType({ id: 0, in: "", emote: "" });
   };
 
-  const handleSave = () =>{
-    handleReset()
-    const savedData = {
-      value,
-      inputValue,
-      inputNote
-      }
-      setAllData(allData =>({
-        ...savedData,allData
-      }))
+  const handleSaveIncome = () => {
+    handleReset();
+    saveIncome({
+        type: selectedType?.in || "Unknown",
+      amount:value,
+      date:inputValue,
+      note:inputNote,
+    })
   }
-  
-
+    
   return (
     <>
       <Flex flexDirection="column" gap={2}>
@@ -178,7 +180,7 @@ const Income = ({ onSelectType, selectedType}: Props) => {
               bgColor="#1C4532"
               _hover={{ bgColor: "#1c4532db" }}
               isDisabled={!selectedType?.in || !inputValue || !value}
-              onClick={handleSave}
+              onClick={handleSaveIncome}
             >
               Save
             </Button>
