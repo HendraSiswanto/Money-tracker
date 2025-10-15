@@ -6,6 +6,7 @@ import {
   Table,
   TableContainer,
   Tbody,
+  Td,
   Th,
   Thead,
   Tr,
@@ -16,7 +17,6 @@ import type { TypeExpense } from "../hooks/useExpense";
 import type { TypeIncome } from "../hooks/useIncome";
 
 import Income from "./Income";
-import dataIncome from "../data/dataIncome";
 interface Props {
   dataExpense: TypeExpense;
   dataIncome: TypeIncome;
@@ -25,7 +25,7 @@ interface Income1 {
   type: string;
   amount: string;
   date: string;
-  note: string
+  note: string;
 }
 
 const Transaction: React.FC = () => {
@@ -33,7 +33,7 @@ const Transaction: React.FC = () => {
   const [selected, setSelected] = useState("income");
   const [allDataIncome, setAllDataIncome] = useState<Income1[]>([]);
 
-    const handleSave = (newDataIncome: Income1) => {
+  const handleSave = (newDataIncome: Income1) => {
     setAllDataIncome((prev) => [...prev, newDataIncome]);
   };
   return (
@@ -89,7 +89,7 @@ const Transaction: React.FC = () => {
             onSelectType={(dataIncome) =>
               setTipe({ ...changeTipe, dataIncome })
             }
-           saveIncome={handleSave}
+            saveIncome={handleSave}
           />
         ) : (
           <Expense
@@ -101,22 +101,33 @@ const Transaction: React.FC = () => {
         )}
       </Card>
 
-      <TableContainer>
-        <Table>
-          <Thead>
-            <Th>Income/Expense</Th>
-            <Th>Type</Th>
-            <Th>Amount</Th>
-            <Th>Date</Th>
-            <Th>Note</Th>
-          </Thead>
-          <Tbody>
-            {dataIncome.map((dataIncome) => (
-              <Tr key={dataIncome.id}>{dataIncome.in}</Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+      <Table width="container.lg">
+        <Thead>
+          <Th  width="20px" border="1px solid #101010" color="#1C4532">
+            Income/Expense
+          </Th>
+          <Th border="1px solid #101010" color="#1C4532">
+            Type
+          </Th>
+          <Th border="1px solid #101010" color="#1C4532">
+            Amount
+          </Th>
+          <Th border="1px solid #101010" color="#1C4532">
+            Date
+          </Th>
+          <Th border="1px solid #101010" color="#1C4532">
+            Note
+          </Th>
+        </Thead>
+        <Tbody>
+          {allDataIncome.map((allDataIncome) => (
+            <>
+              <Td>{allDataIncome.type}</Td>
+              <Td>{allDataIncome.amount}</Td>
+            </>
+          ))}
+        </Tbody>
+      </Table>
     </>
   );
 };

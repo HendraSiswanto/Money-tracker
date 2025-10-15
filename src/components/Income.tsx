@@ -25,7 +25,7 @@ interface Props {
   }) => void;
 }
 
-const Income = ({ onSelectType, selectedType,saveIncome }: Props) => {
+const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
   const { data } = useType();
   const [value, setValue] = useState("");
   const [inputValue, setInputValue] = useState("");
@@ -56,13 +56,13 @@ const Income = ({ onSelectType, selectedType,saveIncome }: Props) => {
   const handleSaveIncome = () => {
     handleReset();
     saveIncome({
-        type: selectedType?.in || "Unknown",
-      amount:value,
-      date:inputValue,
-      note:inputNote,
-    })
-  }
-    
+      type: selectedType?.in || "Unknown",
+      amount: inputValue,
+      date: value,
+      note: inputNote,
+    });
+  };
+
   return (
     <>
       <Flex flexDirection="column" gap={2}>
