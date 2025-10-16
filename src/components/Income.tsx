@@ -18,6 +18,7 @@ interface Props {
   onSelectType: (dataIncome: TypeIncome) => void;
   selectedType: TypeIncome;
   saveIncome: (data: {
+    outcome: string;
     type: string;
     amount: string;
     date: string;
@@ -56,6 +57,7 @@ const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
   const handleSaveIncome = () => {
     handleReset();
     saveIncome({
+      outcome: "Income",
       type: selectedType?.in || "Unknown",
       amount: inputValue,
       date: value,

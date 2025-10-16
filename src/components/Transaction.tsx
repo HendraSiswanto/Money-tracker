@@ -21,7 +21,8 @@ interface Props {
   dataExpense: TypeExpense;
   dataIncome: TypeIncome;
 }
-interface Income1 {
+interface allData {
+  outcome: string;
   type: string;
   amount: string;
   date: string;
@@ -31,9 +32,9 @@ interface Income1 {
 const Transaction: React.FC = () => {
   const [changeTipe, setTipe] = useState<Props>({} as Props);
   const [selected, setSelected] = useState("income");
-  const [allDataIncome, setAllDataIncome] = useState<Income1[]>([]);
+  const [allDataIncome, setAllDataIncome] = useState<allData[]>([]);
 
-  const handleSave = (newDataIncome: Income1) => {
+  const handleSave = (newDataIncome: allData) => {
     setAllDataIncome((prev) => [...prev, newDataIncome]);
   };
   return (
@@ -101,33 +102,78 @@ const Transaction: React.FC = () => {
         )}
       </Card>
 
-      <Table width="container.lg">
-        <Thead>
-          <Th  width="20px" border="1px solid #101010" color="#1C4532">
-            Income/Expense
-          </Th>
-          <Th border="1px solid #101010" color="#1C4532">
-            Type
-          </Th>
-          <Th border="1px solid #101010" color="#1C4532">
-            Amount
-          </Th>
-          <Th border="1px solid #101010" color="#1C4532">
-            Date
-          </Th>
-          <Th border="1px solid #101010" color="#1C4532">
-            Note
-          </Th>
-        </Thead>
-        <Tbody>
-          {allDataIncome.map((allDataIncome) => (
-            <>
-              <Td>{allDataIncome.type}</Td>
-              <Td>{allDataIncome.amount}</Td>
-            </>
-          ))}
-        </Tbody>
-      </Table>
+      <Box display="flex" justifyContent="center" mt={6}>
+        <Table size="md" variant="simple" width="container.xl" >
+          <Thead>
+            <Th
+              textAlign="center"
+              width="15px"
+              border="2px solid #1C4532"
+              color="#1C4532"
+            >
+              Income/Expense
+            </Th>
+            <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
+              Type
+            </Th>
+            <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
+              Amount
+            </Th>
+            <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
+              Date
+            </Th>
+            <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
+              Note
+            </Th>
+          </Thead>
+          <Tbody >
+            {allDataIncome.map((allDataIncome,index) => (
+              <>
+              <Tr key={index}>
+                <Td
+                  textAlign="center"
+                  border="2px solid #1C4532"
+                  color="#1C4532"
+                >
+                  {" "}
+                  {allDataIncome.outcome}
+                </Td>
+                <Td
+                  textAlign="center"
+                  border="2px solid #1C4532"
+                  color="#1C4532"
+                >
+                  {allDataIncome.type}
+                </Td>
+                <Td
+                  textAlign="center"
+                  border="2px solid #1C4532"
+                  color="#1C4532"
+                >
+                  {allDataIncome.amount}
+                </Td>
+                <Td
+                  textAlign="center"
+                  border="2px solid #1C4532"
+                  color="#1C4532"
+                >
+                  {allDataIncome.date}
+                </Td>
+                <Td
+                  textAlign="center"
+                  border="2px solid #1C4532"
+                  color="#1C4532"
+                   wordBreak="break-word"
+                   textOverflow="ellipsis"
+                >
+                  {allDataIncome.note}
+                </Td>
+                </Tr>
+              </>
+            ))}
+          </Tbody>
+        </Table>
+      </Box>
     </>
   );
 };
