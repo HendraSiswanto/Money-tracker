@@ -102,78 +102,82 @@ const Transaction: React.FC = () => {
         )}
       </Card>
 
-      <Box display="flex" justifyContent="center" mt={6}>
-        <Table size="md" variant="simple" width="container.xl" >
-          <Thead>
-            <Th
-              textAlign="center"
-              width="15px"
-              border="2px solid #1C4532"
-              color="#1C4532"
-            >
-              Income/Expense
-            </Th>
-            <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
-              Type
-            </Th>
-            <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
-              Amount
-            </Th>
-            <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
-              Date
-            </Th>
-            <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
-              Note
-            </Th>
-          </Thead>
-          <Tbody >
-            {allDataIncome.map((allDataIncome,index) => (
-              <>
-              <Tr key={index}>
-                <Td
-                  textAlign="center"
-                  border="2px solid #1C4532"
-                  color="#1C4532"
-                >
-                  {" "}
-                  {allDataIncome.outcome}
-                </Td>
-                <Td
-                  textAlign="center"
-                  border="2px solid #1C4532"
-                  color="#1C4532"
-                >
-                  {allDataIncome.type}
-                </Td>
-                <Td
-                  textAlign="center"
-                  border="2px solid #1C4532"
-                  color="#1C4532"
-                >
-                  {allDataIncome.amount}
-                </Td>
-                <Td
-                  textAlign="center"
-                  border="2px solid #1C4532"
-                  color="#1C4532"
-                >
-                  {allDataIncome.date}
-                </Td>
-                <Td
-                  textAlign="center"
-                  border="2px solid #1C4532"
-                  color="#1C4532"
-                   wordBreak="break-word"
-                   textOverflow="ellipsis"
-                >
-                  {allDataIncome.note}
-                </Td>
-                </Tr>
-              </>
-            ))}
-          </Tbody>
-        </Table>
-      </Box>
+      {allDataIncome === null ? (
+        ""
+      ) : (
+        <Box display="flex" justifyContent="center" mt={6}>
+          <Table size="md" variant="simple" width="container.xl">
+            <Thead>
+              <Th
+                textAlign="center"
+                width="15px"
+                border="2px solid #1C4532"
+                color="#1C4532"
+              >
+                Income/Expense
+              </Th>
+              <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
+                Type
+              </Th>
+              <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
+                Amount
+              </Th>
+              <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
+                Date
+              </Th>
+              <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
+                Note
+              </Th>
+            </Thead>
+            <Tbody>
+              {allDataIncome.map((allDataIncome, index) => (
+                <>
+                  <Tr key={index}>
+                    <Td
+                      textAlign="center"
+                      border="2px solid #1C4532"
+                      color="#1C4532"
+                    >
+                      {" "}
+                      {allDataIncome.outcome}
+                    </Td>
+                    <Td
+                      textAlign="center"
+                      border="2px solid #1C4532"
+                      color="#1C4532"
+                    >
+                      {allDataIncome.type}
+                    </Td>
+                    <Td
+                      textAlign="center"
+                      border="2px solid #1C4532"
+                      color="#1C4532"
+                    >
+                      {allDataIncome.amount}
+                    </Td>
+                    <Td
+                      textAlign="center"
+                      border="2px solid #1C4532"
+                      color="#1C4532"
+                    >
+                      {allDataIncome.date}
+                    </Td>
+                    <Td
+                      textAlign="center"
+                      border="2px solid #1C4532"
+                      color="#1C4532"
+                      wordBreak="break-word"
+                      textOverflow="ellipsis"
+                    >
+                      {allDataIncome.note}
+                    </Td>
+                  </Tr>
+                </>
+              ))}
+            </Tbody>
+          </Table>
+        </Box>
+      )}
     </>
   );
 };
