@@ -12,7 +12,7 @@ import {
 import { BsArrowDownCircleFill } from "react-icons/bs";
 import type { TypeExpense } from "../hooks/useExpense";
 import useType from "../hooks/useExpense";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 interface Props {
   onSelectType: (dataExpense: TypeExpense) => void;
@@ -26,7 +26,8 @@ interface Props {
   }) => void;
 }
 
-const Expense = ({ onSelectType, selectedType,saveExpense }: Props) => {
+const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
+  const dateRef = useRef<HTMLInputElement | null>(null);
   const { data } = useType();
   const [value, setValue] = useState("");
   const [inputValue, setInputValue] = useState("");
@@ -57,12 +58,12 @@ const Expense = ({ onSelectType, selectedType,saveExpense }: Props) => {
   const handleSaveExpense = () => {
     handleReset();
     saveExpense({
-      outcome:"Expense",
+      outcome: "Expense",
       type: selectedType?.out || "Unknown",
       amount: inputValue,
-      date:value,
-      note: inputNote
-    })
+      date: value,
+      note: inputNote,
+    });
   };
   return (
     <>
@@ -129,28 +130,31 @@ const Expense = ({ onSelectType, selectedType,saveExpense }: Props) => {
             _placeholder={{ color: "#615e5e4a" }}
             onChange={handleChange}
           ></Input>
-          <Input
-            className="dateInput"
-            type="date"
-            border="0.5px solid #969696ff"
-            color={value ? "black" : "#615e5e4a"}
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            sx={{
-              "::-webkit-calendar-picker-indicator": {
-                color: "#615e5e4a",
-                filter:
-                  "invert(40%) sepia(10%) saturate(200%) hue-rotate(0deg) brightness(90%)",
-                cursor: "pointer",
-              },
-            }}
-            _hover={{ borderColor: "#969696ff" }}
-            _focus={{
-              outline: "none",
-              borderColor: "#9ecaed",
-              boxShadow: "0 0 10px #9ecaed",
-            }}
-          ></Input>
+          <Box onClick={() => dateRef.current?.showPicker?.()}>
+            <Input
+              cursor="pointer"
+              ref={dateRef}
+              type="date"
+              border="0.5px solid #969696ff"
+              color={value ? "black" : "#615e5e4a"}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              sx={{
+                "::-webkit-calendar-picker-indicator": {
+                  color: "#615e5e4a",
+                  filter:
+                    "invert(40%) sepia(10%) saturate(200%) hue-rotate(0deg) brightness(90%)",
+                  cursor: "pointer",
+                },
+              }}
+              _hover={{ borderColor: "#969696ff" }}
+              _focus={{
+                outline: "none",
+                borderColor: "#9ecaed",
+                boxShadow: "0 0 10px #9ecaed",
+              }}
+            ></Input>
+          </Box>
           <Input
             width="260px"
             bgColor="transparent"
