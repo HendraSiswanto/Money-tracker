@@ -12,7 +12,7 @@ import {
 import { BsArrowDownCircleFill } from "react-icons/bs";
 import type { TypeIncome } from "../hooks/useIncome";
 import useType from "../hooks/useIncome";
-import { useState } from "react";
+import { useState,useRef } from "react";
 
 interface Props {
   onSelectType: (dataIncome: TypeIncome) => void;
@@ -27,6 +27,7 @@ interface Props {
 }
 
 const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
+  const dateRef = useRef<HTMLInputElement | null>(null);
   const { data } = useType();
   const [value, setValue] = useState("");
   const [inputValue, setInputValue] = useState("");
@@ -130,7 +131,11 @@ const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
             _placeholder={{ color: "#615e5e4a" }}
             onChange={handleChange}
           ></Input>
+          <Box onClick={() => dateRef.current?.showPicker?.()}>
+
           <Input
+          cursor="pointer"
+          ref={dateRef}
             className="dateInput"
             type="date"
             border="0.5px solid #969696ff"
@@ -152,6 +157,7 @@ const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
               boxShadow: "0 0 10px #9ecaed",
             }}
           ></Input>
+          </Box>
           <Input
             width="260px"
             bgColor="transparent"
