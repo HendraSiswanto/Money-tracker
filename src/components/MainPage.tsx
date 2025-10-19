@@ -22,15 +22,19 @@ const MainPage = ({ onSelectImage, selectImage }: Props) => {
 
   return (
     <>
-      <Flex position="fixed" h="100vh" w="100%">
+      <Flex>
         <Box
-          maxWidth="7%"
+        position="fixed"
+        left="0"
+        top="0"
+        bottom="0"
+     bgColor="#1C4532"
           justifyItems="center"
-          flex="1"
+       
           flexDirection="column"
           alignItems="center"
         >
-          <Image mt="20px" boxSize="28px" src={Logo} />
+          <Image mt="20px" boxSize="28px" src={Logo} bgColor="#1C4532"/>
           <List mt={6} paddingY="5px">
             {data.map((imageData) => (
               <ListItem key={imageData.id}>
@@ -66,7 +70,7 @@ const MainPage = ({ onSelectImage, selectImage }: Props) => {
             ))}
           </List>
         </Box>
-        <Box flex={1} bgColor="#f2f2f6fa" maxWidth="100%">
+        <Box flex={1} ml="125px"> 
           <Transaction />
         </Box>
       </Flex>

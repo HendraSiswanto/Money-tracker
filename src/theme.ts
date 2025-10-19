@@ -8,7 +8,7 @@ const config: ThemeConfig = {
 const styles: Styles = {
   global: () => ({
     body: {
-      bg: "#1C4532",
+      bg: "#f2f2f6fa",
       fontFamily: "Inter"
     },
   }),
