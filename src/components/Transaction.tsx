@@ -119,13 +119,13 @@ const Transaction: React.FC = () => {
                 Type
               </Th>
               <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
-                Amount
-              </Th>
-              <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
                 Date
               </Th>
               <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
                 Note
+              </Th>
+              <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
+                Amount
               </Th>
             </Thead>
             <Tbody>
@@ -147,13 +147,7 @@ const Transaction: React.FC = () => {
                     >
                       {allData.type}
                     </Td>
-                    <Td
-                      textAlign="center"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                    >
-                      {allData.amount}
-                    </Td>
+                   
                     <Td
                       textAlign="center"
                       border="2px solid #1C4532"
@@ -168,7 +162,14 @@ const Transaction: React.FC = () => {
                       wordBreak="break-word"
                       textOverflow="ellipsis"
                     >
-                      {allData.note}
+                      {allData.note || "-"}
+                    </Td>
+                     <Td
+                      textAlign="center"
+                      border="2px solid #1C4532"
+                      color="#1C4532"
+                    >
+                      {allData.amount}
                     </Td>
                   </Tr>
                 </>
