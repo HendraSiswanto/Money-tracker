@@ -4,7 +4,6 @@ import {
   Card,
   Heading,
   Table,
-  TableContainer,
   Tbody,
   Td,
   Th,
@@ -32,10 +31,10 @@ interface allData {
 const Transaction: React.FC = () => {
   const [changeTipe, setTipe] = useState<Props>({} as Props);
   const [selected, setSelected] = useState("income");
-  const [allDataIncome, setAllDataIncome] = useState<allData[]>([]);
+  const [allData, setAllData] = useState<allData[]>([]);
 
-  const handleSave = (newDataIncome: allData) => {
-    setAllDataIncome((prev) => [...prev, newDataIncome]);
+  const handleSave = (newData: allData) => {
+    setAllData((prev) => [...prev, newData]);
   };
   return (
     <>
@@ -97,14 +96,14 @@ const Transaction: React.FC = () => {
             selectedType={changeTipe.dataExpense}
             onSelectType={(dataExpense) =>
               setTipe({ ...changeTipe, dataExpense })
+             
             }
+            saveExpense={handleSave}
           />
         )}
       </Card>
 
-      {allDataIncome === null ? (
-        ""
-      ) : (
+      {allData.length > 0 && (
         <Box display="flex" justifyContent="center" mt={6}>
           <Table size="md" variant="simple" width="container.xl">
             <Thead>
@@ -130,7 +129,7 @@ const Transaction: React.FC = () => {
               </Th>
             </Thead>
             <Tbody>
-              {allDataIncome.map((allDataIncome, index) => (
+              {allData.map((allData, index) => (
                 <>
                   <Tr key={index}>
                     <Td
@@ -139,28 +138,28 @@ const Transaction: React.FC = () => {
                       color="#1C4532"
                     >
                       {" "}
-                      {allDataIncome.outcome}
+                      {allData.outcome}
                     </Td>
                     <Td
                       textAlign="center"
                       border="2px solid #1C4532"
                       color="#1C4532"
                     >
-                      {allDataIncome.type}
+                      {allData.type}
                     </Td>
                     <Td
                       textAlign="center"
                       border="2px solid #1C4532"
                       color="#1C4532"
                     >
-                      {allDataIncome.amount}
+                      {allData.amount}
                     </Td>
                     <Td
                       textAlign="center"
                       border="2px solid #1C4532"
                       color="#1C4532"
                     >
-                      {allDataIncome.date}
+                      {allData.date}
                     </Td>
                     <Td
                       textAlign="center"
@@ -169,7 +168,7 @@ const Transaction: React.FC = () => {
                       wordBreak="break-word"
                       textOverflow="ellipsis"
                     >
-                      {allDataIncome.note}
+                      {allData.note}
                     </Td>
                   </Tr>
                 </>
