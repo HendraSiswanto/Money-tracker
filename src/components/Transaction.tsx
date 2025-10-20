@@ -6,6 +6,7 @@ import {
   Table,
   Tbody,
   Td,
+  Tfoot,
   Th,
   Thead,
   Tr,
@@ -96,7 +97,6 @@ const Transaction: React.FC = () => {
             selectedType={changeTipe.dataExpense}
             onSelectType={(dataExpense) =>
               setTipe({ ...changeTipe, dataExpense })
-             
             }
             saveExpense={handleSave}
           />
@@ -147,7 +147,7 @@ const Transaction: React.FC = () => {
                     >
                       {allData.type}
                     </Td>
-                   
+
                     <Td
                       textAlign="center"
                       border="2px solid #1C4532"
@@ -164,7 +164,7 @@ const Transaction: React.FC = () => {
                     >
                       {allData.note || "-"}
                     </Td>
-                     <Td
+                    <Td
                       textAlign="center"
                       border="2px solid #1C4532"
                       color="#1C4532"
@@ -175,6 +175,20 @@ const Transaction: React.FC = () => {
                 </>
               ))}
             </Tbody>
+            <Tfoot>
+              <Td
+                colSpan={4}
+                textAlign="right"
+                border="2px solid #1C4532"
+                color="#1C4532"
+                fontWeight="bold"
+              >
+                Total
+              </Td>
+              <Td textAlign="center" border="2px solid #1C4532" color="#1C4532">
+                {allData.map((allData) => allData.amount + allData.amount )}
+              </Td>
+            </Tfoot>
           </Table>
         </Box>
       )}
