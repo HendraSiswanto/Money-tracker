@@ -33,10 +33,23 @@ const Transaction: React.FC = () => {
   const [changeTipe, setTipe] = useState<Props>({} as Props);
   const [selected, setSelected] = useState("income");
   const [allData, setAllData] = useState<allData[]>([]);
+  const [sum, setSum] = useState(0);
 
   const handleSave = (newData: allData) => {
-    setAllData((prev) => [...prev, newData]);
+    setAllData((prev) => {
+      const cleanNewAmount = parseFloat(
+        newData.amount.replace(/[^0-9.-]+/g, "")
+      );
+      const prevSum = prev.reduce(
+        (acc, item) => acc + parseFloat(item.amount.replace(/[^0-9.-]+/g, "")),
+        0
+      );
+      const newTotal = prevSum + cleanNewAmount;
+      setSum(newTotal);
+      return [...prev, newData];
+    });
   };
+
   return (
     <>
       <Card
@@ -185,9 +198,11 @@ const Transaction: React.FC = () => {
               >
                 Total
               </Td>
-              <Td textAlign="center" border="2px solid #1C4532" color="#1C4532">
-                {allData.map((allData) => allData.amount + allData.amount )}
-              </Td>
+              <Td
+                textAlign="center"
+                border="2px solid #1C4532"
+                color="#1C4532"
+              >{sum}</Td>
             </Tfoot>
           </Table>
         </Box>
