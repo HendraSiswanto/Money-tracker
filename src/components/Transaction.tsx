@@ -33,18 +33,32 @@ const Transaction: React.FC = () => {
   const [changeTipe, setTipe] = useState<Props>({} as Props);
   const [selected, setSelected] = useState("income");
   const [allData, setAllData] = useState<allData[]>([]);
-  const [sum, setSum] = useState(0);
+  const [sum, setSum] = useState<number>(0);
+  const rupiahFormat = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0,
+  });
 
   const handleSave = (newData: allData) => {
     setAllData((prev) => {
       const cleanNewAmount = parseFloat(
-        newData.amount.replace(/[^0-9.-]+/g, "")
+        newData.amount
+          .replace(/\./g, "")
+          .replace(/,/g, "")
+          .replace(/[^\d.-]/g, "")
       );
-      const prevSum = prev.reduce(
-        (acc, item) => acc + parseFloat(item.amount.replace(/[^0-9.-]+/g, "")),
-        0
-      );
+      const prevSum = prev.reduce((acc, item) => {
+        const cleanPrev = parseFloat(
+          item.amount
+            .replace(/\./g, "")
+            .replace(/,/g, "")
+            .replace(/[^\d.-]/g, "")
+        );
+        return acc + cleanPrev;
+      }, 0);
       const newTotal = prevSum + cleanNewAmount;
+
       setSum(newTotal);
       return [...prev, newData];
     });
@@ -198,11 +212,9 @@ const Transaction: React.FC = () => {
               >
                 Total
               </Td>
-              <Td
-                textAlign="center"
-                border="2px solid #1C4532"
-                color="#1C4532"
-              >{sum}</Td>
+              <Td textAlign="center" border="2px solid #1C4532" color="#1C4532">
+                {rupiahFormat.format(sum)}
+              </Td>
             </Tfoot>
           </Table>
         </Box>
