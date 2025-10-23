@@ -59,7 +59,7 @@ const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
     handleReset();
     saveIncome({
       outcome: "Income",
-      type: selectedType?.in || "Unknown",
+      type:  selectedType?.emote +" "+ selectedType?.in || "Unknown",
       amount: inputValue,
       date: value,
       note: inputNote,

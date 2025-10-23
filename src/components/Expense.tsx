@@ -59,7 +59,7 @@ const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
     handleReset();
     saveExpense({
       outcome: "Expense",
-      type: selectedType?.out || "Unknown",
+      type: selectedType?.emote +" "+ selectedType?.out  || "Unknown",
       amount: inputValue,
       date: value,
       note: inputNote,

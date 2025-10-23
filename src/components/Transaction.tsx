@@ -171,8 +171,9 @@ const Transaction: React.FC = () => {
                       textAlign="center"
                       border="2px solid #1C4532"
                       color="#1C4532"
+                    
                     >
-                      {allData.type}
+                     {allData.type}
                     </Td>
 
                     <Td
@@ -202,6 +203,7 @@ const Transaction: React.FC = () => {
                 </>
               ))}
             </Tbody>
+            
             <Tfoot>
               <Td
                 colSpan={4}
