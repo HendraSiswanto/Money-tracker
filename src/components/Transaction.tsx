@@ -35,15 +35,23 @@ const Transaction: React.FC = () => {
   const [selected, setSelected] = useState("income");
   const [allDataIncome, setAllDataIncome] = useState<allDataIncome[]>([]);
   const [allDataExpense, setAllDataExpense] = useState<allDataExpense[]>([]);
-  const [sum, setSum] = useState<number>(0);
+  const [sumIncome, setSumIncome] = useState<number>(0);
+  const [sumExpense, setSumExpense] = useState<number>(0);
   const rupiahFormat = new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
     maximumFractionDigits: 0,
   });
 
-  const handleSave = (newData: allDataIncome) => {
-    setAllDataIncome((prev) => {
+  const handleSave = (
+    newData: allDataIncome,
+    type: "income" | "expense"
+  ) => {
+
+  const setData = type === "income" ? setAllDataIncome : setAllDataExpense;
+  const setSum = type === "income" ? setSumIncome : setSumExpense;
+
+    setData((prev) => {
       const cleanNewAmount = parseFloat(
         newData.amount
           .replace(/\./g, "")
@@ -119,7 +127,7 @@ const Transaction: React.FC = () => {
             onSelectType={(dataIncome) =>
               setTipe({ ...changeTipe, dataIncome })
             }
-            saveIncome={handleSave}
+            saveIncome={() => handleSave(), "income"}
           />
         ) : (
           <Expense
