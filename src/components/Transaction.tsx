@@ -149,8 +149,8 @@ const Transaction: React.FC = () => {
               bgColor="#f8f8f8"
               _hover={{ bgColor: "#b3b2b2ff" }}
               color="#696969"
-              border="1px solid"
-              boxShadow="1px 1px 2px #696969"
+              border="0 solid"
+              boxShadow="1px  1px 2px 2px rgba(0, 0, 0, 0.3)"
               onClick={() => setCheck("balance")}
             >
               Balance Transaction
