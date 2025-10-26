@@ -33,7 +33,7 @@ type allDataExpense = allDataIncome;
 const Transaction: React.FC = () => {
   const [changeTipe, setTipe] = useState<Props>({} as Props);
   const [selected, setSelected] = useState("income");
-
+  const [check, setCheck] = useState("");
   const [allDataIncome, setAllDataIncome] = useState<allDataIncome[]>([]);
   const [allDataExpense, setAllDataExpense] = useState<allDataExpense[]>([]);
   const [sumIncome, setSumIncome] = useState<number>(0);
@@ -140,16 +140,26 @@ const Transaction: React.FC = () => {
           />
         )}
       </Card>
+      {allDataIncome.length > 0 || allDataExpense.length > 0 ? 
       <Box display="flex" justifyContent="center" mt={7}>
         <Box display="flex" justifyContent="space-between" width="1100px">
-          <Button px="70px" bgColor="#6c6d6dff">
+          <Button
+            px="70px"
+            bgColor="#f8f8f8"
+            _hover={{ bgColor: "#b3b2b2ff" }}
+            color="#696969"
+            border="1px solid"
+            boxShadow="1px 1px 2px #696969"
+            onClick={() => setCheck("balance")}
+          >
             Balance Transaction
           </Button>
-          <Button      
+          <Button
             px="70px"
+            onClick={() => setCheck("income")}
             bgColor="#1C4532"
-            _active={{ bgColor: "#1c4532db" }}
             _hover={{ bgColor: "#1c4532db" }}
+            isDisabled={allDataIncome.length === 0}
           >
             Income Transaction
           </Button>
@@ -157,13 +167,16 @@ const Transaction: React.FC = () => {
             px="70px"
             bgColor="#45241cff"
             _active={{ bgColor: "#45241cd4" }}
+            onClick={() => setCheck("expense")}
             _hover={{ bgColor: "#45241cd4" }}
+             isDisabled={allDataExpense.length === 0}
           >
             Expense Transaction
           </Button>
         </Box>
-      </Box>
-      {allDataIncome.length > 0 && (
+      </Box>:""
+}
+      {allDataIncome.length > 0 && check === "income" &&(
         <Box display="flex" justifyContent="center" mt={6}>
           <Table size="md" variant="simple" width="container.xl">
             <Thead>
@@ -173,7 +186,7 @@ const Transaction: React.FC = () => {
                 border="2px solid #1C4532"
                 color="#1C4532"
               >
-                Income
+                Income/Expense
               </Th>
               <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
                 Type
@@ -230,6 +243,96 @@ const Transaction: React.FC = () => {
                       color="#1C4532"
                     >
                       {allDataIncome.amount}
+                    </Td>
+                  </Tr>
+                </>
+              ))}
+            </Tbody>
+
+            <Tfoot>
+              <Td
+                colSpan={4}
+                textAlign="right"
+                border="2px solid #1C4532"
+                color="#1C4532"
+                fontWeight="bold"
+              >
+                Total
+              </Td>
+              <Td textAlign="center" border="2px solid #1C4532" color="#1C4532">
+                {rupiahFormat.format(sumIncome)}
+              </Td>
+            </Tfoot>
+          </Table>
+        </Box>
+      )}
+            {allDataExpense.length > 0 && check === "expense" &&(
+        <Box display="flex" justifyContent="center" mt={6}>
+          <Table size="md" variant="simple" width="container.xl">
+            <Thead>
+              <Th
+                textAlign="center"
+                width="15px"
+                border="2px solid #1C4532"
+                color="#1C4532"
+              >
+                Income/Expense
+              </Th>
+              <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
+                Type
+              </Th>
+              <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
+                Date
+              </Th>
+              <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
+                Note
+              </Th>
+              <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
+                Amount
+              </Th>
+            </Thead>
+            <Tbody>
+              {allDataExpense.map((allDataExpense, index) => (
+                <>
+                  <Tr key={index}>
+                    <Td
+                      textAlign="center"
+                      border="2px solid #1C4532"
+                      color="#1C4532"
+                    >
+                      {" "}
+                      {allDataExpense.outcome}
+                    </Td>
+                    <Td
+                      textAlign="center"
+                      border="2px solid #1C4532"
+                      color="#1C4532"
+                    >
+                      {allDataExpense.type}
+                    </Td>
+
+                    <Td
+                      textAlign="center"
+                      border="2px solid #1C4532"
+                      color="#1C4532"
+                    >
+                      {allDataExpense.date}
+                    </Td>
+                    <Td
+                      textAlign="center"
+                      border="2px solid #1C4532"
+                      color="#1C4532"
+                      wordBreak="break-word"
+                      textOverflow="ellipsis"
+                    >
+                      {allDataExpense.note || "-"}
+                    </Td>
+                    <Td
+                      textAlign="center"
+                      border="2px solid #1C4532"
+                      color="#1C4532"
+                    >
+                      {allDataExpense.amount}
                     </Td>
                   </Tr>
                 </>
