@@ -20,10 +20,10 @@ interface Props {
   saveExpense: (data: {
     outcome: string;
     type: string;
-    amount: string;
+    amount: string; 
     date: string;
     note: string;
-  }) => void;
+  },typeData:"income" | "expense") => void;
 }
 
 const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
@@ -57,13 +57,13 @@ const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
   };
   const handleSaveExpense = () => {
     handleReset();
-    saveExpense({
+    saveExpense({ 
       outcome: "Expense",
       type: selectedType?.emote +" "+ selectedType?.out  || "Unknown",
       amount: inputValue,
       date: value,
-      note: inputNote,
-    });
+      note: inputNote
+    },"expense");
   };
   return (
     <>

@@ -23,7 +23,7 @@ interface Props {
     amount: string;
     date: string;
     note: string;
-  }) => void;
+  },typeData:"income"|"expense") => void;
 }
 
 const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
@@ -63,7 +63,7 @@ const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
       amount: inputValue,
       date: value,
       note: inputNote,
-    });
+    },"income");
   };
 
   return (

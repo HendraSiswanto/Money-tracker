@@ -45,11 +45,11 @@ const Transaction: React.FC = () => {
 
   const handleSave = (
     newData: allDataIncome,
-    type: "income" | "expense"
+    typeData: "income" | "expense"
   ) => {
 
-  const setData = type === "income" ? setAllDataIncome : setAllDataExpense;
-  const setSum = type === "income" ? setSumIncome : setSumExpense;
+  const setData = typeData === "income" ? setAllDataIncome : setAllDataExpense;
+  const setSum = typeData === "income" ? setSumIncome : setSumExpense;
 
     setData((prev) => {
       const cleanNewAmount = parseFloat(
@@ -127,7 +127,7 @@ const Transaction: React.FC = () => {
             onSelectType={(dataIncome) =>
               setTipe({ ...changeTipe, dataIncome })
             }
-            saveIncome={() => handleSave(), "income"}
+            saveIncome={(data)=>handleSave(data, "income")}
           />
         ) : (
           <Expense
@@ -135,7 +135,7 @@ const Transaction: React.FC = () => {
             onSelectType={(dataExpense) =>
               setTipe({ ...changeTipe, dataExpense })
             }
-            saveExpense={handleSave}
+            saveExpense={(data)=>handleSave(data, "expense")}
           />
         )}
       </Card>
@@ -224,7 +224,7 @@ const Transaction: React.FC = () => {
                 Total
               </Td>
               <Td textAlign="center" border="2px solid #1C4532" color="#1C4532">
-                {rupiahFormat.format(sum)}
+                {rupiahFormat.format(sumIncome)}
               </Td>
             </Tfoot>
           </Table>
