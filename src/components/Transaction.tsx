@@ -33,6 +33,7 @@ type allDataExpense = allDataIncome;
 const Transaction: React.FC = () => {
   const [changeTipe, setTipe] = useState<Props>({} as Props);
   const [selected, setSelected] = useState("income");
+
   const [allDataIncome, setAllDataIncome] = useState<allDataIncome[]>([]);
   const [allDataExpense, setAllDataExpense] = useState<allDataExpense[]>([]);
   const [sumIncome, setSumIncome] = useState<number>(0);
@@ -47,9 +48,9 @@ const Transaction: React.FC = () => {
     newData: allDataIncome,
     typeData: "income" | "expense"
   ) => {
-
-  const setData = typeData === "income" ? setAllDataIncome : setAllDataExpense;
-  const setSum = typeData === "income" ? setSumIncome : setSumExpense;
+    const setData =
+      typeData === "income" ? setAllDataIncome : setAllDataExpense;
+    const setSum = typeData === "income" ? setSumIncome : setSumExpense;
 
     setData((prev) => {
       const cleanNewAmount = parseFloat(
@@ -127,7 +128,7 @@ const Transaction: React.FC = () => {
             onSelectType={(dataIncome) =>
               setTipe({ ...changeTipe, dataIncome })
             }
-            saveIncome={(data)=>handleSave(data, "income")}
+            saveIncome={(data) => handleSave(data, "income")}
           />
         ) : (
           <Expense
@@ -135,11 +136,33 @@ const Transaction: React.FC = () => {
             onSelectType={(dataExpense) =>
               setTipe({ ...changeTipe, dataExpense })
             }
-            saveExpense={(data)=>handleSave(data, "expense")}
+            saveExpense={(data) => handleSave(data, "expense")}
           />
         )}
       </Card>
-
+      <Box display="flex" justifyContent="center" mt={7}>
+        <Box display="flex" justifyContent="space-between" width="1100px">
+          <Button px="70px" bgColor="#6c6d6dff">
+            Balance Transaction
+          </Button>
+          <Button      
+            px="70px"
+            bgColor="#1C4532"
+            _active={{ bgColor: "#1c4532db" }}
+            _hover={{ bgColor: "#1c4532db" }}
+          >
+            Income Transaction
+          </Button>
+          <Button
+            px="70px"
+            bgColor="#45241cff"
+            _active={{ bgColor: "#45241cd4" }}
+            _hover={{ bgColor: "#45241cd4" }}
+          >
+            Expense Transaction
+          </Button>
+        </Box>
+      </Box>
       {allDataIncome.length > 0 && (
         <Box display="flex" justifyContent="center" mt={6}>
           <Table size="md" variant="simple" width="container.xl">
@@ -150,7 +173,7 @@ const Transaction: React.FC = () => {
                 border="2px solid #1C4532"
                 color="#1C4532"
               >
-                Income/Expense
+                Income
               </Th>
               <Th textAlign="center" border="2px solid #1C4532" color="#1C4532">
                 Type
