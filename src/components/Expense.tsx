@@ -23,6 +23,7 @@ interface Props {
     amount: string; 
     date: string;
     note: string;
+    timestamp: number;
   },typeData:"income" | "expense") => void;
 }
 
@@ -62,7 +63,8 @@ const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
       type: selectedType?.emote +" "+ selectedType?.out  || "Unknown",
       amount: inputValue,
       date: value,
-      note: inputNote
+      note: inputNote,
+      timestamp: Date.now()
     },"expense");
   };
   return (

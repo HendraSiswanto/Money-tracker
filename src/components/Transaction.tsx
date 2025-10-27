@@ -27,13 +27,14 @@ interface allDataIncome {
   amount: string;
   date: string;
   note: string;
+  timestamp: number;
 }
 type allDataExpense = allDataIncome;
 
 const Transaction: React.FC = () => {
   const [changeTipe, setTipe] = useState<Props>({} as Props);
   const [selected, setSelected] = useState("income");
-  const [check, setCheck] = useState("");
+  const [check, setCheck] = useState("balance");
   const [allDataIncome, setAllDataIncome] = useState<allDataIncome[]>([]);
   const [allDataExpense, setAllDataExpense] = useState<allDataExpense[]>([]);
   const [sumIncome, setSumIncome] = useState<number>(0);
@@ -75,7 +76,12 @@ const Transaction: React.FC = () => {
     });
   };
 
-  const balance = sumIncome - sumExpense
+  const balancedTransaction = [...allDataIncome,...allDataExpense]
+  const sortedTransactions = balancedTransaction.sort(
+  (a, b) => a.timestamp - b.timestamp
+);
+
+  const balance = sumIncome - sumExpense;
   return (
     <>
       <Card
@@ -222,7 +228,7 @@ const Transaction: React.FC = () => {
                 </Th>
               </Thead>
               <Tbody>
-                {allDataIncome.map((allDataIncome, index) => (
+             {sortedTransactions.map((item, index) => (
                   <>
                     <Tr key={index}>
                       <Td
@@ -231,14 +237,14 @@ const Transaction: React.FC = () => {
                         color="#1C4532"
                       >
                         {" "}
-                        {allDataIncome.outcome}
+                        {item.outcome}
                       </Td>
                       <Td
                         textAlign="center"
                         border="2px solid #1C4532"
                         color="#1C4532"
                       >
-                        {allDataIncome.type}
+                        {item.type}
                       </Td>
 
                       <Td
@@ -246,7 +252,7 @@ const Transaction: React.FC = () => {
                         border="2px solid #1C4532"
                         color="#1C4532"
                       >
-                        {allDataIncome.date}
+                        {item.date}
                       </Td>
                       <Td
                         textAlign="center"
@@ -255,63 +261,20 @@ const Transaction: React.FC = () => {
                         wordBreak="break-word"
                         textOverflow="ellipsis"
                       >
-                        {allDataIncome.note || "-"}
+                        {item.note || "-"}
                       </Td>
                       <Td
                         textAlign="center"
                         border="2px solid #1C4532"
                         color="#1C4532"
                       >
-                        {allDataIncome.amount}
+                        {item.amount}
                       </Td>
                     </Tr>
                   </>
                 ))}
-                {allDataExpense.map((allDataExpense, index) => (
-                  <>
-                    <Tr key={index}>
-                      <Td
-                        textAlign="center"
-                        border="2px solid #1C4532"
-                        color="#1C4532"
-                      >
-                        {" "}
-                        {allDataExpense.outcome}
-                      </Td>
-                      <Td
-                        textAlign="center"
-                        border="2px solid #1C4532"
-                        color="#1C4532"
-                      >
-                        {allDataExpense.type}
-                      </Td>
 
-                      <Td
-                        textAlign="center"
-                        border="2px solid #1C4532"
-                        color="#1C4532"
-                      >
-                        {allDataExpense.date}
-                      </Td>
-                      <Td
-                        textAlign="center"
-                        border="2px solid #1C4532"
-                        color="#1C4532"
-                        wordBreak="break-word"
-                        textOverflow="ellipsis"
-                      >
-                        {allDataExpense.note || "-"}
-                      </Td>
-                      <Td
-                        textAlign="center"
-                        border="2px solid #1C4532"
-                        color="#1C4532"
-                      >
-                        {allDataExpense.amount}
-                      </Td>
-                    </Tr>
-                  </>
-                ))}
+              
               </Tbody>
 
               <Tfoot>
@@ -335,6 +298,7 @@ const Transaction: React.FC = () => {
             </Table>
           </Box>
         )}
+
       {allDataIncome.length > 0 && check === "income" && (
         <Box display="flex" justifyContent="center" mt={6} mb={6}>
           <Table size="md" variant="simple" width="container.xl">
@@ -426,7 +390,7 @@ const Transaction: React.FC = () => {
         </Box>
       )}
       {allDataExpense.length > 0 && check === "expense" && (
-        <Box display="flex" justifyContent="center" mt={6}mb={6}>
+        <Box display="flex" justifyContent="center" mt={6} mb={6}>
           <Table size="md" variant="simple" width="container.xl">
             <Thead>
               <Th
