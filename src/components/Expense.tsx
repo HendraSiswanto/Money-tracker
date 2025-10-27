@@ -47,6 +47,7 @@ const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
     setInputValue(raw ? Rupiah(numeric) : "");
   };
   const handleNote = (e: React.ChangeEvent<HTMLInputElement>) => {
+  
     setInputNote(e.target.value);
   };
 

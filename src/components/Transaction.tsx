@@ -10,6 +10,8 @@ import {
   Th,
   Thead,
   Tr,
+  Text,
+  Tooltip,
 } from "@chakra-ui/react";
 import Expense from "./Expense";
 import { useState } from "react";
@@ -76,10 +78,10 @@ const Transaction: React.FC = () => {
     });
   };
 
-  const balancedTransaction = [...allDataIncome,...allDataExpense]
+  const balancedTransaction = [...allDataIncome, ...allDataExpense];
   const sortedTransactions = balancedTransaction.sort(
-  (a, b) => a.timestamp - b.timestamp
-);
+    (a, b) => a.timestamp - b.timestamp
+  );
 
   const balance = sumIncome - sumExpense;
   return (
@@ -228,7 +230,7 @@ const Transaction: React.FC = () => {
                 </Th>
               </Thead>
               <Tbody>
-             {sortedTransactions.map((item, index) => (
+                {sortedTransactions.map((item, index) => (
                   <>
                     <Tr key={index}>
                       <Td
@@ -261,7 +263,11 @@ const Transaction: React.FC = () => {
                         wordBreak="break-word"
                         textOverflow="ellipsis"
                       >
-                        {item.note || "-"}
+                        <Tooltip label={item.note} hasArrow>
+                          <Text isTruncated maxW="160px" mx="auto">
+                            {item.note}
+                          </Text>
+                        </Tooltip>
                       </Td>
                       <Td
                         textAlign="center"
@@ -273,8 +279,6 @@ const Transaction: React.FC = () => {
                     </Tr>
                   </>
                 ))}
-
-              
               </Tbody>
 
               <Tfoot>
