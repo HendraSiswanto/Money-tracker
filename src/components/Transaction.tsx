@@ -265,7 +265,7 @@ const Transaction: React.FC = () => {
                       >
                         <Tooltip label={item.note} hasArrow>
                           <Text isTruncated maxW="160px" mx="auto">
-                            {item.note}
+                            {item.note || "-"}
                           </Text>
                         </Tooltip>
                       </Td>
