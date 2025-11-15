@@ -1,12 +1,9 @@
 import { useState } from "react";
-import Login from "./components/Login";
 import MainPage from "./components/MainPage";
 import type { Sided } from "./hooks/useImage";
-import type { Type } from "./hooks/useExpense";
 
 export interface moneyQuery {
   imageData: Sided | null;
-  tipe: Type | null;
 }
 
 function App() {
@@ -15,7 +12,6 @@ function App() {
   return (
     <>
       <MainPage
-        tipe={moneyQuery.tipe}
         selectImage={moneyQuery.imageData}
         onSelectImage={(imageData) =>
           setMoneyQuery({ ...moneyQuery, imageData })
