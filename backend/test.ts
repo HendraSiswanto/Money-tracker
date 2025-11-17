@@ -7,13 +7,23 @@ async function main() {
     data: {
       type: "income",
       amount: 50000,
-      category: "Salary",
+      z
       note: "Test data",
     },
   });
   console.log("Created:", t);
 
-  const transactions = await prisma.transaction.findMany()
+  const e = await prisma.transaction.create({
+    data: {
+      type: "expense",
+      amount: 20000,
+      category: "Salary",
+      note: "Test data",
+    },
+  });
+  console.log(e);
+
+  const transactions = await prisma.transaction.findMany();
   console.log(transactions);
 }
 
