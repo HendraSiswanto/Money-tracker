@@ -22,6 +22,7 @@ export const transactionController = {
 
       const newTransaction = await prisma.transaction.create({
         data: {
+            outcome,
           type: outcome,
           category: type,
           amount: numericAmount,
