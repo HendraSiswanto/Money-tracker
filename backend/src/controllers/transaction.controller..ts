@@ -22,13 +22,12 @@ export const transactionController = {
 
       const newTransaction = await prisma.transaction.create({
         data: {
-            outcome,
-          type: outcome,
-          category: type,
+          outcome,
+          type: type, 
           amount: numericAmount,
           note: note ?? "",
-          date: new Date(date),  
-          timestamp: BigInt(timestamp), 
+          date: new Date(date),
+          timestamp: BigInt(timestamp),
         },
       });
 
