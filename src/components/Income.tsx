@@ -12,22 +12,26 @@ import {
 import { BsArrowDownCircleFill } from "react-icons/bs";
 import type { TypeIncome } from "../hooks/useIncome";
 import useType from "../hooks/useIncome";
-import { useState,useRef } from "react";
+import { useState, useRef } from "react";
 
 interface Props {
   onSelectType: (dataIncome: TypeIncome) => void;
   selectedType: TypeIncome;
-  saveIncome: (data: {
-    outcome: string;
-    type: string;
-    amount: number;
-    date: string;
-    note: string;
-    timestamp: number;
-  },typeData:"income"|"expense") => void;
+  saveIncome: (
+    data: {
+      outcome: string;
+      type: string;
+      amount: number;
+      date: string;
+      note: string;
+      timestamp: number;
+    },
+    typeData: "income" | "expense"
+  ) => void;
 }
 
 const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
+  const [rawAmount, setRawAmount] = useState<bigint>();
   const dateRef = useRef<HTMLInputElement | null>(null);
   const { data } = useType();
   const [value, setValue] = useState("");
@@ -44,6 +48,7 @@ const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/[^0-9]/g, "");
     const numeric = raw ? BigInt(raw) : BigInt(0);
+    setRawAmount(numeric);
     setInputValue(raw ? Rupiah(numeric) : "");
   };
   const handleNote = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,28 +62,28 @@ const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
   };
 
   const handleSaveIncome = async () => {
-   const payload = {
-    outcome: "Income",
-    type: selectedType?.in,
-    amount: Number(inputValue),
-    date: value,
-    note: inputNote,
-    timestamp: Date.now()
+    const payload = {
+      outcome: "Income",
+      type: selectedType?.in,
+      amount: Number(rawAmount),
+      date: value,
+      note: inputNote,
+      timestamp: Date.now(),
+    };
+
+    try {
+      await fetch("http://localhost:3000/transactions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      saveIncome(payload, "income");
+      handleReset();
+    } catch (error) {
+      console.log("Failed To Save : ", error);
+    }
   };
-
-  try {
-    await fetch("http://localhost:3000/transactions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    saveIncome(payload,'income');
-    handleReset()
-  }catch(error){
-    console.log("Failed To Save : ",error)
-  }
-}
 
   return (
     <>
@@ -146,31 +151,30 @@ const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
             onChange={handleChange}
           ></Input>
           <Box onClick={() => dateRef.current?.showPicker?.()}>
-
-          <Input
-          cursor="pointer"
-          ref={dateRef}
-            className="dateInput"
-            type="date"
-            border="0.5px solid #969696ff"
-            color={value ? "black" : "#615e5e4a"}
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            sx={{
-              "::-webkit-calendar-picker-indicator": {
-                color: "#615e5e4a",
-                filter:
-                  "invert(40%) sepia(10%) saturate(200%) hue-rotate(0deg) brightness(90%)",
-                cursor: "pointer",
-              },
-            }}
-            _hover={{ borderColor: "#969696ff" }}
-            _focus={{
-              outline: "none",
-              borderColor: "#9ecaed",
-              boxShadow: "0 0 10px #9ecaed",
-            }}
-          ></Input>
+            <Input
+              cursor="pointer"
+              ref={dateRef}
+              className="dateInput"
+              type="date"
+              border="0.5px solid #969696ff"
+              color={value ? "black" : "#615e5e4a"}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              sx={{
+                "::-webkit-calendar-picker-indicator": {
+                  color: "#615e5e4a",
+                  filter:
+                    "invert(40%) sepia(10%) saturate(200%) hue-rotate(0deg) brightness(90%)",
+                  cursor: "pointer",
+                },
+              }}
+              _hover={{ borderColor: "#969696ff" }}
+              _focus={{
+                outline: "none",
+                borderColor: "#9ecaed",
+                boxShadow: "0 0 10px #9ecaed",
+              }}
+            ></Input>
           </Box>
           <Input
             width="260px"

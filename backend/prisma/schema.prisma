@@ -10,9 +10,9 @@ datasource db {
 model Transaction {
   id        Int      @id @default(autoincrement())
   outcome   String
-  type      String // Category (Salary, Food, etc)
-  amount    Int // number
-  date      DateTime // yyyy-mm-dd
+  type      String 
+  amount    Int
+  date      DateTime 
   note      String?
   timestamp BigInt
   createdAt DateTime @default(now())
