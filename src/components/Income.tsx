@@ -67,7 +67,7 @@ const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
   };
 
   try {
-    await fetch("http://localhost:3000/transaction", {
+    await fetch("http://localhost:3000/transactions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
