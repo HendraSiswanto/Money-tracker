@@ -20,7 +20,7 @@ interface Props {
   saveIncome: (data: {
     outcome: string;
     type: string;
-    amount: string;
+    amount: number;
     date: string;
     note: string;
     timestamp: number;
@@ -56,17 +56,29 @@ const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
     onSelectType({ id: 0, in: "", emote: "" });
   };
 
-  const handleSaveIncome = () => {
-    handleReset();
-    saveIncome({
-      outcome: "Income",
-      type:  selectedType?.in,
-      amount: inputValue,
-      date: value,
-      note: inputNote,
-      timestamp: Date.now()
-    },"income");
+  const handleSaveIncome = async () => {
+   const payload = {
+    outcome: "Income",
+    type: selectedType?.in,
+    amount: Number(inputValue),
+    date: value,
+    note: inputNote,
+    timestamp: Date.now()
   };
+
+  try {
+    await fetch("http://localhost:3000/transaction", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    saveIncome(payload,'income');
+    handleReset()
+  }catch(error){
+    console.log("Failed To Save : ",error)
+  }
+}
 
   return (
     <>

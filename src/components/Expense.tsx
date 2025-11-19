@@ -20,7 +20,7 @@ interface Props {
   saveExpense: (data: {
     outcome: string;
     type: string;
-    amount: string; 
+    amount: number; 
     date: string;
     note: string;
     timestamp: number;
@@ -57,17 +57,29 @@ const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
     setInputNote("");
     onSelectType({ id: 0, out: "", emote: "" });
   };
-  const handleSaveExpense = () => {
-    handleReset();
-    saveExpense({ 
-      outcome: "Expense",
-      type: selectedType?.emote +" "+ selectedType?.out  || "Unknown",
-      amount: inputValue,
-      date: value,
-      note: inputNote,
-      timestamp: Date.now()
-    },"expense");
+  const handleSaveExpense = async () => {
+     const payload = {
+    outcome: "Income",
+    type: selectedType?.out,
+    amount: Number(inputValue),
+    date: value,
+    note: inputNote,
+    timestamp: Date.now()
   };
+
+  try {
+    await fetch("http://localhost:3000/api/transaction", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    saveExpense(payload,'expense');
+    handleReset()
+  }catch(error){
+    console.log("Failed To Save : ",error)
+  }
+}
   return (
     <>
       <Flex flexDirection="column" gap={2}>

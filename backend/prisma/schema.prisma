@@ -9,11 +9,11 @@ datasource db {
 
 model Transaction {
   id        Int      @id @default(autoincrement())
+  outcome   String
   type      String // Category (Salary, Food, etc)
   amount    Int // number
   date      DateTime // yyyy-mm-dd
   note      String?
   timestamp BigInt
   createdAt DateTime @default(now())
-  category  String
 }

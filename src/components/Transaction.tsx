@@ -14,9 +14,10 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import Expense from "./Expense";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { TypeExpense } from "../hooks/useExpense";
 import type { TypeIncome } from "../hooks/useIncome";
+import type { Data } from "../data/types";
 
 import Income from "./Income";
 interface Props {
@@ -26,14 +27,31 @@ interface Props {
 interface allDataIncome {
   outcome: string;
   type: string;
-  amount: string;
+  amount: number;
   date: string;
-  note: string;
+  note?: string;
   timestamp: number;
 }
 type allDataExpense = allDataIncome;
 
 const Transaction: React.FC = () => {
+  useEffect(() => {
+    async function fetchData() {
+      const res = await fetch("http://localhost:3000/api/transaction");
+      const data: Data[] = await res.json();
+
+      const income = data.filter((x: any) => x.outcome === "income");
+      const expense = data.filter((x: any) => x.outcome === "expense");
+
+      setAllDataIncome(income);
+      setAllDataExpense(expense);
+
+      setSumIncome(income.reduce((acc, item) => acc + item.amount, 0));
+      setSumExpense(expense.reduce((acc, item) => acc + item.amount, 0));
+    }
+
+    fetchData();
+  }, []);
   const [changeTipe, setTipe] = useState<Props>({} as Props);
   const [selected, setSelected] = useState("income");
   const [check, setCheck] = useState("balance");
@@ -47,7 +65,7 @@ const Transaction: React.FC = () => {
     maximumFractionDigits: 0,
   });
 
-  const handleSave = (
+  const handleSave = async (
     newData: allDataIncome,
     typeData: "income" | "expense"
   ) => {
@@ -56,24 +74,7 @@ const Transaction: React.FC = () => {
     const setSum = typeData === "income" ? setSumIncome : setSumExpense;
 
     setData((prev) => {
-      const cleanNewAmount = parseFloat(
-        newData.amount
-          .replace(/\./g, "")
-          .replace(/,/g, "")
-          .replace(/[^\d.-]/g, "")
-      );
-      const prevSum = prev.reduce((acc, item) => {
-        const cleanPrev = parseFloat(
-          item.amount
-            .replace(/\./g, "")
-            .replace(/,/g, "")
-            .replace(/[^\d.-]/g, "")
-        );
-        return acc + cleanPrev;
-      }, 0);
-      const newTotal = prevSum + cleanNewAmount;
-
-      setSum(newTotal);
+      setSum(prev.reduce((a, b) => a + b.amount, 0) + newData.amount);
       return [...prev, newData];
     });
   };
