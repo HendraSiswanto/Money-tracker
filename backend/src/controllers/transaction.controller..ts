@@ -1,6 +1,14 @@
 import { Request, Response } from "express";
 import { prisma } from "../utils/prisma";
 
+function convertBigInt(obj: any) {
+  return JSON.parse(
+    JSON.stringify(obj, (key, value) =>
+      typeof value === "bigint" ? Number(value) : value
+    )
+  );
+}
+
 export const transactionController = {
   getAll: async (_req: Request, res: Response) => {
     try {
@@ -8,7 +16,7 @@ export const transactionController = {
         orderBy: { timestamp: "desc" },
       });
 
-      res.json(transactions);
+      res.json(convertBigInt(transactions));
     } catch (err) {
       res.status(500).json({ error: "Failed to fetch data" });
     }
@@ -23,7 +31,7 @@ export const transactionController = {
       const newTransaction = await prisma.transaction.create({
         data: {
           outcome,
-          type: type, 
+          type: type,
           amount: numericAmount,
           note: note ?? "",
           date: new Date(date),
@@ -31,7 +39,7 @@ export const transactionController = {
         },
       });
 
-      res.json(newTransaction);
+      res.json(convertBigInt(newTransaction));
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: "Failed to create data" });
@@ -50,11 +58,13 @@ export const transactionController = {
         _sum: { amount: true },
       });
 
-      res.json({
-        income: income._sum.amount || 0,
-        expense: expense._sum.amount || 0,
-        balance: (income._sum.amount || 0) - (expense._sum.amount || 0),
-      });
+      res.json(
+        convertBigInt({
+          income: income._sum.amount || 0,
+          expense: expense._sum.amount || 0,
+          balance: (income._sum.amount || 0) - (expense._sum.amount || 0),
+        })
+      );
     } catch (err) {
       res.status(500).json({ error: "Failed to get summary" });
     }

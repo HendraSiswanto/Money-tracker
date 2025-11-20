@@ -37,7 +37,7 @@ type allDataExpense = allDataIncome;
 const Transaction: React.FC = () => {
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch("http://localhost:3000/api/transaction");
+      const res = await fetch("http://localhost:3000/transactions");
       const data: Data[] = await res.json();
 
       const income = data.filter((x: any) => x.outcome === "income");
