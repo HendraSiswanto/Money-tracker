@@ -25,6 +25,7 @@ interface Props {
   dataIncome: TypeIncome;
 }
 interface allDataIncome {
+  id?:number;
   outcome: string;
   type: string;
   amount: number;
@@ -40,8 +41,8 @@ const Transaction: React.FC = () => {
       const res = await fetch("http://localhost:3000/transactions");
       const data: Data[] = await res.json();
 
-      const income = data.filter((x: any) => x.outcome === "income");
-      const expense = data.filter((x: any) => x.outcome === "expense");
+      const income = data.filter((x: any) => x.outcome.toLowerCase() === "income");
+      const expense = data.filter((x: any) => x.outcome.toLowerCase() === "expense");
 
       setAllDataIncome(income);
       setAllDataExpense(expense);
@@ -193,47 +194,49 @@ const Transaction: React.FC = () => {
           <Box display="flex" justifyContent="center" mt={6} mb={6}>
             <Table size="md" variant="simple" width="container.xl">
               <Thead>
-                <Th
-                  textAlign="center"
-                  width="15px"
-                  border="2px solid #1C4532"
-                  color="#1C4532"
-                >
-                  Income/Expense
-                </Th>
-                <Th
-                  textAlign="center"
-                  border="2px solid #1C4532"
-                  color="#1C4532"
-                >
-                  Type
-                </Th>
-                <Th
-                  textAlign="center"
-                  border="2px solid #1C4532"
-                  color="#1C4532"
-                >
-                  Date
-                </Th>
-                <Th
-                  textAlign="center"
-                  border="2px solid #1C4532"
-                  color="#1C4532"
-                >
-                  Note
-                </Th>
-                <Th
-                  textAlign="center"
-                  border="2px solid #1C4532"
-                  color="#1C4532"
-                >
-                  Amount
-                </Th>
+                <Tr>
+                  <Th
+                    textAlign="center"
+                    width="15px"
+                    border="2px solid #1C4532"
+                    color="#1C4532"
+                  >
+                    Income/Expense
+                  </Th>
+                  <Th
+                    textAlign="center"
+                    border="2px solid #1C4532"
+                    color="#1C4532"
+                  >
+                    Type
+                  </Th>
+                  <Th
+                    textAlign="center"
+                    border="2px solid #1C4532"
+                    color="#1C4532"
+                  >
+                    Date
+                  </Th>
+                  <Th
+                    textAlign="center"
+                    border="2px solid #1C4532"
+                    color="#1C4532"
+                  >
+                    Note
+                  </Th>
+                  <Th
+                    textAlign="center"
+                    border="2px solid #1C4532"
+                    color="#1C4532"
+                  >
+                    Amount
+                  </Th>
+                </Tr>
               </Thead>
               <Tbody>
-                {sortedTransactions.map((item, index) => (
+                {sortedTransactions.map((item) => (
                   <>
-                    <Tr key={index}>
+                    <Tr key={item.id}>
                       <Td
                         textAlign="center"
                         border="2px solid #1C4532"

@@ -17,17 +17,21 @@ import { useState, useRef } from "react";
 interface Props {
   onSelectType: (dataExpense: TypeExpense) => void;
   selectedType: TypeExpense;
-  saveExpense: (data: {
-    outcome: string;
-    type: string;
-    amount: number; 
-    date: string;
-    note: string;
-    timestamp: number;
-  },typeData:"income" | "expense") => void;
+  saveExpense: (
+    data: {
+      outcome: string;
+      type: string;
+      amount: number;
+      date: string;
+      note: string;
+      timestamp: number;
+    },
+    typeData: "income" | "expense"
+  ) => void;
 }
 
 const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
+  const [rawAmount, setRawAmount] = useState<bigint>();
   const dateRef = useRef<HTMLInputElement | null>(null);
   const { data } = useType();
   const [value, setValue] = useState("");
@@ -44,10 +48,10 @@ const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/[^0-9]/g, "");
     const numeric = raw ? BigInt(raw) : BigInt(0);
+    setRawAmount(numeric);
     setInputValue(raw ? Rupiah(numeric) : "");
   };
   const handleNote = (e: React.ChangeEvent<HTMLInputElement>) => {
-  
     setInputNote(e.target.value);
   };
 
@@ -58,28 +62,28 @@ const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
     onSelectType({ id: 0, out: "", emote: "" });
   };
   const handleSaveExpense = async () => {
-     const payload = {
-    outcome: "Income",
-    type: selectedType?.out,
-    amount: Number(inputValue),
-    date: value,
-    note: inputNote,
-    timestamp: Date.now()
+    const payload = {
+      outcome: "Expense",
+      type: selectedType?.out,
+      amount: Number(rawAmount),
+      date: value,
+      note: inputNote,
+      timestamp: Date.now(),
+    };
+
+    try {
+      await fetch("http://localhost:3000/transactions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      saveExpense(payload, "expense");
+      handleReset();
+    } catch (error) {
+      console.log("Failed To Save : ", error);
+    }
   };
-
-  try {
-    await fetch("http://localhost:3000/api/transaction", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    saveExpense(payload,'expense');
-    handleReset()
-  }catch(error){
-    console.log("Failed To Save : ",error)
-  }
-}
   return (
     <>
       <Flex flexDirection="column" gap={2}>

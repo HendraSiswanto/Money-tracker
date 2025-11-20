@@ -6,6 +6,7 @@ export async function getTransactions() {
 }
 
 export async function createTransaction(data: {
+  id: number; 
   type: string;
   amount: number;
   category: string;
