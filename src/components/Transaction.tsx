@@ -65,7 +65,7 @@ const Transaction: React.FC = () => {
     currency: "IDR",
     maximumFractionDigits: 0,
   });
-
+ 
   const handleSave = async (
     newData: allDataIncome,
     typeData: "income" | "expense"

@@ -12,7 +12,7 @@ model Transaction {
   outcome   String
   type      String 
   amount    Int
-  date      DateTime 
+  date      DateTime @db.Date 
   note      String?
   timestamp BigInt
   createdAt DateTime @default(now())
