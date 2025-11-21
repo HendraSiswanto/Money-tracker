@@ -78,13 +78,13 @@ const Transaction: React.FC = () => {
       typeData === "income" ? setAllDataIncome : setAllDataExpense;
     const setSum = typeData === "income" ? setSumIncome : setSumExpense;
 
-    const finalData = {
-      ...newData,
-      id: crypto.randomUUID(),
-      timestamp: newData.timestamp ?? Date.now(), 
-    };
-
     setData((prev) => {
+      const nextId = (prev.at(-1)?.id ?? 0) + 1;
+      const finalData = {
+        ...newData,
+        id: nextId,
+        timestamp: newData.timestamp ?? Date.now(),
+      };
       setSum(prev.reduce((a, b) => a + b.amount, 0) + finalData.amount);
       return [...prev, finalData];
     });
