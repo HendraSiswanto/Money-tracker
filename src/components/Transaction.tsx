@@ -96,6 +96,11 @@ const Transaction: React.FC = () => {
   const sortedTransactions = [...balancedTransaction].sort(
     (a, b) => a.timestamp - b.timestamp
   );
+  const sortedAllIncome = allDataIncome.sort(
+    (a, b) => a.timestamp - b.timestamp)
+
+const sortedAllExpense = allDataExpense.sort(
+    (a, b) => a.timestamp - b.timestamp)
 
   const balance = sumIncome - sumExpense;
   return (
@@ -399,7 +404,7 @@ const Transaction: React.FC = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {allDataIncome.map((allDataIncome) => (
+              {sortedAllIncome.map((allDataIncome) => (
                 <Tr key={allDataIncome.id}>
                   <Td
                     textAlign="center"
@@ -425,14 +430,18 @@ const Transaction: React.FC = () => {
                     {new Date(allDataIncome.date).toLocaleDateString("en-CA")}
                   </Td>
                   <Td
-                    textAlign="center"
-                    border="2px solid #1C4532"
-                    color="#1C4532"
-                    wordBreak="break-word"
-                    textOverflow="ellipsis"
-                  >
-                    {allDataIncome.note || "-"}
-                  </Td>
+                      textAlign="center"
+                      border="2px solid #1C4532"
+                      color="#1C4532"
+                      wordBreak="break-word"
+                      textOverflow="ellipsis"
+                    >
+                      <Tooltip label={allDataIncome.note} hasArrow>
+                        <Text isTruncated maxW="160px" mx="auto">
+                          {allDataIncome.note || "-"}
+                        </Text>
+                      </Tooltip>
+                    </Td>
                   <Td
                     textAlign="center"
                     border="2px solid #1C4532"
@@ -511,7 +520,7 @@ const Transaction: React.FC = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {allDataExpense.map((allDataExpense) => (
+              {sortedAllExpense.map((allDataExpense) => (
                 <Tr key={allDataExpense.id}>
                   <Td
                     textAlign="center"
@@ -537,14 +546,18 @@ const Transaction: React.FC = () => {
                     {new Date(allDataExpense.date).toLocaleDateString("en-CA")}
                   </Td>
                   <Td
-                    textAlign="center"
-                    border="2px solid #1C4532"
-                    color="#1C4532"
-                    wordBreak="break-word"
-                    textOverflow="ellipsis"
-                  >
-                    {allDataExpense.note || "-"}
-                  </Td>
+                      textAlign="center"
+                      border="2px solid #1C4532"
+                      color="#1C4532"
+                      wordBreak="break-word"
+                      textOverflow="ellipsis"
+                    >
+                      <Tooltip label={allDataExpense.note} hasArrow>
+                        <Text isTruncated maxW="160px" mx="auto">
+                          {allDataExpense.note || "-"}
+                        </Text>
+                      </Tooltip>
+                    </Td>
                   <Td
                     textAlign="center"
                     border="2px solid #1C4532"
