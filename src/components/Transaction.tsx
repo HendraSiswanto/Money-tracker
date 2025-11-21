@@ -12,6 +12,7 @@ import {
   Tr,
   Text,
   Tooltip,
+  Icon,
 } from "@chakra-ui/react";
 import Expense from "./Expense";
 import { useState, useEffect } from "react";
@@ -20,6 +21,7 @@ import type { TypeIncome } from "../hooks/useIncome";
 import type { Data } from "../data/types";
 
 import Income from "./Income";
+import { BsPenFill, BsTrash3Fill } from "react-icons/bs";
 interface Props {
   dataExpense: TypeExpense;
   dataIncome: TypeIncome;
@@ -79,7 +81,7 @@ const Transaction: React.FC = () => {
     const setSum = typeData === "income" ? setSumIncome : setSumExpense;
 
     setData((prev) => {
-      const nextId = (prev.at(-1)?.id ?? 0) + 1;
+      const nextId = Math.max(0, ...prev.map((x) => x.id ?? 0)) + 1;
       const finalData = {
         ...newData,
         id: nextId,
@@ -207,6 +209,14 @@ const Transaction: React.FC = () => {
                 <Tr>
                   <Th
                     textAlign="center"
+                    border="2px solid #1C4532"
+                    color="#1C4532"
+                    width="160px"
+                  >
+                    Action
+                  </Th>
+                  <Th
+                    textAlign="center"
                     width="15px"
                     border="2px solid #1C4532"
                     color="#1C4532"
@@ -251,6 +261,34 @@ const Transaction: React.FC = () => {
                       border="2px solid #1C4532"
                       color="#1C4532"
                     >
+                      <Box display="flex" justifyContent="space-between" >
+                        <Button
+                          bgColor="#45241cff"
+                          _active={{ bgColor: "#45241cd4" }}
+                          _hover={{ bgColor: "#45241cd4" }}
+                        >
+                          <Icon
+                            boxSize={5}
+                            as={BsTrash3Fill as React.ElementType}
+                          />
+                        </Button>
+                        <Button
+                          bgColor="#1C4532"
+                          _active={{ bgColor: "#1c4532db" }}
+                          _hover={{ bgColor: "#1c4532db" }}
+                        >
+                          <Icon
+                            boxSize={5}
+                            as={BsPenFill as React.ElementType}
+                          />
+                        </Button>
+                      </Box>
+                    </Td>
+                    <Td
+                      textAlign="center"
+                      border="2px solid #1C4532"
+                      color="#1C4532"
+                    >
                       {" "}
                       {item.outcome}
                     </Td>
@@ -287,7 +325,7 @@ const Transaction: React.FC = () => {
                       border="2px solid #1C4532"
                       color="#1C4532"
                     >
-                      {item.amount}
+                      {rupiahFormat.format(item.amount)}
                     </Td>
                   </Tr>
                 ))}
@@ -296,7 +334,7 @@ const Transaction: React.FC = () => {
               <Tfoot>
                 <Tr>
                   <Td
-                    colSpan={4}
+                    colSpan={5}
                     textAlign="right"
                     border="2px solid #1C4532"
                     color="#1C4532"
@@ -400,7 +438,7 @@ const Transaction: React.FC = () => {
                     border="2px solid #1C4532"
                     color="#1C4532"
                   >
-                    {allDataIncome.amount}
+                    {rupiahFormat.format(allDataIncome.amount)}
                   </Td>
                 </Tr>
               ))}
@@ -512,7 +550,7 @@ const Transaction: React.FC = () => {
                     border="2px solid #1C4532"
                     color="#1C4532"
                   >
-                    {allDataExpense.amount}
+                    {rupiahFormat.format(allDataExpense.amount)}
                   </Td>
                 </Tr>
               ))}
