@@ -22,6 +22,7 @@ import type { Data } from "../data/types";
 
 import Income from "./Income";
 import { BsPenFill, BsTrash3Fill } from "react-icons/bs";
+import { deleteTransactions } from "../api/transaction";
 interface Props {
   dataExpense: TypeExpense;
   dataIncome: TypeIncome;
@@ -92,15 +93,23 @@ const Transaction: React.FC = () => {
     });
   };
 
+  const handleDelete = async (id: number) => {
+    await deleteTransactions(id);
+    setAllDataIncome((prev) => prev.filter((item) => item.id !== id));
+    setAllDataExpense((prev) => prev.filter((item) => item.id !== id));
+  };
+
   const balancedTransaction = [...allDataIncome, ...allDataExpense];
   const sortedTransactions = [...balancedTransaction].sort(
     (a, b) => a.timestamp - b.timestamp
   );
   const sortedAllIncome = allDataIncome.sort(
-    (a, b) => a.timestamp - b.timestamp)
+    (a, b) => a.timestamp - b.timestamp
+  );
 
-const sortedAllExpense = allDataExpense.sort(
-    (a, b) => a.timestamp - b.timestamp)
+  const sortedAllExpense = allDataExpense.sort(
+    (a, b) => a.timestamp - b.timestamp
+  );
 
   const balance = sumIncome - sumExpense;
   return (
@@ -266,11 +275,16 @@ const sortedAllExpense = allDataExpense.sort(
                       border="2px solid #1C4532"
                       color="#1C4532"
                     >
-                      <Box display="flex" justifyContent="space-between" >
+                      <Box display="flex" justifyContent="space-between">
                         <Button
                           bgColor="#45241cff"
                           _active={{ bgColor: "#45241cd4" }}
                           _hover={{ bgColor: "#45241cd4" }}
+                          onClick={() => {
+                            if (item.id !== undefined) {
+                              handleDelete(item.id);
+                            }
+                          }}
                         >
                           <Icon
                             boxSize={5}
@@ -430,18 +444,18 @@ const sortedAllExpense = allDataExpense.sort(
                     {new Date(allDataIncome.date).toLocaleDateString("en-CA")}
                   </Td>
                   <Td
-                      textAlign="center"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                      wordBreak="break-word"
-                      textOverflow="ellipsis"
-                    >
-                      <Tooltip label={allDataIncome.note} hasArrow>
-                        <Text isTruncated maxW="160px" mx="auto">
-                          {allDataIncome.note || "-"}
-                        </Text>
-                      </Tooltip>
-                    </Td>
+                    textAlign="center"
+                    border="2px solid #1C4532"
+                    color="#1C4532"
+                    wordBreak="break-word"
+                    textOverflow="ellipsis"
+                  >
+                    <Tooltip label={allDataIncome.note} hasArrow>
+                      <Text isTruncated maxW="160px" mx="auto">
+                        {allDataIncome.note || "-"}
+                      </Text>
+                    </Tooltip>
+                  </Td>
                   <Td
                     textAlign="center"
                     border="2px solid #1C4532"
@@ -546,18 +560,18 @@ const sortedAllExpense = allDataExpense.sort(
                     {new Date(allDataExpense.date).toLocaleDateString("en-CA")}
                   </Td>
                   <Td
-                      textAlign="center"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                      wordBreak="break-word"
-                      textOverflow="ellipsis"
-                    >
-                      <Tooltip label={allDataExpense.note} hasArrow>
-                        <Text isTruncated maxW="160px" mx="auto">
-                          {allDataExpense.note || "-"}
-                        </Text>
-                      </Tooltip>
-                    </Td>
+                    textAlign="center"
+                    border="2px solid #1C4532"
+                    color="#1C4532"
+                    wordBreak="break-word"
+                    textOverflow="ellipsis"
+                  >
+                    <Tooltip label={allDataExpense.note} hasArrow>
+                      <Text isTruncated maxW="160px" mx="auto">
+                        {allDataExpense.note || "-"}
+                      </Text>
+                    </Tooltip>
+                  </Td>
                   <Td
                     textAlign="center"
                     border="2px solid #1C4532"
@@ -595,5 +609,4 @@ const sortedAllExpense = allDataExpense.sort(
     </>
   );
 };
-
 export default Transaction;
