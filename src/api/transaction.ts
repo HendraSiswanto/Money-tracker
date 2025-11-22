@@ -24,3 +24,10 @@ export async function getSummary() {
   const res = await fetch(`${API_URL}/transactions/summary`);
   return res.json();
 }
+
+export async function deleteTransactions(id:number) {
+   const res = await fetch(`${API_URL}/transactions/${id}`,{
+    method: "DELETE"
+   });
+   return res.json()
+}
