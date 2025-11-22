@@ -68,6 +68,9 @@ const Transaction: React.FC = () => {
 
     fetchData();
   }, []);
+  const [editData, setEditData] = useState<allDataIncome | null>(null);
+  const [isEditOpen, setEditOpen] = useState(false);
+
   const [changeTipe, setTipe] = useState<Props>({} as Props);
   const [selected, setSelected] = useState("income");
   const [check, setCheck] = useState("balance");
@@ -119,6 +122,11 @@ const Transaction: React.FC = () => {
 
     onClose();
   };
+
+  const handleEditOpen = (item : allDataIncome) => {
+    setEditData(item)
+    setEditOpen(true)
+  } ;
 
   const balancedTransaction = [...allDataIncome, ...allDataExpense];
   const sortedTransactions = [...balancedTransaction].sort(
@@ -428,14 +436,14 @@ const Transaction: React.FC = () => {
           <Table size="md" variant="simple" width="container.xl">
             <Thead>
               <Tr>
-                  <Th
-                    textAlign="center"
-                    border="2px solid #1C4532"
-                    color="#1C4532"
-                    width="160px"
-                  >
-                    Action
-                  </Th>
+                <Th
+                  textAlign="center"
+                  border="2px solid #1C4532"
+                  color="#1C4532"
+                  width="160px"
+                >
+                  Action
+                </Th>
                 <Th
                   textAlign="center"
                   width="15px"
@@ -477,39 +485,36 @@ const Transaction: React.FC = () => {
             <Tbody>
               {sortedAllIncome.map((allDataIncome) => (
                 <Tr key={allDataIncome.id}>
-                    <Td
-                      textAlign="center"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                    >
-                      <Box display="flex" justifyContent="space-between">
-                        <Button
-                          bgColor="#45241cff"
-                          _active={{ bgColor: "#45241cd4" }}
-                          _hover={{ bgColor: "#45241cd4" }}
-                          onClick={() => {
-                            if (allDataIncome.id !== undefined) {
-                              handleOpenDialog(allDataIncome.id);
-                            }
-                          }}
-                        >
-                          <Icon
-                            boxSize={5}
-                            as={BsTrash3Fill as React.ElementType}
-                          />
-                        </Button>
-                        <Button
-                          bgColor="#1C4532"
-                          _active={{ bgColor: "#1c4532db" }}
-                          _hover={{ bgColor: "#1c4532db" }}
-                        >
-                          <Icon
-                            boxSize={5}
-                            as={BsPenFill as React.ElementType}
-                          />
-                        </Button>
-                      </Box>
-                    </Td>
+                  <Td
+                    textAlign="center"
+                    border="2px solid #1C4532"
+                    color="#1C4532"
+                  >
+                    <Box display="flex" justifyContent="space-between">
+                      <Button
+                        bgColor="#45241cff"
+                        _active={{ bgColor: "#45241cd4" }}
+                        _hover={{ bgColor: "#45241cd4" }}
+                        onClick={() => {
+                          if (allDataIncome.id !== undefined) {
+                            handleOpenDialog(allDataIncome.id);
+                          }
+                        }}
+                      >
+                        <Icon
+                          boxSize={5}
+                          as={BsTrash3Fill as React.ElementType}
+                        />
+                      </Button>
+                      <Button
+                        bgColor="#1C4532"
+                        _active={{ bgColor: "#1c4532db" }}
+                        _hover={{ bgColor: "#1c4532db" }}
+                      >
+                        <Icon boxSize={5} as={BsPenFill as React.ElementType} />
+                      </Button>
+                    </Box>
+                  </Td>
                   <Td
                     textAlign="center"
                     border="2px solid #1C4532"
@@ -585,14 +590,14 @@ const Transaction: React.FC = () => {
           <Table size="md" variant="simple" width="container.xl">
             <Thead>
               <Tr>
-                 <Th
-                    textAlign="center"
-                    border="2px solid #1C4532"
-                    color="#1C4532"
-                    width="160px"
-                  >
-                    Action
-                  </Th>
+                <Th
+                  textAlign="center"
+                  border="2px solid #1C4532"
+                  color="#1C4532"
+                  width="160px"
+                >
+                  Action
+                </Th>
                 <Th
                   textAlign="center"
                   width="15px"
@@ -634,39 +639,36 @@ const Transaction: React.FC = () => {
             <Tbody>
               {sortedAllExpense.map((allDataExpense) => (
                 <Tr key={allDataExpense.id}>
-                    <Td
-                      textAlign="center"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                    >
-                      <Box display="flex" justifyContent="space-between">
-                        <Button
-                          bgColor="#45241cff"
-                          _active={{ bgColor: "#45241cd4" }}
-                          _hover={{ bgColor: "#45241cd4" }}
-                          onClick={() => {
-                            if (allDataExpense.id !== undefined) {
-                              handleOpenDialog(allDataExpense.id);
-                            }
-                          }}
-                        >
-                          <Icon
-                            boxSize={5}
-                            as={BsTrash3Fill as React.ElementType}
-                          />
-                        </Button>
-                        <Button
-                          bgColor="#1C4532"
-                          _active={{ bgColor: "#1c4532db" }}
-                          _hover={{ bgColor: "#1c4532db" }}
-                        >
-                          <Icon
-                            boxSize={5}
-                            as={BsPenFill as React.ElementType}
-                          />
-                        </Button>
-                      </Box>
-                    </Td>
+                  <Td
+                    textAlign="center"
+                    border="2px solid #1C4532"
+                    color="#1C4532"
+                  >
+                    <Box display="flex" justifyContent="space-between">
+                      <Button
+                        bgColor="#45241cff"
+                        _active={{ bgColor: "#45241cd4" }}
+                        _hover={{ bgColor: "#45241cd4" }}
+                        onClick={() => {
+                          if (allDataExpense.id !== undefined) {
+                            handleOpenDialog(allDataExpense.id);
+                          }
+                        }}
+                      >
+                        <Icon
+                          boxSize={5}
+                          as={BsTrash3Fill as React.ElementType}
+                        />
+                      </Button>
+                      <Button
+                        bgColor="#1C4532"
+                        _active={{ bgColor: "#1c4532db" }}
+                        _hover={{ bgColor: "#1c4532db" }}
+                      >
+                        <Icon boxSize={5} as={BsPenFill as React.ElementType} />
+                      </Button>
+                    </Box>
+                  </Td>
                   <Td
                     textAlign="center"
                     border="2px solid #1C4532"
