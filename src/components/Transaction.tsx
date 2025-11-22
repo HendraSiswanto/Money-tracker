@@ -13,9 +13,16 @@ import {
   Text,
   Tooltip,
   Icon,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  useDisclosure,
 } from "@chakra-ui/react";
 import Expense from "./Expense";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { TypeExpense } from "../hooks/useExpense";
 import type { TypeIncome } from "../hooks/useIncome";
 import type { Data } from "../data/types";
@@ -23,6 +30,7 @@ import type { Data } from "../data/types";
 import Income from "./Income";
 import { BsPenFill, BsTrash3Fill } from "react-icons/bs";
 import { deleteTransactions } from "../api/transaction";
+
 interface Props {
   dataExpense: TypeExpense;
   dataIncome: TypeIncome;
@@ -67,6 +75,10 @@ const Transaction: React.FC = () => {
   const [allDataExpense, setAllDataExpense] = useState<allDataExpense[]>([]);
   const [sumIncome, setSumIncome] = useState<number>(0);
   const [sumExpense, setSumExpense] = useState<number>(0);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [deletedId, setDeletedId] = useState<number | null>(null);
+  const cancelRef = useRef<HTMLButtonElement>(null);
+
   const rupiahFormat = new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
@@ -93,10 +105,19 @@ const Transaction: React.FC = () => {
     });
   };
 
-  const handleDelete = async (id: number) => {
-    await deleteTransactions(id);
-    setAllDataIncome((prev) => prev.filter((item) => item.id !== id));
-    setAllDataExpense((prev) => prev.filter((item) => item.id !== id));
+  const handleOpenDialog = (id: number) => {
+    setDeletedId(id);
+    onOpen();
+  };
+
+  const handleDelete = async () => {
+    if (!deletedId) return;
+
+    await deleteTransactions(deletedId);
+    setAllDataIncome((prev) => prev.filter((item) => item.id !== deletedId));
+    setAllDataExpense((prev) => prev.filter((item) => item.id !== deletedId));
+
+    onClose();
   };
 
   const balancedTransaction = [...allDataIncome, ...allDataExpense];
@@ -112,8 +133,37 @@ const Transaction: React.FC = () => {
   );
 
   const balance = sumIncome - sumExpense;
+
   return (
     <>
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isCentered
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Transaction
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure you want to delete this transaction?
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={handleDelete} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+      ;
       <Card
         ml={2}
         width="fit-content"
@@ -282,7 +332,7 @@ const Transaction: React.FC = () => {
                           _hover={{ bgColor: "#45241cd4" }}
                           onClick={() => {
                             if (item.id !== undefined) {
-                              handleDelete(item.id);
+                              handleOpenDialog(item.id);
                             }
                           }}
                         >
@@ -373,7 +423,6 @@ const Transaction: React.FC = () => {
             </Table>
           </Box>
         )}
-
       {allDataIncome.length > 0 && check === "income" && (
         <Box display="flex" justifyContent="center" mt={6} mb={6}>
           <Table size="md" variant="simple" width="container.xl">
