@@ -46,6 +46,18 @@ export const transactionController = {
     }
   },
 
+  delete: async (req: Request, res: Response)=>{
+    try{
+      const id = Number(req.params.id);
+      await prisma.transaction.delete({
+        where:{id}
+      })
+      res.json({success : true})
+    }catch(err){
+      res.status(500).json({error :'Failed to delete data'})
+    }
+  },
+
   summary: async (_req: Request, res: Response) => {
     try {
       const income = await prisma.transaction.aggregate({
