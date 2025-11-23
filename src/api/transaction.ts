@@ -32,17 +32,27 @@ export async function deleteTransactions(id: number) {
   return res.json();
 }
 
-export async function updateTransaction(updatedData: {
+export async function updateTransaction(data: {
   id: number;
   type: string;
   amount: number;
+  date: string;
   note?: string;
-  
+  timestamp: number;
+  outcome: string;
 }) {
-  const res = await fetch(`${API_URL}/transactions/${updatedData.id}`, {
+   const res = await fetch(`${API_URL}/transactions/${data.id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(updatedData),
+    body: JSON.stringify({
+      ...data,
+      date: new Date(data.date) // convert to valid date for Prisma
+    }),
   });
-  return res.json();
+
+  if (!res.ok) {
+    throw new Error("Failed to update transaction");
+  }
+
+  return res.json(); // return updated data from database
 }

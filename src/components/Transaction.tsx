@@ -78,7 +78,6 @@ const Transaction: React.FC = () => {
   }, []);
   const [editData, setEditData] = useState<allDataIncome | null>(null);
   const [isEditOpen, setEditOpen] = useState(false);
-
   const [changeTipe, setTipe] = useState<Props>({} as Props);
   const [selected, setSelected] = useState("income");
   const [check, setCheck] = useState("balance");
@@ -132,7 +131,7 @@ const Transaction: React.FC = () => {
   };
 
   const handleEdit = (item: allDataIncome) => {
-    setEditData(item);
+    setEditData({ ...item, date: item.date.split("T")[0] });
     setEditOpen(true);
   };
 
@@ -143,19 +142,19 @@ const Transaction: React.FC = () => {
       type: editData.type,
       amount: editData.amount,
       note: editData.note,
-      date: editData.date,
+      date: new Date(editData.date).toISOString(),
+      timestamp: BigInt(editData.timestamp),
+      outcome: editData.outcome,
     };
-    await updateTransaction(updatedData);
+   const saved = await updateTransaction(updatedData);
 
-    if (editData.outcome === "income") {
-      setAllDataIncome((prev) =>
-        prev.map((x) => (x.id === editData.id ? editData : x))
-      );
-    } else {
-      setAllDataExpense((prev) =>
-        prev.map((x) => (x.id === editData.id ? editData : x))
-      );
-    }
+    const setData =
+      editData.outcome === "income" ? setAllDataIncome : setAllDataExpense;
+
+    setData(prev =>
+  prev.map(item => item.id === saved.id ? saved : item)
+);
+
     setEditOpen(false);
   };
 
@@ -163,11 +162,11 @@ const Transaction: React.FC = () => {
   const sortedTransactions = [...balancedTransaction].sort(
     (a, b) => a.timestamp - b.timestamp
   );
-  const sortedAllIncome = allDataIncome.sort(
+  const sortedAllIncome = [...allDataIncome].sort(
     (a, b) => a.timestamp - b.timestamp
   );
 
-  const sortedAllExpense = allDataExpense.sort(
+  const sortedAllExpense = [...allDataExpense].sort(
     (a, b) => a.timestamp - b.timestamp
   );
 

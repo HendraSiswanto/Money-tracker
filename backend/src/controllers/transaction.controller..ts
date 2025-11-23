@@ -65,7 +65,15 @@ export const transactionController = {
 
       const updated = await prisma.transaction.update({
         where: { id },
-        data,
+        data: {
+          ...(data.type && { type: data.type }),
+          ...(data.amount && { amount: data.amount }),
+          ...(data.note !== undefined && { note: data.note }),
+          ...(data.date && { date: new Date(data.date) }),
+          ...(data.timestamp && { timestamp: data.timestamp }),
+          ...(data.outcome && { outcome: data.outcome }),
+          
+        },
       });
       res.json(updated);
     } catch (err) {
