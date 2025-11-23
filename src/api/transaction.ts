@@ -6,7 +6,7 @@ export async function getTransactions() {
 }
 
 export async function createTransaction(data: {
-  id: number; 
+  id: number;
   type: string;
   amount: number;
   category: string;
@@ -25,9 +25,24 @@ export async function getSummary() {
   return res.json();
 }
 
-export async function deleteTransactions(id:number) {
-   const res = await fetch(`${API_URL}/transactions/${id}`,{
-    method: "DELETE"
-   });
-   return res.json()
+export async function deleteTransactions(id: number) {
+  const res = await fetch(`${API_URL}/transactions/${id}`, {
+    method: "DELETE",
+  });
+  return res.json();
+}
+
+export async function updateTransaction(updatedData: {
+  id: number;
+  type: string;
+  amount: number;
+  note?: string;
+  
+}) {
+  const res = await fetch(`${API_URL}/transactions/${updatedData.id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updatedData),
+  });
+  return res.json();
 }

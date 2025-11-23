@@ -37,7 +37,7 @@ import type { Data } from "../data/types";
 
 import Income from "./Income";
 import { BsPenFill, BsTrash3Fill } from "react-icons/bs";
-import { deleteTransactions } from "../api/transaction";
+import { deleteTransactions, updateTransaction } from "../api/transaction";
 
 interface Props {
   dataExpense: TypeExpense;
@@ -136,8 +136,16 @@ const Transaction: React.FC = () => {
     setEditOpen(true);
   };
 
-  const saveEditData = () => {
+  const saveEditData = async () => {
     if (!editData) return;
+    const updatedData = {
+      id: editData.id!,
+      type: editData.type,
+      amount: editData.amount,
+      note: editData.note,
+      date: editData.date,
+    };
+    await updateTransaction(updatedData);
 
     if (editData.outcome === "income") {
       setAllDataIncome((prev) =>
