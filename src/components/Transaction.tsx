@@ -20,6 +20,14 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   useDisclosure,
+  Modal,
+  Input,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from "@chakra-ui/react";
 import Expense from "./Expense";
 import { useState, useEffect, useRef } from "react";
@@ -123,10 +131,25 @@ const Transaction: React.FC = () => {
     onClose();
   };
 
-  const handleEditOpen = (item : allDataIncome) => {
-    setEditData(item)
-    setEditOpen(true)
-  } ;
+  const handleEdit = (item: allDataIncome) => {
+    setEditData(item);
+    setEditOpen(true);
+  };
+
+  const saveEditData = () => {
+    if (!editData) return;
+
+    if (editData.outcome === "income") {
+      setAllDataIncome((prev) =>
+        prev.map((x) => (x.id === editData.id ? editData : x))
+      );
+    } else {
+      setAllDataExpense((prev) =>
+        prev.map((x) => (x.id === editData.id ? editData : x))
+      );
+    }
+    setEditOpen(false);
+  };
 
   const balancedTransaction = [...allDataIncome, ...allDataExpense];
   const sortedTransactions = [...balancedTransaction].sort(
@@ -144,6 +167,50 @@ const Transaction: React.FC = () => {
 
   return (
     <>
+      <Modal isCentered isOpen={isEditOpen} onClose={() => setEditOpen(false)}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Edit Transaction</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Input
+              placeholder="Amount"
+              type="number"
+              value={editData?.amount ?? ""}
+              onChange={(e) =>
+                setEditData(
+                  (prev) => prev && { ...prev, amount: +e.target.value }
+                )
+              }
+            />
+
+            <Input
+              mt={3}
+              placeholder="Note"
+              value={editData?.note ?? ""}
+              onChange={(e) =>
+                setEditData((prev) => prev && { ...prev, note: e.target.value })
+              }
+            />
+
+            <Input
+              mt={3}
+              type="date"
+              value={editData?.date ?? ""}
+              onChange={(e) =>
+                setEditData((prev) => prev && { ...prev, date: e.target.value })
+              }
+            />
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="green" mr={3} onClick={saveEditData}>
+              Save
+            </Button>
+            <Button onClick={() => setEditOpen(false)}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
@@ -353,6 +420,7 @@ const Transaction: React.FC = () => {
                           bgColor="#1C4532"
                           _active={{ bgColor: "#1c4532db" }}
                           _hover={{ bgColor: "#1c4532db" }}
+                          onClick={() => handleEdit(item)}
                         >
                           <Icon
                             boxSize={5}
