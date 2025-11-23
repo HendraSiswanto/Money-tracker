@@ -46,15 +46,30 @@ export const transactionController = {
     }
   },
 
-  delete: async (req: Request, res: Response)=>{
-    try{
+  delete: async (req: Request, res: Response) => {
+    try {
       const id = Number(req.params.id);
       await prisma.transaction.delete({
-        where:{id}
-      })
-      res.json({success : true})
-    }catch(err){
-      res.status(500).json({error :'Failed to delete data'})
+        where: { id },
+      });
+      res.json({ success: true });
+    } catch (err) {
+      res.status(500).json({ error: "Failed to delete data" });
+    }
+  },
+
+  update: async (req: Request, res: Response) => {
+    try {
+      const id = Number(req.params.id);
+      const data = req.body;
+
+      const updated = await prisma.transaction.update({
+        where: { id },
+        data,
+      });
+      res.json(updated);
+    } catch (err) {
+      res.status(400).json({ error: "Failed to update data" });
     }
   },
 

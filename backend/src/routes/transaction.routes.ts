@@ -6,7 +6,8 @@ const router = Router();
 router.get("/", transactionController.getAll);
 router.post("/", transactionController.create);
 router.get("/summary", transactionController.summary);
-router.delete("/:id", transactionController.delete)
+router.delete("/:id", transactionController.delete);
+router.patch("/:id", transactionController.update);
 
 
 export default router;
