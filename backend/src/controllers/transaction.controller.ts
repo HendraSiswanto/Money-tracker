@@ -62,36 +62,34 @@ export const transactionController = {
     try {
       const id = Number(req.params.id);
 
-      const payload: any = {};
+      const existing = await prisma.transaction.findUnique({
+        where: { id },
+      });
 
-      if (req.body.amount !== undefined)
-        payload.amount = Number(req.body.amount);
-      if (req.body.note !== undefined) payload.note = req.body.note;
-      if (req.body.type !== undefined) payload.type = req.body.type;
-      if (req.body.outcome !== undefined) payload.outcome = req.body.outcome;
-
-      if (req.body.date !== undefined) {
-        payload.date = req.body.date ? new Date(req.body.date) : null;
+      if (!existing) {
+        return res.status(404).json({ error: "Transaction not found" });
       }
 
-      if (req.body.timestamp !== undefined) {
-        payload.timestamp = req.body.timestamp
-          ? BigInt(req.body.timestamp)
-          : null;
-      }
+      const { amount, note, date, outcome, type, timestamp } = req.body;
 
       const updated = await prisma.transaction.update({
         where: { id },
-        data: payload,
+        data: {
+          amount: amount !== undefined ? Number(amount) : existing.amount,
+          note: note ?? existing.note,
+          date: date ? new Date(date) : existing.date,
+          outcome: outcome ?? existing.outcome,
+          type: type ?? existing.type,
+          timestamp: timestamp ? BigInt(timestamp) : existing.timestamp,
+        },
       });
 
-      res.json(updated);
+      res.json(convertBigInt(updated));
     } catch (err) {
       console.error(err);
       res.status(400).json({ error: "Failed to update data" });
     }
   },
-
   summary: async (_req: Request, res: Response) => {
     try {
       const income = await prisma.transaction.aggregate({

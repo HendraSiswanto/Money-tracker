@@ -104,14 +104,24 @@ const Transaction: React.FC = () => {
     const setSum = typeData === "income" ? setSumIncome : setSumExpense;
 
     setData((prev) => {
-      const nextId = Math.max(0, ...prev.map((x) => x.id ?? 0)) + 1;
+      const isEditing = !!newData.id;
+
       const finalData = {
         ...newData,
-        id: nextId,
+        id: isEditing
+          ? newData.id // keep old id when editing
+          : Math.max(0, ...prev.map((x) => x.id ?? 0)) + 1, // only for create
         timestamp: newData.timestamp ?? Date.now(),
       };
-      setSum(prev.reduce((a, b) => a + b.amount, 0) + finalData.amount);
-      return [...prev, finalData];
+
+      if (!isEditing) {
+        // only adjust sum when adding
+        setSum(prev.reduce((a, b) => a + b.amount, 0) + finalData.amount);
+        return [...prev, finalData];
+      }
+
+      // editing: replace the item
+      return prev.map((item) => (item.id === finalData.id ? finalData : item));
     });
   };
 
@@ -131,7 +141,15 @@ const Transaction: React.FC = () => {
   };
 
   const handleEdit = (item: allDataIncome) => {
-    setEditData({ ...item, date: item.date.split("T")[0] });
+    setEditData({
+      id: item.id,
+      amount: item.amount,
+      note: item.note ?? "",
+      date: item.date ? item.date.slice(0, 10) : "",
+      type: item.type,
+      timestamp: Number(item.timestamp),
+      outcome: item.outcome,
+    });
     setEditOpen(true);
   };
 
@@ -147,9 +165,9 @@ const Transaction: React.FC = () => {
         : new Date().toISOString().split("T")[0],
       type: editData.type,
       outcome: editData.outcome,
-      timestamp: editData.timestamp,
+      timestamp: Number(editData.timestamp),
     };
-
+    console.log("EDIT ID:", editData.id);
     const saved = await updateTransaction(updatedData);
 
     const setData =

@@ -36,17 +36,22 @@ export async function updateTransaction(data: {
   id: number;
   type: string;
   amount: number;
-  date: string;
+  date: string | null;
   note?: string;
   timestamp: number;
   outcome: string;
 }) {
-   const res = await fetch(`${API_URL}/transactions/${data.id}`, {
+  const safeDate =
+    data.date && !isNaN(new Date(data.date).getTime())
+      ? new Date(data.date)
+      : undefined;
+
+  const res = await fetch(`${API_URL}/transactions/${data.id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       ...data,
-      date: new Date(data.date) // convert to valid date for Prisma
+      date: safeDate,
     }),
   });
 
@@ -54,5 +59,5 @@ export async function updateTransaction(data: {
     throw new Error("Failed to update transaction");
   }
 
-  return res.json(); // return updated data from database
+  return res.json();
 }
