@@ -61,22 +61,33 @@ export const transactionController = {
   update: async (req: Request, res: Response) => {
     try {
       const id = Number(req.params.id);
-      const data = req.body;
+
+      const payload: any = {};
+
+      if (req.body.amount !== undefined)
+        payload.amount = Number(req.body.amount);
+      if (req.body.note !== undefined) payload.note = req.body.note;
+      if (req.body.type !== undefined) payload.type = req.body.type;
+      if (req.body.outcome !== undefined) payload.outcome = req.body.outcome;
+
+      if (req.body.date !== undefined) {
+        payload.date = req.body.date ? new Date(req.body.date) : null;
+      }
+
+      if (req.body.timestamp !== undefined) {
+        payload.timestamp = req.body.timestamp
+          ? BigInt(req.body.timestamp)
+          : null;
+      }
 
       const updated = await prisma.transaction.update({
         where: { id },
-        data: {
-          ...(data.type && { type: data.type }),
-          ...(data.amount && { amount: data.amount }),
-          ...(data.note !== undefined && { note: data.note }),
-          ...(data.date && { date: new Date(data.date) }),
-          ...(data.timestamp && { timestamp: data.timestamp }),
-          ...(data.outcome && { outcome: data.outcome }),
-          
-        },
+        data: payload,
       });
+
       res.json(updated);
     } catch (err) {
+      console.error(err);
       res.status(400).json({ error: "Failed to update data" });
     }
   },

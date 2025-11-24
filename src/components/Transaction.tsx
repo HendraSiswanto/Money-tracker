@@ -137,23 +137,27 @@ const Transaction: React.FC = () => {
 
   const saveEditData = async () => {
     if (!editData) return;
+
     const updatedData = {
       id: editData.id!,
-      type: editData.type,
       amount: editData.amount,
       note: editData.note,
-      date: new Date(editData.date).toISOString(),
-      timestamp: BigInt(editData.timestamp),
+      date: editData.date
+        ? editData.date
+        : new Date().toISOString().split("T")[0],
+      type: editData.type,
       outcome: editData.outcome,
+      timestamp: editData.timestamp,
     };
-   const saved = await updateTransaction(updatedData);
+
+    const saved = await updateTransaction(updatedData);
 
     const setData =
       editData.outcome === "income" ? setAllDataIncome : setAllDataExpense;
 
-    setData(prev =>
-  prev.map(item => item.id === saved.id ? saved : item)
-);
+    setData((prev) =>
+      prev.map((item) => (item.id === saved.id ? saved : item))
+    );
 
     setEditOpen(false);
   };
