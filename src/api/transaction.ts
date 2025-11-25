@@ -9,8 +9,10 @@ export async function createTransaction(data: {
   id: number;
   type: string;
   amount: number;
-  category: string;
+  outcome: string;
   note?: string;
+  date: string | null;
+   timestamp: number;
 }) {
   const res = await fetch(`${API_URL}/transactions`, {
     method: "POST",

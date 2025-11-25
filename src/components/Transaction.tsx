@@ -107,25 +107,43 @@ const Transaction: React.FC = () => {
     const setData =
       typeData === "income" ? setAllDataIncome : setAllDataExpense;
 
-    const saved = await updateTransaction(newData);
+    const isEditing = !!newData.id;
+    if (!isEditing) {
+  
+      const created = await createTransaction({
+        id: newData.id!,
+        outcome: typeData,
+        type: newData.type,
+        amount: newData.amount,
+        note: newData.note,
+        date: newData.date,
+        timestamp: Date.now(),
+      });
 
-    // 2️⃣ UPDATE STATE LIST
-    setData((prev) => {
-      const exists = prev.some((item) => item.id === saved.id);
+      setData((prev) => [...prev, created]);
 
-      if (!exists) {
-        // NEW data
-        return [...prev, saved];
-      }
+      const summary = await getSummary();
+      setSumIncome(summary.income);
+      setSumExpense(summary.expense);
 
-      // EDITED data
-      return prev.map((item) => (item.id === saved.id ? saved : item));
+      return;
+    }
+
+    const updated = await updateTransaction({
+      id: newData.id!,
+      amount: newData.amount,
+      type: newData.type,
+      timestamp: Date.now(),
+      outcome: typeData,
+      note: newData.note,
+      date: newData.date,
     });
+    setData((prev) => prev.map((x) => (x.id === updated.id ? updated : x)));
 
-    // 3️⃣ REFRESH SUMMARY FROM BACKEND
     const summary = await getSummary();
     setSumIncome(summary.income);
     setSumExpense(summary.expense);
+    return;
   };
 
   const handleOpenDialog = (id: number) => {
@@ -140,6 +158,9 @@ const Transaction: React.FC = () => {
     setAllDataIncome((prev) => prev.filter((item) => item.id !== deletedId));
     setAllDataExpense((prev) => prev.filter((item) => item.id !== deletedId));
 
+    const summary = await getSummary();
+    setSumIncome(summary.income);
+    setSumExpense(summary.expense);
     onClose();
   };
 
