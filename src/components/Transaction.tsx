@@ -37,7 +37,12 @@ import type { Data } from "../data/types";
 
 import Income from "./Income";
 import { BsPenFill, BsTrash3Fill } from "react-icons/bs";
-import { deleteTransactions, updateTransaction } from "../api/transaction";
+import {
+  createTransaction,
+  deleteTransactions,
+  getSummary,
+  updateTransaction,
+} from "../api/transaction";
 
 interface Props {
   dataExpense: TypeExpense;
@@ -101,28 +106,26 @@ const Transaction: React.FC = () => {
   ) => {
     const setData =
       typeData === "income" ? setAllDataIncome : setAllDataExpense;
-    const setSum = typeData === "income" ? setSumIncome : setSumExpense;
 
+    const saved = await updateTransaction(newData);
+
+    // 2️⃣ UPDATE STATE LIST
     setData((prev) => {
-      const isEditing = !!newData.id;
+      const exists = prev.some((item) => item.id === saved.id);
 
-      const finalData = {
-        ...newData,
-        id: isEditing
-          ? newData.id // keep old id when editing
-          : Math.max(0, ...prev.map((x) => x.id ?? 0)) + 1, // only for create
-        timestamp: newData.timestamp ?? Date.now(),
-      };
-
-      if (!isEditing) {
-        // only adjust sum when adding
-        setSum(prev.reduce((a, b) => a + b.amount, 0) + finalData.amount);
-        return [...prev, finalData];
+      if (!exists) {
+        // NEW data
+        return [...prev, saved];
       }
 
-      // editing: replace the item
-      return prev.map((item) => (item.id === finalData.id ? finalData : item));
+      // EDITED data
+      return prev.map((item) => (item.id === saved.id ? saved : item));
     });
+
+    // 3️⃣ REFRESH SUMMARY FROM BACKEND
+    const summary = await getSummary();
+    setSumIncome(summary.income);
+    setSumExpense(summary.expense);
   };
 
   const handleOpenDialog = (id: number) => {
@@ -167,7 +170,6 @@ const Transaction: React.FC = () => {
       outcome: editData.outcome,
       timestamp: Number(editData.timestamp),
     };
-    console.log("EDIT ID:", editData.id);
     const saved = await updateTransaction(updatedData);
 
     const setData =
@@ -176,6 +178,9 @@ const Transaction: React.FC = () => {
     setData((prev) =>
       prev.map((item) => (item.id === saved.id ? saved : item))
     );
+    const summary = await getSummary();
+    setSumIncome(summary.income);
+    setSumExpense(summary.expense);
 
     setEditOpen(false);
   };
