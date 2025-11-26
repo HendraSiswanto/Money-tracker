@@ -40,7 +40,6 @@ import { BsPenFill, BsTrash3Fill } from "react-icons/bs";
 import {
   createTransaction,
   deleteTransactions,
-  getSummary,
   updateTransaction,
   getTransactions,
 } from "../api/transaction";
@@ -147,12 +146,18 @@ const Transaction: React.FC = () => {
     if (!deletedId) return;
 
     await deleteTransactions(deletedId);
-    setAllDataIncome((prev) => prev.filter((item) => item.id !== deletedId));
-    setAllDataExpense((prev) => prev.filter((item) => item.id !== deletedId));
 
-    const summary = await getSummary();
-    setSumIncome(summary.income);
-    setSumExpense(summary.expense);
+    setAllDataIncome((prev) => {
+      const updated = prev.filter((item) => item.id !== deletedId);
+      setSumIncome(updated.reduce((acc, item) => acc + item.amount, 0));
+      return updated;
+    });
+    setAllDataExpense((prev) => {
+      const updated = prev.filter((item) => item.id !== deletedId);
+      setSumExpense(updated.reduce((acc, item) => acc + item.amount, 0));
+      return updated;
+    });
+
     onClose();
   };
 
@@ -184,12 +189,14 @@ const Transaction: React.FC = () => {
       timestamp: Number(editData.timestamp),
     });
     const latest = await getTransactions();
-    setAllDataIncome(latest.filter((x) => x.outcome === "income"));
-    setAllDataExpense(latest.filter((x) => x.outcome === "expense"));
+    const latestIncome = latest.filter((x) => x.outcome === "income");
+    const latestExpense = latest.filter((x) => x.outcome === "expense");
 
-    const summary = await getSummary();
-    setSumIncome(summary.income);
-    setSumExpense(summary.expense);
+    setAllDataIncome(latestIncome);
+    setAllDataExpense(latestExpense);
+
+    setSumIncome(latestIncome.reduce((acc, item) => acc + item.amount, 0));
+    setSumExpense(latestExpense.reduce((acc, item) => acc + item.amount, 0));
 
     setEditOpen(false);
   };
@@ -333,7 +340,7 @@ const Transaction: React.FC = () => {
             onSelectType={(dataIncome) =>
               setTipe({ ...changeTipe, dataIncome })
             }
-            saveIncome={(data) => handleSave(data, "income")}
+            saveIncome={handleSave}
           />
         ) : (
           <Expense
