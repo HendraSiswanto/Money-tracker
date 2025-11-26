@@ -108,7 +108,6 @@ const Transaction: React.FC = () => {
     const isEditing = !!newData.id;
     if (!isEditing) {
       await createTransaction({
-        id: newData.id!,
         outcome: typeData,
         type: newData.type,
         amount: newData.amount,
@@ -127,15 +126,16 @@ const Transaction: React.FC = () => {
         date: newData.date,
       });
     }
-
-    // Refresh UI from backend
     const latest = await getTransactions();
-    setAllDataIncome(latest.income);
-    setAllDataExpense(latest.expense);
 
-    const summary = await getSummary();
-    setSumIncome(summary.income);
-    setSumExpense(summary.expense);
+    const latestIncome = latest.filter((x) => x.outcome === "income");
+    const latestExpense = latest.filter((x) => x.outcome === "expense");
+
+    setAllDataIncome(latestIncome);
+    setAllDataExpense(latestExpense);
+
+    setSumIncome(latestIncome.reduce((acc, item) => acc + item.amount, 0));
+    setSumExpense(latestExpense.reduce((acc, item) => acc + item.amount, 0));
   };
 
   const handleOpenDialog = (id: number) => {
@@ -172,7 +172,7 @@ const Transaction: React.FC = () => {
   const saveEditData = async () => {
     if (!editData) return;
 
-    const updatedData = {
+    await updateTransaction({
       id: editData.id!,
       amount: editData.amount,
       note: editData.note,
@@ -182,15 +182,11 @@ const Transaction: React.FC = () => {
       type: editData.type,
       outcome: editData.outcome,
       timestamp: Number(editData.timestamp),
-    };
-    const saved = await updateTransaction(updatedData);
+    });
+    const latest = await getTransactions();
+    setAllDataIncome(latest.filter((x) => x.outcome === "income"));
+    setAllDataExpense(latest.filter((x) => x.outcome === "expense"));
 
-    const setData =
-      editData.outcome === "income" ? setAllDataIncome : setAllDataExpense;
-
-    setData((prev) =>
-      prev.map((item) => (item.id === saved.id ? saved : item))
-    );
     const summary = await getSummary();
     setSumIncome(summary.income);
     setSumExpense(summary.expense);

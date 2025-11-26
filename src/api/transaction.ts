@@ -1,18 +1,27 @@
 const API_URL = "http://localhost:3000";
 
-export async function getTransactions() {
+export interface Transaction {
+  id: number;
+  type: string;
+  amount: number;
+  date: string;
+  note?: string;
+  timestamp: number;
+  outcome: "income" | "expense";
+}
+
+export async function getTransactions(): Promise<Transaction[]> {
   const res = await fetch(`${API_URL}/transactions`);
   return res.json();
 }
 
 export async function createTransaction(data: {
-  id: number;
   type: string;
   amount: number;
   outcome: string;
   note?: string;
-  date: string | null;
-  timestamp: number;
+  date?: string | null;
+  timestamp?: number;
 }) {
   const res = await fetch(`${API_URL}/transactions`, {
     method: "POST",
