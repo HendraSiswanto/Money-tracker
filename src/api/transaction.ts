@@ -12,7 +12,7 @@ export async function createTransaction(data: {
   outcome: string;
   note?: string;
   date: string | null;
-   timestamp: number;
+  timestamp: number;
 }) {
   const res = await fetch(`${API_URL}/transactions`, {
     method: "POST",

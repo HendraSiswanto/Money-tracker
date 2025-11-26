@@ -42,6 +42,7 @@ import {
   deleteTransactions,
   getSummary,
   updateTransaction,
+  getTransactions,
 } from "../api/transaction";
 
 interface Props {
@@ -104,13 +105,9 @@ const Transaction: React.FC = () => {
     newData: allDataIncome,
     typeData: "income" | "expense"
   ) => {
-    const setData =
-      typeData === "income" ? setAllDataIncome : setAllDataExpense;
-
     const isEditing = !!newData.id;
     if (!isEditing) {
-  
-      const created = await createTransaction({
+      await createTransaction({
         id: newData.id!,
         outcome: typeData,
         type: newData.type,
@@ -119,31 +116,26 @@ const Transaction: React.FC = () => {
         date: newData.date,
         timestamp: Date.now(),
       });
-
-      setData((prev) => [...prev, created]);
-
-      const summary = await getSummary();
-      setSumIncome(summary.income);
-      setSumExpense(summary.expense);
-
-      return;
+    } else {
+      await updateTransaction({
+        id: newData.id!,
+        amount: newData.amount,
+        type: newData.type,
+        timestamp: Date.now(),
+        outcome: typeData,
+        note: newData.note,
+        date: newData.date,
+      });
     }
 
-    const updated = await updateTransaction({
-      id: newData.id!,
-      amount: newData.amount,
-      type: newData.type,
-      timestamp: Date.now(),
-      outcome: typeData,
-      note: newData.note,
-      date: newData.date,
-    });
-    setData((prev) => prev.map((x) => (x.id === updated.id ? updated : x)));
+    // Refresh UI from backend
+    const latest = await getTransactions();
+    setAllDataIncome(latest.income);
+    setAllDataExpense(latest.expense);
 
     const summary = await getSummary();
     setSumIncome(summary.income);
     setSumExpense(summary.expense);
-    return;
   };
 
   const handleOpenDialog = (id: number) => {
