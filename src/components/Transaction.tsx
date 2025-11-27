@@ -43,6 +43,7 @@ import {
   updateTransaction,
   getTransactions,
 } from "../api/transaction";
+import TrSkeleton from "./skeleton/TrSkeleton";
 
 interface Props {
   dataExpense: TypeExpense;
@@ -62,7 +63,7 @@ type allDataExpense = allDataIncome;
 const Transaction: React.FC = () => {
   useEffect(() => {
     async function fetchData() {
-      setLoading(true)
+      setIsLoading(true);
       const res = await fetch("http://localhost:3000/transactions");
       const data: Data[] = await res.json();
 
@@ -78,12 +79,15 @@ const Transaction: React.FC = () => {
 
       setSumIncome(income.reduce((acc, item) => acc + item.amount, 0));
       setSumExpense(expense.reduce((acc, item) => acc + item.amount, 0));
-      setLoading(false)
+
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1200);
     }
 
     fetchData();
   }, []);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [editData, setEditData] = useState<allDataIncome | null>(null);
   const [isEditOpen, setEditOpen] = useState(false);
   const [changeTipe, setTipe] = useState<Props>({} as Props);
@@ -107,7 +111,7 @@ const Transaction: React.FC = () => {
     newData: allDataIncome,
     typeData: "income" | "expense"
   ) => {
-    setLoading(true)
+    setIsLoading(true);
     const isEditing = !!newData.id;
     if (!isEditing) {
       await createTransaction({
@@ -139,6 +143,7 @@ const Transaction: React.FC = () => {
 
     setSumIncome(latestIncome.reduce((acc, item) => acc + item.amount, 0));
     setSumExpense(latestExpense.reduce((acc, item) => acc + item.amount, 0));
+    setIsLoading(false);
   };
 
   const handleOpenDialog = (id: number) => {
@@ -296,7 +301,7 @@ const Transaction: React.FC = () => {
       <Card
         ml={2}
         width="fit-content"
-        mt={10}
+        mt={6}
         bgColor="transparent"
         border="1px solid #605f5f37"
         boxShadow="5px 5px 10px #605f5f37"
@@ -396,162 +401,175 @@ const Transaction: React.FC = () => {
       )}
       {(allDataIncome.length > 0 || allDataExpense.length > 0) &&
         check === "balance" && (
-          <Box display="flex" justifyContent="center" mt={6} mb={6}>
-            <Table size="md" variant="simple" width="container.xl">
-              <Thead>
-                <Tr>
-                  <Th
-                    textAlign="center"
-                    border="2px solid #1C4532"
-                    color="#1C4532"
-                    width="160px"
-                  >
-                    Action
-                  </Th>
-                  <Th
-                    textAlign="center"
-                    width="15px"
-                    border="2px solid #1C4532"
-                    color="#1C4532"
-                  >
-                    Income/Expense
-                  </Th>
-                  <Th
-                    textAlign="center"
-                    border="2px solid #1C4532"
-                    color="#1C4532"
-                  >
-                    Type
-                  </Th>
-                  <Th
-                    textAlign="center"
-                    border="2px solid #1C4532"
-                    color="#1C4532"
-                  >
-                    Date
-                  </Th>
-                  <Th
-                    textAlign="center"
-                    border="2px solid #1C4532"
-                    color="#1C4532"
-                  >
-                    Note
-                  </Th>
-                  <Th
-                    textAlign="center"
-                    border="2px solid #1C4532"
-                    color="#1C4532"
-                  >
-                    Amount
-                  </Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {sortedTransactions.map((item) => (
-                  <Tr key={item.id}>
-                    <Td
-                      textAlign="center"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                    >
-                      <Box display="flex" justifyContent="space-between">
-                        <Button
-                          bgColor="#45241cff"
-                          _active={{ bgColor: "#45241cd4" }}
-                          _hover={{ bgColor: "#45241cd4" }}
-                          onClick={() => {
-                            if (item.id !== undefined) {
-                              handleOpenDialog(item.id);
-                            }
-                          }}
-                        >
-                          <Icon
-                            boxSize={5}
-                            as={BsTrash3Fill as React.ElementType}
-                          />
-                        </Button>
-                        <Button
-                          bgColor="#1C4532"
-                          _active={{ bgColor: "#1c4532db" }}
-                          _hover={{ bgColor: "#1c4532db" }}
-                          onClick={() => handleEdit(item)}
-                        >
-                          <Icon
-                            boxSize={5}
-                            as={BsPenFill as React.ElementType}
-                          />
-                        </Button>
-                      </Box>
-                    </Td>
-                    <Td
-                      textAlign="center"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                    >
-                      {" "}
-                      {item.outcome}
-                    </Td>
-                    <Td
-                      textAlign="center"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                    >
-                      {item.type}
-                    </Td>
+          <>
+            {isLoading ? (
+              <TrSkeleton />
+            ) : (
+              <Box display="flex" justifyContent="center" mt={6} mb={6}>
+                <Table size="md" variant="simple" width="container.xl">
+                  <Thead>
+                    <Tr>
+                      <Th
+                        textAlign="center"
+                        border="2px solid #1C4532"
+                        color="#1C4532"
+                        w="162px"
+                      >
+                        Action
+                      </Th>
+                      <Th
+                        textAlign="center"
+                        width="15px"
+                        border="2px solid #1C4532"
+                        color="#1C4532"
+                        w="168px"
+                      >
+                        Income/Expense
+                      </Th>
+                      <Th
+                        textAlign="center"
+                        border="2px solid #1C4532"
+                        color="#1C4532"
+                        w="173px"
+                      >
+                        Type
+                      </Th>
+                      <Th
+                        textAlign="center"
+                        border="2px solid #1C4532"
+                        color="#1C4532"
+                        w="200px"
+                      >
+                        Date
+                      </Th>
+                      <Th
+                        textAlign="center"
+                        border="2px solid #1C4532"
+                        color="#1C4532"
+                        w="311px"
+                      >
+                        Note
+                      </Th>
+                      <Th
+                        textAlign="center"
+                        border="2px solid #1C4532"
+                        color="#1C4532"
+                        w="280px"
+                      >
+                        Amount
+                      </Th>
+                    </Tr>
+                  </Thead>
 
-                    <Td
-                      textAlign="center"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                    >
-                      {new Date(item.date).toLocaleDateString("en-CA")}
-                    </Td>
-                    <Td
-                      textAlign="center"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                      wordBreak="break-word"
-                      textOverflow="ellipsis"
-                    >
-                      <Tooltip label={item.note} hasArrow>
-                        <Text isTruncated maxW="160px" mx="auto">
-                          {item.note || "-"}
-                        </Text>
-                      </Tooltip>
-                    </Td>
-                    <Td
-                      textAlign="center"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                    >
-                      {rupiahFormat.format(item.amount)}
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
+                  <Tbody>
+                    {sortedTransactions.map((item) => (
+                      <Tr key={item.id}>
+                        <Td
+                          textAlign="center"
+                          border="2px solid #1C4532"
+                          color="#1C4532"
+                        >
+                          <Box display="flex" justifyContent="space-between">
+                            <Button
+                              bgColor="#45241cff"
+                              _active={{ bgColor: "#45241cd4" }}
+                              _hover={{ bgColor: "#45241cd4" }}
+                              onClick={() => {
+                                if (item.id !== undefined) {
+                                  handleOpenDialog(item.id);
+                                }
+                              }}
+                            >
+                              <Icon
+                                boxSize={5}
+                                as={BsTrash3Fill as React.ElementType}
+                              />
+                            </Button>
+                            <Button
+                              ml={2}
+                              bgColor="#1C4532"
+                              _active={{ bgColor: "#1c4532db" }}
+                              _hover={{ bgColor: "#1c4532db" }}
+                              onClick={() => handleEdit(item)}
+                            >
+                              <Icon
+                                boxSize={5}
+                                as={BsPenFill as React.ElementType}
+                              />
+                            </Button>
+                          </Box>
+                        </Td>
+                        <Td
+                          textAlign="center"
+                          border="2px solid #1C4532"
+                          color="#1C4532"
+                        >
+                          {" "}
+                          {item.outcome}
+                        </Td>
+                        <Td
+                          textAlign="center"
+                          border="2px solid #1C4532"
+                          color="#1C4532"
+                        >
+                          {item.type}
+                        </Td>
 
-              <Tfoot>
-                <Tr>
-                  <Td
-                    colSpan={5}
-                    textAlign="right"
-                    border="2px solid #1C4532"
-                    color="#1C4532"
-                    fontWeight="bold"
-                  >
-                    Total
-                  </Td>
-                  <Td
-                    textAlign="center"
-                    border="2px solid #1C4532"
-                    color="#1C4532"
-                  >
-                    {rupiahFormat.format(balance)}
-                  </Td>
-                </Tr>
-              </Tfoot>
-            </Table>
-          </Box>
+                        <Td
+                          textAlign="center"
+                          border="2px solid #1C4532"
+                          color="#1C4532"
+                        >
+                          {new Date(item.date).toLocaleDateString("en-CA")}
+                        </Td>
+                        <Td
+                          textAlign="center"
+                          border="2px solid #1C4532"
+                          color="#1C4532"
+                          wordBreak="break-word"
+                          textOverflow="ellipsis"
+                        >
+                          <Tooltip label={item.note} hasArrow>
+                            <Text isTruncated maxW="160px" mx="auto">
+                              {item.note || "-"}
+                            </Text>
+                          </Tooltip>
+                        </Td>
+                        <Td
+                          textAlign="center"
+                          border="2px solid #1C4532"
+                          color="#1C4532"
+                        >
+                          {rupiahFormat.format(item.amount)}
+                        </Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+
+                  <Tfoot>
+                    <Tr>
+                      <Td
+                        colSpan={5}
+                        textAlign="right"
+                        border="2px solid #1C4532"
+                        color="#1C4532"
+                        fontWeight="bold"
+                      >
+                        Total
+                      </Td>
+                      <Td
+                        textAlign="center"
+                        border="2px solid #1C4532"
+                        color="#1C4532"
+                      >
+                        {rupiahFormat.format(balance)}
+                      </Td>
+                    </Tr>
+                  </Tfoot>
+                </Table>
+              </Box>
+            )}
+          </>
         )}
       {allDataIncome.length > 0 && check === "income" && (
         <Box display="flex" justifyContent="center" mt={6} mb={6}>
@@ -562,7 +580,7 @@ const Transaction: React.FC = () => {
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
-                  width="160px"
+                  w="80px"
                 >
                   Action
                 </Th>
@@ -571,6 +589,7 @@ const Transaction: React.FC = () => {
                   width="15px"
                   border="2px solid #1C4532"
                   color="#1C4532"
+                  w="80px"
                 >
                   Income/Expense
                 </Th>
@@ -578,6 +597,7 @@ const Transaction: React.FC = () => {
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
+                  w="180px"
                 >
                   Type
                 </Th>
@@ -585,6 +605,7 @@ const Transaction: React.FC = () => {
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
+                  w="200px"
                 >
                   Date
                 </Th>
@@ -592,6 +613,7 @@ const Transaction: React.FC = () => {
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
+                  w="350px"
                 >
                   Note
                 </Th>
@@ -599,6 +621,7 @@ const Transaction: React.FC = () => {
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
+                  w="280px"
                 >
                   Amount
                 </Th>
@@ -629,6 +652,7 @@ const Transaction: React.FC = () => {
                         />
                       </Button>
                       <Button
+                        ml={2}
                         bgColor="#1C4532"
                         _active={{ bgColor: "#1c4532db" }}
                         _hover={{ bgColor: "#1c4532db" }}
@@ -716,7 +740,7 @@ const Transaction: React.FC = () => {
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
-                  width="160px"
+                  w="80px"
                 >
                   Action
                 </Th>
@@ -725,6 +749,7 @@ const Transaction: React.FC = () => {
                   width="15px"
                   border="2px solid #1C4532"
                   color="#1C4532"
+                  w="80px"
                 >
                   Income/Expense
                 </Th>
@@ -732,6 +757,7 @@ const Transaction: React.FC = () => {
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
+                  w="180px"
                 >
                   Type
                 </Th>
@@ -739,6 +765,7 @@ const Transaction: React.FC = () => {
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
+                  w="200px"
                 >
                   Date
                 </Th>
@@ -746,6 +773,7 @@ const Transaction: React.FC = () => {
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
+                  w="350px"
                 >
                   Note
                 </Th>
@@ -753,6 +781,7 @@ const Transaction: React.FC = () => {
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
+                  w="280px"
                 >
                   Amount
                 </Th>
@@ -783,6 +812,7 @@ const Transaction: React.FC = () => {
                         />
                       </Button>
                       <Button
+                        ml={2}
                         bgColor="#1C4532"
                         _active={{ bgColor: "#1c4532db" }}
                         _hover={{ bgColor: "#1c4532db" }}
