@@ -62,6 +62,7 @@ type allDataExpense = allDataIncome;
 const Transaction: React.FC = () => {
   useEffect(() => {
     async function fetchData() {
+      setLoading(true)
       const res = await fetch("http://localhost:3000/transactions");
       const data: Data[] = await res.json();
 
@@ -77,10 +78,12 @@ const Transaction: React.FC = () => {
 
       setSumIncome(income.reduce((acc, item) => acc + item.amount, 0));
       setSumExpense(expense.reduce((acc, item) => acc + item.amount, 0));
+      setLoading(false)
     }
 
     fetchData();
   }, []);
+  const [loading, setLoading] = useState(false);
   const [editData, setEditData] = useState<allDataIncome | null>(null);
   const [isEditOpen, setEditOpen] = useState(false);
   const [changeTipe, setTipe] = useState<Props>({} as Props);
@@ -104,6 +107,7 @@ const Transaction: React.FC = () => {
     newData: allDataIncome,
     typeData: "income" | "expense"
   ) => {
+    setLoading(true)
     const isEditing = !!newData.id;
     if (!isEditing) {
       await createTransaction({
@@ -348,7 +352,7 @@ const Transaction: React.FC = () => {
             onSelectType={(dataExpense) =>
               setTipe({ ...changeTipe, dataExpense })
             }
-            saveExpense={(data) => handleSave(data, "expense")}
+            saveExpense={handleSave}
           />
         )}
       </Card>

@@ -71,18 +71,8 @@ const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
       timestamp: Date.now(),
     };
 
-    try {
-      await fetch("http://localhost:3000/transactions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
       saveExpense(payload, "expense");
       handleReset();
-    } catch (error) {
-      console.log("Failed To Save : ", error);
-    }
   };
   return (
     <>

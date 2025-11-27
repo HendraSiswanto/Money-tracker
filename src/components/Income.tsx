@@ -71,18 +71,8 @@ const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
       timestamp: Date.now(),
     };
 
-    try {
-      await fetch("http://localhost:3000/transactions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      saveIncome(payload, "income");
-      handleReset();
-    } catch (error) {
-      console.log("Failed To Save : ", error);
-    }
+    saveIncome(payload, "income");
+    handleReset();
   };
 
   return (
