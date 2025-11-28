@@ -29,6 +29,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Flex,
+  Select,
 } from "@chakra-ui/react";
 import Expense from "./Expense";
 import { useState, useEffect, useRef } from "react";
@@ -88,6 +89,9 @@ const Transaction: React.FC = () => {
 
     fetchData();
   }, []);
+  const [sortOption, setSortOption] = useState<
+    "newest" | "oldest" | "high" | "low"
+  >("newest");
   const [isLoading, setIsLoading] = useState(false);
   const [editData, setEditData] = useState<allDataIncome | null>(null);
   const [isEditOpen, setEditOpen] = useState(false);
@@ -101,6 +105,9 @@ const Transaction: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [deletedId, setDeletedId] = useState<number | null>(null);
   const cancelRef = useRef<HTMLButtonElement>(null);
+  const [filterOption, setFilterOption] = useState<
+    "all" | "income" | "expense"
+  >("all");
 
   const rupiahFormat = new Intl.NumberFormat("id-ID", {
     style: "currency",
@@ -212,17 +219,37 @@ const Transaction: React.FC = () => {
   };
 
   const balancedTransaction = [...allDataIncome, ...allDataExpense];
-  const sortedTransactions = [...balancedTransaction].sort(
-    (a, b) => a.timestamp - b.timestamp
-  );
-  const sortedAllIncome = [...allDataIncome].sort(
-    (a, b) => a.timestamp - b.timestamp
-  );
+  const sortedTransactions = [...balancedTransaction].sort((a, b) => {
+    if (sortOption === "oldest") return a.timestamp - b.timestamp;
+    if (sortOption === "newest") return b.timestamp - a.timestamp;
+    if (sortOption === "high") return b.amount - a.amount;
+    if (sortOption === "low") return a.amount - b.amount;
+    return 0;
+  });
 
-  const sortedAllExpense = [...allDataExpense].sort(
-    (a, b) => a.timestamp - b.timestamp
-  );
+  const sortedAllIncome = [...allDataIncome].sort((a, b) => {
+    if (sortOption === "oldest") a.timestamp - b.timestamp;
+    if (sortOption === "newest") b.timestamp - a.timestamp;
+    if (sortOption === "high") return b.amount - a.amount;
+    if (sortOption === "low") return a.amount - b.amount;
+    return 0;
+  });
 
+  const sortedAllExpense = [...allDataExpense].sort((a, b) => {
+    if (sortOption === "oldest") a.timestamp - b.timestamp;
+    if (sortOption === "newest") b.timestamp - a.timestamp;
+    if (sortOption === "high") return b.amount - a.amount;
+    if (sortOption === "low") return a.amount - b.amount;
+    return 0;
+  });
+
+  const filteredTransactions = sortedTransactions.filter((item) => {
+    if (filterOption === "income")
+      return item.outcome.toLowerCase() === "income";
+    if (filterOption === "expense")
+      return item.outcome.toLowerCase() === "expense";
+    return true;
+  });
   const balance = sumIncome - sumExpense;
 
   return (
@@ -400,18 +427,45 @@ const Transaction: React.FC = () => {
       ) : (
         ""
       )}
+      <Flex gap={3} mb={4} justify="end" mr="75px" mt={4}>
+        <Select
+          color="#696969"
+          border="0 solid"
+          boxShadow="1px  1px 2px 2px rgba(0, 0, 0, 0.3)"
+          width="150px"
+          bgColor="#f8f8f8"
+          _hover={{ bgColor: "#b3b2b2ff" }}
+          value={filterOption}
+          onChange={(e) => setFilterOption(e.target.value as any)}
+        >
+          <option value="all">All</option>
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </Select>
+
+        <Select
+          color="#696969"
+          border="0 solid"
+          boxShadow="1px  1px 2px 2px rgba(0, 0, 0, 0.3)"
+          width="150px"
+          value={sortOption}
+          bgColor="#f8f8f8"
+          _hover={{ bgColor: "#b3b2b2ff" }}
+          onChange={(e) => setSortOption(e.target.value as any)}
+        >
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="high">Highest</option>
+          <option value="low">Lowest</option>
+        </Select>
+      </Flex>
       {(allDataIncome.length > 0 || allDataExpense.length > 0) &&
         check === "balance" && (
           <>
             {isLoading ? (
               <TrSkeleton />
             ) : (
-              <Box
-                display="flex"
-                justifyContent="center"
-                mt={6}
-                mb={6}
-              >
+              <Box display="flex" justifyContent="center" mt={6} mb={6}>
                 <Table
                   style={{ tableLayout: "fixed" }}
                   size="md"
@@ -421,7 +475,7 @@ const Transaction: React.FC = () => {
                   <Thead>
                     <Tr>
                       <Th
-                       whiteSpace="nowrap"
+                        whiteSpace="nowrap"
                         textAlign="center"
                         border="2px solid #1C4532"
                         color="#1C4532"
@@ -474,7 +528,7 @@ const Transaction: React.FC = () => {
                   </Thead>
 
                   <Tbody>
-                    {sortedTransactions.map((item) => (
+                    {filteredTransactions.map((item) => (
                       <Tr key={item.id}>
                         <Td
                           textAlign="center"
@@ -588,10 +642,16 @@ const Transaction: React.FC = () => {
         )}
       {allDataIncome.length > 0 && check === "income" && (
         <Box display="flex" justifyContent="center" mt={6} mb={6}>
-          <Table size="md" variant="simple" width="container.xl">
+          <Table
+            size="md"
+            variant="simple"
+            style={{ tableLayout: "fixed" }}
+            width="1200px"
+          >
             <Thead>
               <Tr>
                 <Th
+                  whiteSpace="nowrap"
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
@@ -604,7 +664,7 @@ const Transaction: React.FC = () => {
                   width="15px"
                   border="2px solid #1C4532"
                   color="#1C4532"
-                  w="80px"
+                  w="120px"
                 >
                   Income/Expense
                 </Th>
@@ -612,7 +672,7 @@ const Transaction: React.FC = () => {
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
-                  w="180px"
+                  w="140px"
                 >
                   Type
                 </Th>
@@ -620,7 +680,7 @@ const Transaction: React.FC = () => {
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
-                  w="200px"
+                  w="140px"
                 >
                   Date
                 </Th>
@@ -628,7 +688,7 @@ const Transaction: React.FC = () => {
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
-                  w="350px"
+                  w="200px"
                 >
                   Note
                 </Th>
@@ -636,7 +696,7 @@ const Transaction: React.FC = () => {
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
-                  w="280px"
+                  w="160px"
                 >
                   Amount
                 </Th>
@@ -650,8 +710,10 @@ const Transaction: React.FC = () => {
                     border="2px solid #1C4532"
                     color="#1C4532"
                   >
-                    <Box display="flex" justifyContent="space-between">
+                    <Flex justifyContent="center" width="100%" gap={2}>
                       <Button
+                        w="40px"
+                        h="40px"
                         bgColor="#45241cff"
                         _active={{ bgColor: "#45241cd4" }}
                         _hover={{ bgColor: "#45241cd4" }}
@@ -667,14 +729,15 @@ const Transaction: React.FC = () => {
                         />
                       </Button>
                       <Button
-                        ml={2}
+                        w="40px"
+                        h="40px"
                         bgColor="#1C4532"
                         _active={{ bgColor: "#1c4532db" }}
                         _hover={{ bgColor: "#1c4532db" }}
                       >
                         <Icon boxSize={5} as={BsPenFill as React.ElementType} />
                       </Button>
-                    </Box>
+                    </Flex>
                   </Td>
                   <Td
                     textAlign="center"
@@ -748,10 +811,16 @@ const Transaction: React.FC = () => {
       )}
       {allDataExpense.length > 0 && check === "expense" && (
         <Box display="flex" justifyContent="center" mt={6} mb={6}>
-          <Table size="md" variant="simple" width="container.xl">
+          <Table
+            size="md"
+            variant="simple"
+            style={{ tableLayout: "fixed" }}
+            width="1200px"
+          >
             <Thead>
               <Tr>
                 <Th
+                  whiteSpace="nowrap"
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
@@ -764,7 +833,7 @@ const Transaction: React.FC = () => {
                   width="15px"
                   border="2px solid #1C4532"
                   color="#1C4532"
-                  w="80px"
+                  w="120px"
                 >
                   Income/Expense
                 </Th>
@@ -772,7 +841,7 @@ const Transaction: React.FC = () => {
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
-                  w="180px"
+                  w="140px"
                 >
                   Type
                 </Th>
@@ -780,7 +849,7 @@ const Transaction: React.FC = () => {
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
-                  w="200px"
+                  w="140px"
                 >
                   Date
                 </Th>
@@ -788,7 +857,7 @@ const Transaction: React.FC = () => {
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
-                  w="350px"
+                  w="200px"
                 >
                   Note
                 </Th>
@@ -796,7 +865,7 @@ const Transaction: React.FC = () => {
                   textAlign="center"
                   border="2px solid #1C4532"
                   color="#1C4532"
-                  w="280px"
+                  w="160px"
                 >
                   Amount
                 </Th>
@@ -810,8 +879,10 @@ const Transaction: React.FC = () => {
                     border="2px solid #1C4532"
                     color="#1C4532"
                   >
-                    <Box display="flex" justifyContent="space-between">
+                    <Flex justifyContent="center" width="100%" gap={2}>
                       <Button
+                        w="40px"
+                        h="40px"
                         bgColor="#45241cff"
                         _active={{ bgColor: "#45241cd4" }}
                         _hover={{ bgColor: "#45241cd4" }}
@@ -827,14 +898,15 @@ const Transaction: React.FC = () => {
                         />
                       </Button>
                       <Button
-                        ml={2}
+                        w="40px"
+                        h="40px"
                         bgColor="#1C4532"
                         _active={{ bgColor: "#1c4532db" }}
                         _hover={{ bgColor: "#1c4532db" }}
                       >
                         <Icon boxSize={5} as={BsPenFill as React.ElementType} />
                       </Button>
-                    </Box>
+                    </Flex>
                   </Td>
                   <Td
                     textAlign="center"
