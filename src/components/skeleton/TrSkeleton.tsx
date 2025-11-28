@@ -7,17 +7,18 @@ import {
   Table,
   Th,
   Thead,
+  Tfoot,
 } from "@chakra-ui/react";
 
 const TableSkeleton = () => {
   return (
     <Box display="flex" justifyContent="center" mt={6} mb={6}>
-      <Table size="md" variant="simple" width="container.xl">
+      <Table size="md" variant="simple" width="1200px">
         <Thead>
           <Tr>
             <Th
               textAlign="center"
-              width="80px"
+              width="115px"
               border="2px solid #1C4532"
               color="#1C4532"
             >
@@ -25,7 +26,7 @@ const TableSkeleton = () => {
             </Th>
             <Th
               textAlign="center"
-              width="80px"
+              width="171px"
               border="2px solid #1C4532"
               color="#1C4532"
             >
@@ -33,7 +34,7 @@ const TableSkeleton = () => {
             </Th>
             <Th
               textAlign="center"
-              width="180px"
+              width="200px"
               border="2px solid #1C4532"
               color="#1C4532"
             >
@@ -49,7 +50,7 @@ const TableSkeleton = () => {
             </Th>
             <Th
               textAlign="center"
-              width="350px"
+              width="285px"
               border="2px solid #1C4532"
               color="#1C4532"
             >
@@ -57,7 +58,7 @@ const TableSkeleton = () => {
             </Th>
             <Th
               textAlign="center"
-              width="280px"
+              width="228px"
               border="2px solid #1C4532"
               color="#1C4532"
             >
@@ -90,6 +91,22 @@ const TableSkeleton = () => {
             </Tr>
           ))}
         </Tbody>
+        <Tfoot>
+          <Tr>
+            <Td
+              colSpan={5}
+              textAlign="right"
+              border="2px solid #1C4532"
+              color="#1C4532"
+              fontWeight="bold"
+            >
+              <Skeleton width="60px" height="25px" ml="auto" display="block" />
+            </Td>
+            <Td textAlign="center" border="2px solid #1C4532" color="#1C4532">
+              <Skeleton height="25px" />
+            </Td>
+          </Tr>
+        </Tfoot>
       </Table>
     </Box>
   );

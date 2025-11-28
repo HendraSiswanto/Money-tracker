@@ -406,20 +406,26 @@ const Transaction: React.FC = () => {
             {isLoading ? (
               <TrSkeleton />
             ) : (
-              <Box display="flex" justifyContent="center" mt={6} mb={6}>
+              <Box
+                display="flex"
+                justifyContent="center"
+                mt={6}
+                mb={6}
+              >
                 <Table
                   style={{ tableLayout: "fixed" }}
                   size="md"
                   variant="simple"
-                  width="container.xl"
+                  width="1200px"
                 >
                   <Thead>
                     <Tr>
                       <Th
+                       whiteSpace="nowrap"
                         textAlign="center"
                         border="2px solid #1C4532"
                         color="#1C4532"
-                        w="160px"
+                        w="80px"
                       >
                         Action
                       </Th>
@@ -428,7 +434,7 @@ const Transaction: React.FC = () => {
                         width="15px"
                         border="2px solid #1C4532"
                         color="#1C4532"
-                        w="140px"
+                        w="120px"
                       >
                         Income/Expense
                       </Th>
