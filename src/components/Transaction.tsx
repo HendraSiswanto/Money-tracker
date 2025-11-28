@@ -28,6 +28,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Flex,
 } from "@chakra-ui/react";
 import Expense from "./Expense";
 import { useState, useEffect, useRef } from "react";
@@ -406,14 +407,19 @@ const Transaction: React.FC = () => {
               <TrSkeleton />
             ) : (
               <Box display="flex" justifyContent="center" mt={6} mb={6}>
-                <Table size="md" variant="simple" width="container.xl">
+                <Table
+                  style={{ tableLayout: "fixed" }}
+                  size="md"
+                  variant="simple"
+                  width="container.xl"
+                >
                   <Thead>
                     <Tr>
                       <Th
                         textAlign="center"
                         border="2px solid #1C4532"
                         color="#1C4532"
-                        w="162px"
+                        w="160px"
                       >
                         Action
                       </Th>
@@ -422,7 +428,7 @@ const Transaction: React.FC = () => {
                         width="15px"
                         border="2px solid #1C4532"
                         color="#1C4532"
-                        w="168px"
+                        w="140px"
                       >
                         Income/Expense
                       </Th>
@@ -430,7 +436,7 @@ const Transaction: React.FC = () => {
                         textAlign="center"
                         border="2px solid #1C4532"
                         color="#1C4532"
-                        w="173px"
+                        w="140px"
                       >
                         Type
                       </Th>
@@ -438,7 +444,7 @@ const Transaction: React.FC = () => {
                         textAlign="center"
                         border="2px solid #1C4532"
                         color="#1C4532"
-                        w="200px"
+                        w="140px"
                       >
                         Date
                       </Th>
@@ -446,7 +452,7 @@ const Transaction: React.FC = () => {
                         textAlign="center"
                         border="2px solid #1C4532"
                         color="#1C4532"
-                        w="311px"
+                        w="200px"
                       >
                         Note
                       </Th>
@@ -454,7 +460,7 @@ const Transaction: React.FC = () => {
                         textAlign="center"
                         border="2px solid #1C4532"
                         color="#1C4532"
-                        w="280px"
+                        w="160px"
                       >
                         Amount
                       </Th>
@@ -469,7 +475,7 @@ const Transaction: React.FC = () => {
                           border="2px solid #1C4532"
                           color="#1C4532"
                         >
-                          <Box display="flex" justifyContent="space-between">
+                          <Flex justifyContent="center" gap={2} w="100%">
                             <Button
                               bgColor="#45241cff"
                               _active={{ bgColor: "#45241cd4" }}
@@ -479,6 +485,8 @@ const Transaction: React.FC = () => {
                                   handleOpenDialog(item.id);
                                 }
                               }}
+                              w="40px"
+                              h="40px"
                             >
                               <Icon
                                 boxSize={5}
@@ -486,7 +494,8 @@ const Transaction: React.FC = () => {
                               />
                             </Button>
                             <Button
-                              ml={2}
+                              w="40px"
+                              h="40px"
                               bgColor="#1C4532"
                               _active={{ bgColor: "#1c4532db" }}
                               _hover={{ bgColor: "#1c4532db" }}
@@ -497,7 +506,7 @@ const Transaction: React.FC = () => {
                                 as={BsPenFill as React.ElementType}
                               />
                             </Button>
-                          </Box>
+                          </Flex>
                         </Td>
                         <Td
                           textAlign="center"
