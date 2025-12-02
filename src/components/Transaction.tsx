@@ -6,7 +6,6 @@ import {
   Table,
   Tbody,
   Td,
-  Tfoot,
   Th,
   Thead,
   Tr,
@@ -37,7 +36,7 @@ interface allDataIncome {
 }
 
 const Transaction: React.FC = () => {
-  const { transactions, saveTransaction, balance, isLoading } =
+  const { transactions, saveTransaction,  isLoading } =
     useTransactions();
   const [changeTipe, setTipe] = useState<Props>({} as Props);
   const [selected, setSelected] = useState("income");
@@ -54,6 +53,7 @@ const Transaction: React.FC = () => {
   const formatOutcome = (outcome: string) =>
     outcome.charAt(0).toUpperCase() + outcome.slice(1);
 
+  const latestFive = transactions.slice(0,6);
   return (
     <>
       <Card
@@ -124,7 +124,7 @@ const Transaction: React.FC = () => {
           {isLoading ? (
             <TrSkeleton />
           ) : (
-            <Box display="flex" justifyContent="center" mt={6} mb={6}>
+            <Box display="flex" justifyContent="flex-start" ml="10px" mt={6} mb={6}>
               <Table
                 style={{ tableLayout: "fixed" }}
                 size="md"
@@ -178,7 +178,7 @@ const Transaction: React.FC = () => {
                 </Thead>
 
                 <Tbody>
-                  {transactions.map((item) => (
+                  {latestFive.map((item) => (
                     <Tr key={item.id}>
                       <Td
                         textAlign="center"
@@ -226,27 +226,7 @@ const Transaction: React.FC = () => {
                     </Tr>
                   ))}
                 </Tbody>
-
-                <Tfoot>
-                  <Tr>
-                    <Td
-                      colSpan={4}
-                      textAlign="right"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                      fontWeight="bold"
-                    >
-                      Total
-                    </Td>
-                    <Td
-                      textAlign="center"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                    >
-                      {rupiahFormat.format(balance)}
-                    </Td>
-                  </Tr>
-                </Tfoot>
+\
               </Table>
             </Box>
           )}
