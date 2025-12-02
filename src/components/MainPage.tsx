@@ -28,7 +28,7 @@ const MainPage = ({ onSelectImage, selectImage }: Props) => {
       case "History":
         return <History />;
       default:
-        return <Transaction />; // default
+        return <Transaction />;
     }
   };
 
