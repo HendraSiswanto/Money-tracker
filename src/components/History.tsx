@@ -1,8 +1,6 @@
 import {
   Box,
   Button,
-  Card,
-  Heading,
   Table,
   Tbody,
   Td,
@@ -31,26 +29,13 @@ import {
   Flex,
   Select,
 } from "@chakra-ui/react";
-import Expense from "./Expense";
-import { useState, useEffect, useRef } from "react";
-import type { TypeExpense } from "../hooks/useExpense";
-import type { TypeIncome } from "../hooks/useIncome";
-import type { Data } from "../data/types";
+import { useState, useRef } from "react";
 
-import Income from "./Income";
 import { BsPenFill, BsTrash3Fill } from "react-icons/bs";
-import {
-  createTransaction,
-  deleteTransactions,
-  updateTransaction,
-  getTransactions,
-} from "../api/transaction";
 import TrSkeleton from "./skeleton/TrSkeleton";
+import { useTransactions } from "../hooks/useTransactions";
 
-interface Props {
-  dataExpense: TypeExpense;
-  dataIncome: TypeIncome;
-}
+
 interface allDataIncome {
   id?: number;
   outcome: string;
@@ -62,42 +47,28 @@ interface allDataIncome {
 }
 
 const History: React.FC = () => {
-  useEffect(() => {
-    async function fetchData() {
-      setIsLoading(true);
-      const res = await fetch("http://localhost:3000/transactions");
-      const data: Data[] = await res.json();
-
-      setTransactions(data);
-
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1200);
-    }
-
-    fetchData();
-  }, []);
-  const [sortOption, setSortOption] = useState<
-    "newest" | "oldest" | "high" | "low"
-  >("newest");
-  const [isLoading, setIsLoading] = useState(false);
+  const {
+    transactions,
+    isLoading,
+    sortOption,
+    filterOption,
+    setSortOption,
+    setFilterOption,
+    saveTransaction,
+    removeTransaction,
+    balance
+  } = useTransactions();
   const [editData, setEditData] = useState<allDataIncome | null>(null);
   const [isEditOpen, setEditOpen] = useState(false);
 
-  const [transactions, setTransactions] = useState<allDataIncome[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [deletedId, setDeletedId] = useState<number | null>(null);
   const cancelRef = useRef<HTMLButtonElement>(null);
-  const [filterOption, setFilterOption] = useState<
-    "all" | "income" | "expense"
-  >("all");
-
   const rupiahFormat = new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
     maximumFractionDigits: 0,
   });
-
 
   const handleOpenDialog = (id: number) => {
     setDeletedId(id);
@@ -106,15 +77,7 @@ const History: React.FC = () => {
 
   const handleDelete = async () => {
     if (!deletedId) return;
-
-    await deleteTransactions(deletedId);
-
-    setTransactions((prev) => {
-      const updated = prev.filter((item) => item.id !== deletedId);
-
-      return updated;
-    });
-
+    await removeTransaction(deletedId);
     onClose();
   };
 
@@ -133,20 +96,7 @@ const History: React.FC = () => {
 
   const saveEditData = async () => {
     if (!editData) return;
-
-    await updateTransaction({
-      id: editData.id!,
-      amount: editData.amount,
-      note: editData.note,
-      date: editData.date
-        ? editData.date
-        : new Date().toISOString().split("T")[0],
-      type: editData.type,
-      outcome: editData.outcome,
-      timestamp: Number(editData.timestamp),
-    });
-    const latest = await getTransactions();
-    setTransactions(latest);
+await saveTransaction(editData,editData.outcome as "income" | "expense")
     setEditOpen(false);
   };
 
@@ -165,20 +115,7 @@ const History: React.FC = () => {
       return item.outcome.toLowerCase() === "expense";
     return true;
   });
-  const totalIncome = filteredTransactions
-    .filter((t) => t.outcome.toLowerCase() === "income")
-    .reduce((sum, t) => sum + t.amount, 0);
 
-  const totalExpense = filteredTransactions
-    .filter((t) => t.outcome.toLowerCase() === "expense")
-    .reduce((sum, t) => sum + t.amount, 0);
-
-  const balance =
-    filterOption === "all"
-      ? totalIncome - totalExpense
-      : filterOption === "income"
-      ? totalIncome
-      : totalExpense;
 
   return (
     <>
