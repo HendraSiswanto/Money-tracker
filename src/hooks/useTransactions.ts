@@ -28,17 +28,18 @@ export function useTransactions() {
 
   useEffect(() => {
     loadTransactions();
-  }, []);
+  }, [sortOption,filterOption]);
 
   const loadTransactions = async () => {
     setIsLoading(true);
     const res = await fetch("http://localhost:3000/transactions");
     const data: Data[] = await res.json();
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1200);
+    }, 800);
     setTransactions(data);
-    setIsLoading(false);
+
+    return () => clearTimeout(timer);
   };
 
   const saveTransaction = async (

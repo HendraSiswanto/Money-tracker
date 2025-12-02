@@ -63,7 +63,7 @@ const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
   };
   const handleSaveExpense = async () => {
     const payload = {
-      outcome: "Expense",
+      outcome: "expense",
       type: selectedType?.out,
       amount: Number(rawAmount),
       date: value,

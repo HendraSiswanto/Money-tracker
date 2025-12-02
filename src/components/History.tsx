@@ -32,9 +32,8 @@ import {
 import { useState, useRef } from "react";
 
 import { BsPenFill, BsTrash3Fill } from "react-icons/bs";
-import TrSkeleton from "./skeleton/TrSkeleton";
 import { useTransactions } from "../hooks/useTransactions";
-
+import HisSkeleton from "./skeleton/HisSkeleton";
 
 interface allDataIncome {
   id?: number;
@@ -56,7 +55,7 @@ const History: React.FC = () => {
     setFilterOption,
     saveTransaction,
     removeTransaction,
-    balance
+    balance,
   } = useTransactions();
   const [editData, setEditData] = useState<allDataIncome | null>(null);
   const [isEditOpen, setEditOpen] = useState(false);
@@ -96,26 +95,9 @@ const History: React.FC = () => {
 
   const saveEditData = async () => {
     if (!editData) return;
-await saveTransaction(editData,editData.outcome as "income" | "expense")
+    await saveTransaction(editData, editData.outcome as "income" | "expense");
     setEditOpen(false);
   };
-
-  const sortedTransactions = [...transactions].sort((a, b) => {
-    if (sortOption === "oldest") return a.timestamp - b.timestamp;
-    if (sortOption === "newest") return b.timestamp - a.timestamp;
-    if (sortOption === "high") return b.amount - a.amount;
-    if (sortOption === "low") return a.amount - b.amount;
-    return 0;
-  });
-
-  const filteredTransactions = sortedTransactions.filter((item) => {
-    if (filterOption === "income")
-      return item.outcome.toLowerCase() === "income";
-    if (filterOption === "expense")
-      return item.outcome.toLowerCase() === "expense";
-    return true;
-  });
-
 
   return (
     <>
@@ -225,7 +207,7 @@ await saveTransaction(editData,editData.outcome as "income" | "expense")
             </Select>
           </Flex>
           {isLoading ? (
-            <TrSkeleton />
+            <HisSkeleton />
           ) : (
             <Box display="flex" justifyContent="center" mt={6} mb={6}>
               <Table
@@ -290,7 +272,7 @@ await saveTransaction(editData,editData.outcome as "income" | "expense")
                 </Thead>
 
                 <Tbody>
-                  {filteredTransactions.map((item) => (
+                  {transactions.map((item) => (
                     <Tr key={item.id}>
                       <Td
                         textAlign="center"

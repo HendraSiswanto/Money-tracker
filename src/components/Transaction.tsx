@@ -19,7 +19,7 @@ import type { TypeExpense } from "../hooks/useExpense";
 import type { TypeIncome } from "../hooks/useIncome";
 
 import Income from "./Income";
-import TrSkeleton from "./skeleton/TrSkeleton";
+import TrSkeleton from "./skeleton/HisSkeleton";
 import { useTransactions } from "../hooks/useTransactions";
 
 interface Props {
@@ -37,8 +37,8 @@ interface allDataIncome {
 }
 
 const Transaction: React.FC = () => {
-
-  const {transactions,saveTransaction,balance,isLoading} = useTransactions()
+  const { transactions, saveTransaction, balance, isLoading } =
+    useTransactions();
   const [changeTipe, setTipe] = useState<Props>({} as Props);
   const [selected, setSelected] = useState("income");
 
@@ -48,9 +48,11 @@ const Transaction: React.FC = () => {
     maximumFractionDigits: 0,
   });
 
-  const handleSave = async (item: allDataIncome,) => {
+  const handleSave = async (item: allDataIncome) => {
     await saveTransaction(item, item.outcome as "income" | "expense");
   };
+  const formatOutcome = (outcome: string) =>
+    outcome.charAt(0).toUpperCase() + outcome.slice(1);
 
   return (
     <>
@@ -119,7 +121,6 @@ const Transaction: React.FC = () => {
       </Card>
       {transactions.length > 0 ? (
         <>
-        
           {isLoading ? (
             <TrSkeleton />
           ) : (
@@ -132,15 +133,6 @@ const Transaction: React.FC = () => {
               >
                 <Thead>
                   <Tr>
-                    <Th
-                      whiteSpace="nowrap"
-                      textAlign="center"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                      w="80px"
-                    >
-                      Action
-                    </Th>
                     <Th
                       textAlign="center"
                       width="15px"
@@ -193,15 +185,8 @@ const Transaction: React.FC = () => {
                         border="2px solid #1C4532"
                         color="#1C4532"
                       >
-                        
-                      </Td>
-                      <Td
-                        textAlign="center"
-                        border="2px solid #1C4532"
-                        color="#1C4532"
-                      >
                         {" "}
-                        {item.outcome}
+                        {formatOutcome(item.outcome)}
                       </Td>
                       <Td
                         textAlign="center"
@@ -245,7 +230,7 @@ const Transaction: React.FC = () => {
                 <Tfoot>
                   <Tr>
                     <Td
-                      colSpan={5}
+                      colSpan={4}
                       textAlign="right"
                       border="2px solid #1C4532"
                       color="#1C4532"

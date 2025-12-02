@@ -10,7 +10,7 @@ import {
   Tfoot,
 } from "@chakra-ui/react";
 
-const TableSkeleton = () => {
+const HisSkeleton = () => {
   return (
     <Box display="flex" justifyContent="center" mt={6} mb={6}>
       <Table size="md" variant="simple" width="1200px">
@@ -112,4 +112,4 @@ const TableSkeleton = () => {
   );
 };
 
-export default TableSkeleton;
+export default HisSkeleton;
