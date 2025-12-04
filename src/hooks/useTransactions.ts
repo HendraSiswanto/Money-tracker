@@ -119,6 +119,8 @@ export function useTransactions() {
     setFilterOption,
     saveTransaction,
     balance,
+    totalExpense,
+    totalIncome,
     removeTransaction,
   };
 }
