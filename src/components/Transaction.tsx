@@ -64,11 +64,12 @@ const Transaction: React.FC = () => {
   const latestFive = transactions.slice(0, 6);
   return (
     <>
-      <Container display="flex" flexDirection="row">
+      <Container display="flex" flexDirection="row" centerContent maxW="container.xl" mt={8}>
         <Card
           ml={2}
           width="fit-content"
           mt={6}
+          p={6}
           bgColor="transparent"
           border="1px solid #605f5f37"
           boxShadow="5px 5px 10px #605f5f37"
@@ -86,30 +87,36 @@ const Transaction: React.FC = () => {
             START TRACKING
           </Heading>
 
-          <Box display="flex" flexDirection="row" width="fit-content" gap={10}>
-            <Button
-              ml="110px"
-              px="70px"
-              bgColor="#1C4532"
-              _active={{ bgColor: "#1c4532db" }}
-              _hover={{ bgColor: "#1c4532db" }}
-              onClick={() => setSelected("income")}
-            >
-              Income 💰
-            </Button>
+          <Box
+  display="flex"
+  bg="#E6E6E6"
+  p="6px"
+  borderRadius="full"
+  gap={2}
+  mt={2}
+>
+  <Button
+    flex="1"
+    borderRadius="full"
+    bgColor={selected === "income" ? "#1C4532" : "transparent"}
+    color={selected === "income" ? "white" : "#1C4532"}
+    _hover={{ bgColor: "#1c4532db", color: "white" }}
+    onClick={() => setSelected("income")}
+  >
+    Income 💰
+  </Button>
 
-            <Button
-              mr="110px"
-              px="70px"
-              bgColor="#45241cff"
-              _active={{ bgColor: "#45241cd4" }}
-              _hover={{ bgColor: "#45241cd4" }}
-              onClick={() => setSelected("expense")}
-            >
-              Expense 💸
-            </Button>
-          </Box>
-
+  <Button
+    flex="1"
+    borderRadius="full"
+    bgColor={selected === "expense" ? "#45241cff" : "transparent"}
+    color={selected === "expense" ? "white" : "#45241cff"}
+    _hover={{ bgColor: "#45241cd4", color: "white" }}
+    onClick={() => setSelected("expense")}
+  >
+    Expense 💸
+  </Button>
+</Box>
           {selected === "income" ? (
             <Income
               selectedType={changeTipe.dataIncome}
@@ -136,8 +143,7 @@ const Transaction: React.FC = () => {
           userName="Hendra Giswanto"
           userImage="/assets/profile.png"
         ></BalanceCard>
-      </Container>
-      {transactions.length > 0 ? (
+      </Container>{transactions.length > 0 ? (
         <>
           {isLoading ? (
             <TrSkeleton />
