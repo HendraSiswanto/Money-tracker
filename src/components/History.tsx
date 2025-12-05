@@ -92,6 +92,8 @@ const History: React.FC = () => {
     });
     setEditOpen(true);
   };
+  const formatOutcome = (outcome: string) =>
+    outcome.charAt(0).toUpperCase() + outcome.slice(1);
 
   const saveEditData = async () => {
     if (!editData) return;
@@ -318,7 +320,7 @@ const History: React.FC = () => {
                         color="#1C4532"
                       >
                         {" "}
-                        {item.outcome}
+                        {formatOutcome(item.outcome)}
                       </Td>
                       <Td
                         textAlign="center"

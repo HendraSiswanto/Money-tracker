@@ -53,106 +53,96 @@ const Transaction: React.FC = () => {
   const handleSave = async (item: allDataIncome) => {
     await saveTransaction(item, item.outcome as "income" | "expense");
   };
-  const formatOutcome = (outcome: string) =>
-    outcome.charAt(0).toUpperCase() + outcome.slice(1);
-
+ 
   const latestFive = transactions.slice(0, 6);
   return (
     <>
-     
-      <Container
-        display="flex"
-        flexDirection="row"
-      
-        maxW="container.xl"
-        mt={8}
-      >
-        <Flex flexDirection="column">
+      <Container display="flex" flexDirection="row" maxW="container.xl" mt={8}>
+        <Flex flexDirection="column" align="flex-start">
+          <BalanceCard
+            balance={balance}
+            totalIncome={totalIncome}
+            totalExpense={totalExpense}
+            userName="Hendra Giswanto"
+            userImage="/assets/profile.png"
+          ></BalanceCard>
 
-        <BalanceCard
-        balance={balance}
-        totalIncome={totalIncome}
-        totalExpense={totalExpense}
-        userName="Hendra Giswanto"
-        userImage="/assets/profile.png"
-      ></BalanceCard>
-        <Card
-          ml={2}
-          width="fit-content"
-          mt={6}
-          px={28}
-          bgColor="transparent"
-          border="1px solid #605f5f37"
-          boxShadow="5px 5px 10px #605f5f37"
-          alignItems="center"
-          gap={2}
-        >
-          <Heading
-            size="md"
-            mb={4}
-            textAlign="center"
-            color="#1C4532"
-            fontWeight="bold"
-            mt={5}
-          >
-            START TRACKING
-          </Heading>
-
-          <Box
-            display="flex"
-            bg="#E6E6E6"
-            p="6px"
-            borderRadius="full"
+          <Card
+            width="fit-content"
+            mt={6}
+            px="44px"
+            bgColor="transparent"
+            border="1px solid #605f5f37"
+            boxShadow="5px 5px 10px #605f5f37"
+            alignItems="center"
             gap={2}
-            mt={2}
           >
-            <Button
-              flex="1"
-              borderRadius="full"
-              bgColor={selected === "income" ? "#1C4532" : "transparent"}
-              color={selected === "income" ? "white" : "#1C4532"}
-              _hover={{ bgColor: "#1c4532db", color: "white" }}
-              onClick={() => setSelected("income")}
+            <Heading
+              size="md"
+              mb={4}
+              textAlign="center"
+              color="#1C4532"
+              fontWeight="bold"
+              mt={5}
             >
-              Income 💰
-            </Button>
+              START TRACKING
+            </Heading>
 
-            <Button
-              flex="1"
+            <Box
+              display="flex"
+              bg="#E6E6E6"
+              p="6px"
               borderRadius="full"
-              bgColor={selected === "expense" ? "#45241cff" : "transparent"}
-              color={selected === "expense" ? "white" : "#45241cff"}
-              _hover={{ bgColor: "#45241cd4", color: "white" }}
-              onClick={() => setSelected("expense")}
+              gap={2}
+              mt={2}
             >
-              Expense 💸
-            </Button>
-          </Box>
-          {selected === "income" ? (
-            <Income
-              selectedType={changeTipe.dataIncome}
-              onSelectType={(dataIncome) =>
-                setTipe({ ...changeTipe, dataIncome })
-              }
-              saveIncome={handleSave}
-            />
-          ) : (
-            <Expense
-              selectedType={changeTipe.dataExpense}
-              onSelectType={(dataExpense) =>
-                setTipe({ ...changeTipe, dataExpense })
-              }
-              saveExpense={handleSave}
-            />
-          )}
-        </Card>
+              <Button
+                flex="1"
+                borderRadius="full"
+                bgColor={selected === "income" ? "#1C4532" : "transparent"}
+                color={selected === "income" ? "white" : "#1C4532"}
+                _hover={{ bgColor: "#1c4532db", color: "white" }}
+                onClick={() => setSelected("income")}
+              >
+                Income 💰
+              </Button>
+
+              <Button
+                flex="1"
+                borderRadius="full"
+                bgColor={selected === "expense" ? "#45241cff" : "transparent"}
+                color={selected === "expense" ? "white" : "#45241cff"}
+                _hover={{ bgColor: "#45241cd4", color: "white" }}
+                onClick={() => setSelected("expense")}
+              >
+                Expense 💸
+              </Button>
+            </Box>
+            {selected === "income" ? (
+              <Income
+                selectedType={changeTipe.dataIncome}
+                onSelectType={(dataIncome) =>
+                  setTipe({ ...changeTipe, dataIncome })
+                }
+                saveIncome={handleSave}
+              />
+            ) : (
+              <Expense
+                selectedType={changeTipe.dataExpense}
+                onSelectType={(dataExpense) =>
+                  setTipe({ ...changeTipe, dataExpense })
+                }
+                saveExpense={handleSave}
+              />
+            )}
+          </Card>
         </Flex>
         {transactions.length > 0 ? (
           <>
             {isLoading ? (
               <TrSkeleton />
             ) : (
-              <Box mt={8} width="100%" maxW="900px" mx="auto">
+              <Box mt="2px" width="80%" maxW="900px" ml={10}>
                 {latestFive.map((item) => (
                   <Flex
                     key={item.id}
