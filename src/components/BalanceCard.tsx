@@ -13,21 +13,21 @@ const BalanceCard = ({
   totalIncome,
   totalExpense,
   userName = "Guest User",
-  userImage = ""
+  userImage = "",
 }: Props) => {
   return (
     <Card
       p={5}
       borderRadius="lg"
-      boxShadow="md"
-      bg="white"
+      bgColor="transparent"
+      border="1px solid #605f5f37"
+      boxShadow="5px 5px 10px #605f5f37"
       w="350px"
-      mx="auto"
-      mt={5}
+     
     >
       <Flex align="center" gap={3} mb={3}>
         <Avatar name={userName} src={userImage} />
-        <Text fontWeight="bold" fontSize="lg">
+        <Text fontWeight="bold" color="#1C4532" fontSize="lg">
           {userName}
         </Text>
       </Flex>

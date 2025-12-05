@@ -3,15 +3,10 @@ import {
   Button,
   Card,
   Heading,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
   Text,
   Tooltip,
   Container,
+  Flex,
 } from "@chakra-ui/react";
 import Expense from "./Expense";
 import { useState } from "react";
@@ -64,12 +59,28 @@ const Transaction: React.FC = () => {
   const latestFive = transactions.slice(0, 6);
   return (
     <>
-      <Container display="flex" flexDirection="row" centerContent maxW="container.xl" mt={8}>
+     
+      <Container
+        display="flex"
+        flexDirection="row"
+      
+        maxW="container.xl"
+        mt={8}
+      >
+        <Flex flexDirection="column">
+
+        <BalanceCard
+        balance={balance}
+        totalIncome={totalIncome}
+        totalExpense={totalExpense}
+        userName="Hendra Giswanto"
+        userImage="/assets/profile.png"
+      ></BalanceCard>
         <Card
           ml={2}
           width="fit-content"
           mt={6}
-          p={6}
+          px={28}
           bgColor="transparent"
           border="1px solid #605f5f37"
           boxShadow="5px 5px 10px #605f5f37"
@@ -88,35 +99,35 @@ const Transaction: React.FC = () => {
           </Heading>
 
           <Box
-  display="flex"
-  bg="#E6E6E6"
-  p="6px"
-  borderRadius="full"
-  gap={2}
-  mt={2}
->
-  <Button
-    flex="1"
-    borderRadius="full"
-    bgColor={selected === "income" ? "#1C4532" : "transparent"}
-    color={selected === "income" ? "white" : "#1C4532"}
-    _hover={{ bgColor: "#1c4532db", color: "white" }}
-    onClick={() => setSelected("income")}
-  >
-    Income 💰
-  </Button>
+            display="flex"
+            bg="#E6E6E6"
+            p="6px"
+            borderRadius="full"
+            gap={2}
+            mt={2}
+          >
+            <Button
+              flex="1"
+              borderRadius="full"
+              bgColor={selected === "income" ? "#1C4532" : "transparent"}
+              color={selected === "income" ? "white" : "#1C4532"}
+              _hover={{ bgColor: "#1c4532db", color: "white" }}
+              onClick={() => setSelected("income")}
+            >
+              Income 💰
+            </Button>
 
-  <Button
-    flex="1"
-    borderRadius="full"
-    bgColor={selected === "expense" ? "#45241cff" : "transparent"}
-    color={selected === "expense" ? "white" : "#45241cff"}
-    _hover={{ bgColor: "#45241cd4", color: "white" }}
-    onClick={() => setSelected("expense")}
-  >
-    Expense 💸
-  </Button>
-</Box>
+            <Button
+              flex="1"
+              borderRadius="full"
+              bgColor={selected === "expense" ? "#45241cff" : "transparent"}
+              color={selected === "expense" ? "white" : "#45241cff"}
+              _hover={{ bgColor: "#45241cd4", color: "white" }}
+              onClick={() => setSelected("expense")}
+            >
+              Expense 💸
+            </Button>
+          </Box>
           {selected === "income" ? (
             <Income
               selectedType={changeTipe.dataIncome}
@@ -135,134 +146,63 @@ const Transaction: React.FC = () => {
             />
           )}
         </Card>
-
-        <BalanceCard
-          balance={balance}
-          totalIncome={totalIncome}
-          totalExpense={totalExpense}
-          userName="Hendra Giswanto"
-          userImage="/assets/profile.png"
-        ></BalanceCard>
-      </Container>{transactions.length > 0 ? (
-        <>
-          {isLoading ? (
-            <TrSkeleton />
-          ) : (
-            <Box
-              display="flex"
-              justifyContent="flex-start"
-              ml="10px"
-              mt={6}
-              mb={6}
-            >
-              <Table
-                style={{ tableLayout: "fixed" }}
-                size="md"
-                variant="simple"
-                width="1200px"
-              >
-                <Thead>
-                  <Tr>
-                    <Th
-                      textAlign="center"
-                      width="15px"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                      w="120px"
-                    >
-                      Income/Expense
-                    </Th>
-                    <Th
-                      textAlign="center"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                      w="140px"
-                    >
-                      Type
-                    </Th>
-                    <Th
-                      textAlign="center"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                      w="140px"
-                    >
-                      Date
-                    </Th>
-                    <Th
-                      textAlign="center"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                      w="200px"
-                    >
-                      Note
-                    </Th>
-                    <Th
-                      textAlign="center"
-                      border="2px solid #1C4532"
-                      color="#1C4532"
-                      w="160px"
-                    >
-                      Amount
-                    </Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {latestFive.map((item) => (
-                    <Tr key={item.id}>
-                      <Td
-                        textAlign="center"
-                        border="2px solid #1C4532"
-                        color="#1C4532"
-                      >
-                        {" "}
-                        {formatOutcome(item.outcome)}
-                      </Td>
-                      <Td
-                        textAlign="center"
-                        border="2px solid #1C4532"
-                        color="#1C4532"
-                      >
+        </Flex>
+        {transactions.length > 0 ? (
+          <>
+            {isLoading ? (
+              <TrSkeleton />
+            ) : (
+              <Box mt={8} width="100%" maxW="900px" mx="auto">
+                {latestFive.map((item) => (
+                  <Flex
+                    key={item.id}
+                    align="center"
+                    justify="space-between"
+                    bgColor="transparent"
+                    border="1px solid #605f5f37"
+                    boxShadow="5px 5px 10px #605f5f37"
+                    p={4}
+                    mb={3}
+                    borderRadius="md"
+                    borderLeft={
+                      item.outcome === "income"
+                        ? "6px solid #1C4532"
+                        : "6px solid #C53030"
+                    }
+                  >
+                    <Box>
+                      <Text fontWeight="bold" color="#1C4532">
                         {item.type}
-                      </Td>
-
-                      <Td
-                        textAlign="center"
-                        border="2px solid #1C4532"
-                        color="#1C4532"
-                      >
-                        {new Date(item.date).toLocaleDateString("en-CA")}
-                      </Td>
-                      <Td
-                        textAlign="center"
-                        border="2px solid #1C4532"
-                        color="#1C4532"
-                        wordBreak="break-word"
-                        textOverflow="ellipsis"
-                      >
+                      </Text>
+                      <Text fontSize="sm" color="gray.600" display="flex">
+                        {new Date(item.date).toLocaleDateString("en-CA")} •
                         <Tooltip label={item.note} hasArrow>
                           <Text isTruncated maxW="160px" mx="auto">
                             {item.note || "-"}
                           </Text>
                         </Tooltip>
-                      </Td>
-                      <Td
-                        textAlign="center"
-                        border="2px solid #1C4532"
-                        color="#1C4532"
-                      >
-                        {rupiahFormat.format(item.amount)}
-                      </Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-                \
-              </Table>
-            </Box>
-          )}
-        </>
-      ) : (
-        ""
-      )}
+                      </Text>
+                    </Box>
+
+                    <Text
+                      fontWeight="bold"
+                      color={
+                        item.outcome === "income" ? "green.500" : "red.500"
+                      }
+                      fontSize="lg"
+                    >
+                      {item.outcome === "income" ? "+ " : "- "}
+                      {rupiahFormat.format(item.amount)}
+                    </Text>
+                  </Flex>
+                ))}
+              </Box>
+            )}
+          </>
+        ) : (
+          ""
+        )}
+      </Container>
     </>
   );
 };
