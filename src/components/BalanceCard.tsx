@@ -47,19 +47,29 @@ const BalanceCard = ({
       w="350px"
       h="380px"
     >
-      <Flex align="center" gap={3} mb={3}>
+      <Flex  align="center" gap={3} mb={3}>
         <Avatar name={userName} src={userImage} />
         <Text fontWeight="bold" color="#1C4532" fontSize="lg">
           {userName}
         </Text>
       </Flex>
 
-      <Text fontSize="sm" color="gray.600">
-        Balance
-      </Text>
-      <Text fontSize="3xl" fontWeight="bold" color="#1C4532" mb={3}>
-        Rp {balance.toLocaleString("id-ID")}
-      </Text>
+      <Card
+      p={1}
+        borderRadius="lg"
+        bgColor="transparent"
+        border="1px solid #605f5f37"
+        boxShadow="5px 5px 10px #605f5f37"
+        align="center"
+        mb={2}
+      >
+        <Text fontSize="sm" fontWeight="bold" color="gray.600">
+          Balance
+        </Text>
+        <Text fontSize="3xl" fontWeight="bold" color="#1C4532">
+          Rp {balance.toLocaleString("id-ID")}
+        </Text>
+      </Card>
 
       <Flex justify="space-between">
         <Box textAlign="left">

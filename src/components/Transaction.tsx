@@ -157,7 +157,7 @@ const Transaction: React.FC = () => {
                     borderLeft={
                       item.outcome === "income"
                         ? "6px solid #1C4532"
-                        : "6px solid #C53030"
+                        : "6px solid #45241cff"
                     }
                   >
                     <Box>
@@ -168,7 +168,7 @@ const Transaction: React.FC = () => {
                         {new Date(item.date).toLocaleDateString("en-CA")} •
                         <Tooltip label={item.note} hasArrow>
                           <Text isTruncated maxW="160px" mx="auto">
-                            {item.note || "-"}
+                          {" "}  {item.note || "No Note"}
                           </Text>
                         </Tooltip>
                       </Text>
@@ -177,7 +177,7 @@ const Transaction: React.FC = () => {
                     <Text
                       fontWeight="bold"
                       color={
-                        item.outcome === "income" ? "green.500" : "red.500"
+                        item.outcome === "income" ? "#1C4532" : "#45241cff"
                       }
                       fontSize="lg"
                     >
