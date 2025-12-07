@@ -73,19 +73,21 @@ const BalanceCard = ({
         <Text fontSize="sm" fontWeight="bold" color="gray.600">
           Balance
         </Text>
-        <Text
-          p={1}
-          fontSize="2xl"
-          fontWeight="bold"
-          color="#1C4532"
-          wordBreak="break-word"
-          maxW="100%"
-          whiteSpace="nowrap"
-          overflow="hidden"
-          textOverflow="ellipsis"
-        >
-          Rp {balance.toLocaleString("id-ID")}
-        </Text>
+        <ChakraTooltip label={`Rp ${balance.toLocaleString("id-ID")}`} hasArrow>
+          <Text
+            p={1}
+            fontSize="2xl"
+            fontWeight="bold"
+            color="#1C4532"
+            maxW="100%"
+            whiteSpace="nowrap"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            isTruncated
+          >
+            Rp {balance.toLocaleString("id-ID")}
+          </Text>
+        </ChakraTooltip>
       </Card>
 
       <Flex justify="space-between">
@@ -97,7 +99,7 @@ const BalanceCard = ({
             </Text>
           </Flex>
           <ChakraTooltip
-            label={`Rp ${balance.toLocaleString("id-ID")}`}
+            label={`Rp ${totalIncome.toLocaleString("id-ID")}`}
             hasArrow
           >
             <Text
@@ -107,7 +109,6 @@ const BalanceCard = ({
               whiteSpace="nowrap"
               overflow="hidden"
               textOverflow="ellipsis"
-
               isTruncated
             >
               + Rp {totalIncome.toLocaleString("id-ID")}
@@ -122,19 +123,24 @@ const BalanceCard = ({
               Expense
             </Text>
           </Flex>
-          <Text
-            fontSize="lg"
-            color="#45241cff"
-            fontWeight="bold"
-            whiteSpace="nowrap"
-            overflow="hidden"
-            textOverflow="ellipsis"
+          <ChakraTooltip
+            label={`Rp ${totalExpense.toLocaleString("id-ID")}`}
+            hasArrow
           >
-            - Rp {totalExpense.toLocaleString("id-ID")}
-          </Text>
+            <Text
+              fontSize="lg"
+              color="#45241cff"
+              fontWeight="bold"
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              isTruncated
+            >
+              - Rp {totalExpense.toLocaleString("id-ID")}
+            </Text>
+          </ChakraTooltip>
         </Box>
       </Flex>
-
       <Box w="120px" mx="auto" mt={5}>
         <Pie data={chartData} options={chartOptions} />
       </Box>

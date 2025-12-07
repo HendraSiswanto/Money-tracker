@@ -17,6 +17,7 @@ import Income from "./Income";
 import TrSkeleton from "./skeleton/HisSkeleton";
 import { useTransactions } from "../hooks/useTransactions";
 import BalanceCard from "./BalanceCard";
+import LineCard from "./LineCard";
 
 interface Props {
   dataExpense: TypeExpense;
@@ -53,8 +54,8 @@ const Transaction: React.FC = () => {
   const handleSave = async (item: allDataIncome) => {
     await saveTransaction(item, item.outcome as "income" | "expense");
   };
- 
-  const latestFive = (transactions ?? []).slice(0, 6);
+
+  const latestFive = (transactions ?? []).slice(0, 5);
   return (
     <>
       <Container display="flex" flexDirection="row" maxW="container.xl" mt={8}>
@@ -143,6 +144,16 @@ const Transaction: React.FC = () => {
               <TrSkeleton />
             ) : (
               <Box mt="2px" width="80%" maxW="900px" ml={10}>
+                <Text
+                  fontSize="sm"
+                  fontWeight="bold"
+                  color="gray.600"
+                  borderBottom="1px"
+                  mb={1}
+                >
+                  RECENTS TRANSACTIONS
+                </Text>
+
                 {latestFive.map((item) => (
                   <Flex
                     key={item.id}
@@ -167,8 +178,8 @@ const Transaction: React.FC = () => {
                       <Text fontSize="sm" color="gray.600" display="flex">
                         {new Date(item.date).toLocaleDateString("en-CA")} •
                         <Tooltip label={item.note} hasArrow>
-                          <Text isTruncated maxW="160px" mx="auto">
-                          {" "}  {item.note || "No Note"}
+                          <Text isTruncated maxW="160px" mx="auto" ml={1}>
+                            {item.note || "No Note"}
                           </Text>
                         </Tooltip>
                       </Text>
@@ -186,6 +197,7 @@ const Transaction: React.FC = () => {
                     </Text>
                   </Flex>
                 ))}
+                <LineCard></LineCard>
               </Box>
             )}
           </>
