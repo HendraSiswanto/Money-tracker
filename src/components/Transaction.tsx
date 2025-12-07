@@ -54,7 +54,7 @@ const Transaction: React.FC = () => {
     await saveTransaction(item, item.outcome as "income" | "expense");
   };
  
-  const latestFive = transactions.slice(0, 6);
+  const latestFive = (transactions ?? []).slice(0, 6);
   return (
     <>
       <Container display="flex" flexDirection="row" maxW="container.xl" mt={8}>

@@ -11,7 +11,7 @@ model Transaction {
   id        Int      @id @default(autoincrement())
   outcome   String
   type      String 
-  amount    Int
+  amount    BigInt
   date      DateTime? @db.Date 
   note      String?
   timestamp BigInt

@@ -11,7 +11,7 @@ export type TransactionType = {
   id?: number;
   outcome: string;
   type: string;
-  amount: number;
+  amount: number ;
   date: string;
   note?: string;
   timestamp: number;
@@ -37,7 +37,7 @@ export function useTransactions() {
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 800);
-    setTransactions(data);
+    setTransactions(data ?? []);
 
     return () => clearTimeout(timer);
   };
