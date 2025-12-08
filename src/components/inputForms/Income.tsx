@@ -10,14 +10,14 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { BsArrowDownCircleFill } from "react-icons/bs";
-import type { TypeExpense } from "../hooks/useExpense";
-import useType from "../hooks/useExpense";
+import type { TypeIncome } from "../../hooks/useIncome";
+import useType from "../../hooks/useIncome";
 import { useState, useRef } from "react";
 
 interface Props {
-  onSelectType: (dataExpense: TypeExpense) => void;
-  selectedType: TypeExpense;
-  saveExpense: (
+  onSelectType: (dataIncome: TypeIncome) => void;
+  selectedType: TypeIncome;
+  saveIncome: (
     data: {
       outcome: string;
       type: string;
@@ -30,7 +30,7 @@ interface Props {
   ) => void;
 }
 
-const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
+const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
   const [rawAmount, setRawAmount] = useState<bigint>();
   const dateRef = useRef<HTMLInputElement | null>(null);
   const { data } = useType();
@@ -54,39 +54,40 @@ const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
   const handleNote = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputNote(e.target.value);
   };
-
   const handleReset = () => {
     setValue("");
     setInputValue("");
     setInputNote("");
-    onSelectType({ id: 0, out: "", emote: "" });
+    onSelectType({ id: 0, in: "", emote: "" });
   };
-  const handleSaveExpense = async () => {
+
+  const handleSaveIncome = async () => {
     const payload = {
-      outcome: "expense",
-      type: selectedType?.out,
+      outcome: "income",
+      type: selectedType?.in,
       amount: Number(rawAmount),
       date: value,
       note: inputNote,
       timestamp: Date.now(),
     };
 
-      saveExpense(payload, "expense");
-      handleReset();
+    saveIncome(payload, "income");
+    handleReset();
   };
+
   return (
     <>
       <Flex flexDirection="column" gap={2}>
         <Menu>
           <MenuButton
-            _active={{ bgColor: "#45241cd4" }}
-            _hover={{ bgColor: "#45241cd4" }}
-            bgColor="#45241cff"
+            _active={{ bgColor: "#1c4532db" }}
+            _hover={{ bgColor: "#1c4532db" }}
+            bgColor="#1C4532"
             as={Button}
             width="260px"
           >
             <Box display="flex" justifyContent="space-between">
-              {selectedType?.out || "Select Type Of Expense"}
+              {selectedType?.in || "Select Type Of Income"}
               <Box>
                 {selectedType?.emote || (
                   <Icon
@@ -97,19 +98,19 @@ const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
               </Box>
             </Box>
           </MenuButton>
-          <MenuList bg="#45241cff">
-            {data.map((dataExpense) => (
+          <MenuList bg="#1C4532">
+            {data.map((dataIncome) => (
               <MenuItem
-                _hover={{ bgColor: "#584642d4" }}
+                _hover={{ bgColor: "#94b0a3db" }}
                 justifyContent="space-between"
-                bg="#45241cff"
-                key={dataExpense.id}
-                onClick={() => onSelectType(dataExpense)}
+                bg="#1C4532"
+                key={dataIncome.id}
+                onClick={() => onSelectType(dataIncome)}
                 width="258px"
                 pl={3}
               >
-                {dataExpense.out}
-                <Box>{dataExpense.emote}</Box>
+                {dataIncome.in}
+                <Box>{dataIncome.emote}</Box>
               </MenuItem>
             ))}
           </MenuList>
@@ -143,6 +144,7 @@ const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
             <Input
               cursor="pointer"
               ref={dateRef}
+              className="dateInput"
               type="date"
               border="0.5px solid #969696ff"
               color={value ? "black" : "#615e5e4a"}
@@ -181,6 +183,7 @@ const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
             _placeholder={{ color: "#615e5e4a" }}
             onChange={handleNote}
           ></Input>
+
           <Box display="flex" justifyContent="center" gap={3}>
             <Button
               bgColor="#45241cff"
@@ -192,8 +195,8 @@ const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
             <Button
               bgColor="#1C4532"
               _hover={{ bgColor: "#1c4532db" }}
-              isDisabled={!selectedType?.out || !inputValue || !value}
-              onClick={handleSaveExpense}
+              isDisabled={!selectedType?.in || !inputValue || !value}
+              onClick={handleSaveIncome}
             >
               Save
             </Button>
@@ -204,4 +207,4 @@ const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
   );
 };
 
-export default Expense;
+export default Income;

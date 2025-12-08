@@ -12,6 +12,7 @@ import useImage, { type Sided } from "../hooks/useImage";
 import Logo from "../assets/Vector2.svg";
 import Transaction from "./Transaction";
 import History from "./History";
+import Balance from "./Balance";
 
 interface Props {
   onSelectImage: (imageData: Sided) => void;
@@ -21,10 +22,12 @@ interface Props {
 const MainPage = ({ onSelectImage, selectImage }: Props) => {
   const { data } = useImage();
 
-   const renderPage = () => {
+  const renderPage = () => {
     switch (selectImage?.name) {
       case "Transaction":
         return <Transaction />;
+      case "Balance":
+        return <Balance />;
       case "History":
         return <History />;
       default:
@@ -82,7 +85,7 @@ const MainPage = ({ onSelectImage, selectImage }: Props) => {
           </List>
         </Box>
         <Box flex={1} ml="125px">
-           {renderPage()}
+          {renderPage()}
         </Box>
       </Flex>
     </>

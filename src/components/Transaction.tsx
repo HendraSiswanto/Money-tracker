@@ -8,12 +8,12 @@ import {
   Container,
   Flex,
 } from "@chakra-ui/react";
-import Expense from "./Expense";
+import Expense from "./inputForms/Expense";
 import { useState } from "react";
 import type { TypeExpense } from "../hooks/useExpense";
 import type { TypeIncome } from "../hooks/useIncome";
 
-import Income from "./Income";
+import Income from "./inputForms/Income";
 import TrSkeleton from "./skeleton/HisSkeleton";
 import { useTransactions } from "../hooks/useTransactions";
 import BalanceCard from "./charts/BalanceCard";
