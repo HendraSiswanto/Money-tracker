@@ -16,7 +16,7 @@ import type { TypeIncome } from "../hooks/useIncome";
 import Income from "./inputForms/Income";
 import TrSkeleton from "./skeleton/HisSkeleton";
 import { useTransactions } from "../hooks/useTransactions";
-import BalanceCard from "./charts/BalanceCard";
+import BalanceCard from "./charts/UserCard";
 import LineCard from "./charts/LineCard";
 
 interface Props {
