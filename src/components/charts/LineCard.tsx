@@ -1,5 +1,5 @@
 import React from "react";
-import { useTransactions } from "../hooks/useTransactions";
+import { useTransactions } from "../../hooks/useTransactions";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -67,21 +67,6 @@ const LineCard: React.FC = () => {
       },
     },
   };
-
-  if (!transactions.length) {
-    return (
-      <div
-        style={{
-          height: 260,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        No data yet
-      </div>
-    );
-  }
 
   return (
     <div style={{ width: "100%", height: 300 }}>
