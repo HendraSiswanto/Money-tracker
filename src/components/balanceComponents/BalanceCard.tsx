@@ -6,7 +6,7 @@ export default function BalanceCard() {
   return (
     <Card bg="#E6F4EA">
       <CardBody textAlign="center">
-        <Text fontSize="sm">Total Income</Text>
+        <Text fontSize="sm">Total Balance</Text>
         <Text fontSize="xl" fontWeight="bold" color="#1C4532">
           Rp {balance.toLocaleString("id-ID")}
         </Text>

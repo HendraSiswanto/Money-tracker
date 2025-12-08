@@ -2,6 +2,7 @@ import { Box, SimpleGrid } from "@chakra-ui/react";
 import IncomeCard from "./balanceComponents/IncomeCard";
 import ExpenseCard from "./balanceComponents/ExpenseCard";
 import BalanceCard from "./balanceComponents/BalanceCard";
+import BarCard from "./balanceComponents/BarCard";
 
 
 export default function Balance() {
@@ -14,12 +15,11 @@ export default function Balance() {
       </SimpleGrid>
 
       <Box h="260px" mb={4}>
-        <BarChartBalance />
+        <BarCard/>
       </Box>
 
       <SimpleGrid columns={2} spacing={3}>
-        <DoughnutBalance />
-        <MiniLineBalance />
+        
       </SimpleGrid>
     </Box>
   );

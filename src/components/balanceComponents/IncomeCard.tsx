@@ -4,7 +4,7 @@ import { useTransactions } from "../../hooks/useTransactions";
 export default function IncomeCard() {
   const { totalIncome } = useTransactions();
   return (
-    <Card bg="#E6F4EA">
+    <Card bg="#1C4532" w="330px">
       <CardBody textAlign="center">
         <Text fontSize="sm">Total Income</Text>
         <Text fontSize="xl" fontWeight="bold" color="#1C4532">
