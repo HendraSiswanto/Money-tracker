@@ -33,6 +33,8 @@ export default function Balance() {
           percent={incomeGrowth.toFixed(0)}
           iconColor={incomeGrowth > 0 ? "#1C4532" : "#45241cff"}
           onClick={() => setActive("income")}
+          active={active === "income"}
+          activeColor="rgba(28, 69, 50, 0.10)"
         />
         <StatCard
           icon={BsCurrencyExchange}
@@ -42,6 +44,8 @@ export default function Balance() {
           percent={expenseGrowth.toFixed(0)}
           iconColor={expenseGrowth > 0 ? "#1C4532" : "#45241cff"}
           onClick={() => setActive("expense")}
+          active={active === "expense"}
+          activeColor="rgba(69, 36, 28, 0.10)"
         />
         <StatCard
           icon={BsPiggyBank}
@@ -60,7 +64,9 @@ export default function Balance() {
             active === "income" ? highestIncome?.date : highestExpense?.date
           }
           amount={
-            active === "income" ? highestIncome?.amount ?? 0 : highestExpense?.amount ?? 0
+            active === "income"
+              ? highestIncome?.amount ?? 0
+              : highestExpense?.amount ?? 0
           }
         ></HighestCard>
       </SimpleGrid>
