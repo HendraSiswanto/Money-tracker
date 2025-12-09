@@ -1,26 +1,33 @@
-import { Box, SimpleGrid } from "@chakra-ui/react";
-import IncomeCard from "./balanceComponents/IncomeCard";
-import ExpenseCard from "./balanceComponents/ExpenseCard";
-import BalanceCard from "./balanceComponents/BalanceCard";
+import { Box, Grid, SimpleGrid } from "@chakra-ui/react";
+import { StatCard } from "./balanceComponents/StatCard";
 import BarCard from "./balanceComponents/BarCard";
-
+import { useTransactions } from "../hooks/useTransactions";
+import { BsCoin } from "react-icons/bs";
 
 export default function Balance() {
+  const { totalIncome } = useTransactions();
   return (
-    <Box p={4}>
-      <SimpleGrid columns={3} spacing={3} mb={4}>
-        <IncomeCard />
-        <ExpenseCard />
-        <BalanceCard />
+    <>
+      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
+        <StatCard
+          icon={BsCoin}
+          title="Total Income"
+          fontColor="#1C4532"
+          value={totalIncome}
+          percent={"+6%"}
+          iconColor="green.600"
+        />
       </SimpleGrid>
 
-      <Box h="260px" mb={4}>
-        <BarCard/>
+      <Box mt={6}>
+        <BarCard />
       </Box>
 
-      <SimpleGrid columns={2} spacing={3}>
-        
-      </SimpleGrid>
-    </Box>
+      <Grid
+        templateColumns={{ base: "1fr", md: "1fr 1fr" }}
+        gap={4}
+        mt={6}
+      ></Grid>
+    </>
   );
 }
