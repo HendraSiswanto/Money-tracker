@@ -2,12 +2,18 @@ import { Box, Icon, Text } from "@chakra-ui/react";
 import { BsGraphUpArrow } from "react-icons/bs";
 
 type HighestCardProps = {
-  type: string;
+  title: string;
   amount: number;
   date: string;
+  type: "income" | "expense";
 };
 
-export const HighestCard = ({ type, amount, date }: HighestCardProps) => {
+export const HighestCard = ({
+  title,
+  type,
+  amount,
+  date,
+}: HighestCardProps) => {
   return (
     <Box
       mt={8}
@@ -30,11 +36,11 @@ export const HighestCard = ({ type, amount, date }: HighestCardProps) => {
       <Text fontWeight="bold" color="gray.600">
         Highest {type === "income" ? "Income" : "Expense"}
       </Text>
-      <Text fontSize="2xl" color={type === "income" ? "green.600" : "red.600"}>
-        Rp {amount}
+      <Text fontSize="2xl" fontWeight="bold" color={type === "income" ?" #1C4532" : "#45241cff"}>
+        Rp {amount.toLocaleString("id-ID")}
       </Text>
       <Text fontSize="sm" color="gray.500">
-        {type}
+        {title}
       </Text>
       <Text fontSize="xs" color="gray.400">
         {new Date(date).toLocaleDateString("id-ID")}

@@ -24,7 +24,7 @@ export default function Balance() {
   const [active, setActive] = useState<"income" | "expense">("income");
   return (
     <>
-      <SimpleGrid columns={{ base: 1, md: 4 }} spacing={3} mt={6} mb={4}>
+      <SimpleGrid columns={{ base: 1, md: 4 }} ml={6} mt={6} mb={4}>
         <StatCard
           icon={BsCurrencyBitcoin}
           title="Total Income"
@@ -52,14 +52,15 @@ export default function Balance() {
           iconColor={balanceGrowth > 0 ? "#1C4532" : "#45241cff"}
         />
         <HighestCard
-          type={
+          type={active}
+          title={
             active === "income" ? highestIncome?.type : highestExpense?.type
           }
           date={
             active === "income" ? highestIncome?.date : highestExpense?.date
           }
           amount={
-            active === "income" ? highestIncome?.amount : highestExpense?.amount
+            active === "income" ? highestIncome?.amount ?? 0 : highestExpense?.amount ?? 0
           }
         ></HighestCard>
       </SimpleGrid>

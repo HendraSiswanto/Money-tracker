@@ -16,7 +16,7 @@ type Props = {
   iconColor: string;
   fontColor: string;
   icon: React.ElementType;
-    onClick?: () => void;
+  onClick?: () => void;
 };
 
 export const StatCard = ({
@@ -26,6 +26,7 @@ export const StatCard = ({
   iconColor,
   fontColor,
   icon,
+  onClick
 }: Props) => {
   const isNegative = percent.includes("-");
 
@@ -39,6 +40,8 @@ export const StatCard = ({
       border="1px solid #605f5f37"
       boxShadow="5px 5px 10px #605f5f37"
       w="270px"
+      onClick={onClick}
+      cursor="pointer"
     >
       <Stat>
         <Icon
@@ -52,7 +55,7 @@ export const StatCard = ({
         <StatLabel fontSize="sm" color="gray.500">
           {title}
         </StatLabel>
-        <StatNumber fontWeight="bold" color={fontColor}>
+        <StatNumber fontWeight="semibold" color={fontColor}>
           Rp {value.toLocaleString("id-ID")}
         </StatNumber>
         <StatHelpText
