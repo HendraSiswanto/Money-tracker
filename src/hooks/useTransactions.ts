@@ -11,7 +11,7 @@ export type TransactionType = {
   id?: number;
   outcome: string;
   type: string;
-  amount: number ;
+  amount: number;
   date: string;
   note?: string;
   timestamp: number;
@@ -28,7 +28,7 @@ export function useTransactions() {
 
   useEffect(() => {
     loadTransactions();
-  }, [sortOption,filterOption]);
+  }, [sortOption, filterOption]);
 
   const loadTransactions = async () => {
     setIsLoading(true);
@@ -110,6 +110,61 @@ export function useTransactions() {
       ? totalIncome
       : totalExpense;
 
+  function getMonthYear(dateStr: string) {
+    const d = new Date(dateStr);
+    return `${d.getMonth() + 1}-${d.getFullYear()}`;
+  }
+
+  const currentMonthKey = getMonthYear(new Date().toISOString());
+  const lastMonthDate = new Date();
+  lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
+  const lastMonthKey = getMonthYear(lastMonthDate.toISOString());
+
+  const currentMonthTransactions = transactions.filter(
+    (t) => getMonthYear(t.date) === currentMonthKey
+  );
+  const lastMonthTransactions = transactions.filter(
+    (t) => getMonthYear(t.date) === lastMonthKey
+  );
+
+  const currentIncome = currentMonthTransactions
+    .filter((t) => t.outcome === "income")
+    .reduce((sum, t) => sum + t.amount, 0);
+
+  const currentExpense = currentMonthTransactions
+    .filter((t) => t.outcome === "expense")
+    .reduce((sum, t) => sum + t.amount, 0);
+
+  const lastIncome = lastMonthTransactions
+    .filter((t) => t.outcome === "income")
+    .reduce((sum, t) => sum + t.amount, 0);
+
+  const lastExpense = lastMonthTransactions
+    .filter((t) => t.outcome === "expense")
+    .reduce((sum, t) => sum + t.amount, 0);
+
+  const incomeGrowth =
+    lastIncome === 0 ? 100 : ((currentIncome - lastIncome) / lastIncome) * 100;
+
+  const expenseGrowth =
+    lastExpense === 0
+      ? 100
+      : ((currentExpense - lastExpense) / lastExpense) * 100;
+
+  const balanceGrowth =
+    lastIncome - lastExpense === 0
+      ? 100
+      : ((currentIncome - currentExpense - (lastIncome - lastExpense)) /
+          (lastIncome - lastExpense)) *
+        100;
+
+const highestIncome = transactions
+  .filter(t => t.outcome.toLowerCase() === "income")
+  .sort((a, b) => b.amount - a.amount)[0] || null;
+
+const highestExpense = transactions
+  .filter(t => t.outcome.toLowerCase() === "expense")
+  .sort((a, b) => b.amount - a.amount)[0] || null;
   return {
     transactions: filtered,
     isLoading,
@@ -122,5 +177,10 @@ export function useTransactions() {
     totalExpense,
     totalIncome,
     removeTransaction,
+    incomeGrowth,
+    expenseGrowth,
+    balanceGrowth,
+    highestExpense,
+    highestIncome,
   };
 }

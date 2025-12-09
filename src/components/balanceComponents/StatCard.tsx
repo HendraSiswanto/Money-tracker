@@ -5,6 +5,7 @@ import {
   StatNumber,
   StatHelpText,
   Icon,
+  Text,
 } from "@chakra-ui/react";
 import { FiArrowUpRight, FiArrowDownRight } from "react-icons/fi";
 
@@ -31,26 +32,41 @@ export const StatCard = ({
     <Box
       mt={8}
       mb={4}
-      p={5}
+      p={7}
       bg="transparent"
       borderRadius="lg"
-      shadow="md"
-      w="300px"
+      border="1px solid #605f5f37"
+      boxShadow="5px 5px 10px #605f5f37"
+      w="270px"
     >
       <Stat>
-        <Icon color={"gray"} boxSize={5} as={icon as React.ElementType} />
+        <Icon
+          bgColor="#e4e4e7c3"
+          borderRadius="full"
+          p={2}
+          color={fontColor}
+          boxSize="60px"
+          as={icon as React.ElementType}
+        />
         <StatLabel fontSize="sm" color="gray.500">
           {title}
         </StatLabel>
         <StatNumber fontWeight="bold" color={fontColor}>
           Rp {value.toLocaleString("id-ID")}
         </StatNumber>
-        <StatHelpText display="flex" alignItems="center" gap={1}>
+        <StatHelpText
+          display="flex"
+          alignItems="center"
+          gap={2}
+          color={iconColor}
+          fontWeight="bold"
+        >
           <Icon
             as={isNegative ? FiArrowDownRight : FiArrowUpRight}
             color={iconColor}
           />
-          {percent} vs last 30 days
+          {percent}% 
+          <Text color="gray.600">vs last 30 days</Text>
         </StatHelpText>
       </Stat>
     </Box>
