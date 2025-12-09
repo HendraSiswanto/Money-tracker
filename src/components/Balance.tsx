@@ -8,6 +8,7 @@ import {
   BsPiggyBank,
 } from "react-icons/bs";
 import { HighestCard } from "./balanceComponents/HighestCard";
+import { useState } from "react";
 
 export default function Balance() {
   const {
@@ -17,11 +18,13 @@ export default function Balance() {
     incomeGrowth,
     expenseGrowth,
     balanceGrowth,
+    highestExpense,
+    highestIncome,
   } = useTransactions();
+  const [active, setActive] = useState<"income" | "expense">("income");
   return (
     <>
-      <SimpleGrid columns={{ base: 1, md: 4 }} spacing={3}  mt={6}
-      mb={4}>
+      <SimpleGrid columns={{ base: 1, md: 4 }} spacing={3} mt={6} mb={4}>
         <StatCard
           icon={BsCurrencyBitcoin}
           title="Total Income"
@@ -29,6 +32,7 @@ export default function Balance() {
           value={totalIncome}
           percent={incomeGrowth.toFixed(0)}
           iconColor={incomeGrowth > 0 ? "#1C4532" : "#45241cff"}
+          onClick={() => setActive("income")}
         />
         <StatCard
           icon={BsCurrencyExchange}
@@ -37,6 +41,7 @@ export default function Balance() {
           value={totalExpense}
           percent={expenseGrowth.toFixed(0)}
           iconColor={expenseGrowth > 0 ? "#1C4532" : "#45241cff"}
+          onClick={() => setActive("expense")}
         />
         <StatCard
           icon={BsPiggyBank}
@@ -46,7 +51,17 @@ export default function Balance() {
           percent={balanceGrowth.toFixed(0)}
           iconColor={balanceGrowth > 0 ? "#1C4532" : "#45241cff"}
         />
-        <HighestCard></HighestCard>
+        <HighestCard
+          type={
+            active === "income" ? highestIncome?.type : highestExpense?.type
+          }
+          date={
+            active === "income" ? highestIncome?.date : highestExpense?.date
+          }
+          amount={
+            active === "income" ? highestIncome?.amount : highestExpense?.amount
+          }
+        ></HighestCard>
       </SimpleGrid>
 
       <Box mt={6}>

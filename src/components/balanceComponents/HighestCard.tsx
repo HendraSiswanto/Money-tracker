@@ -1,46 +1,44 @@
-import { Box, Text } from "@chakra-ui/react";
-import { useState } from "react";
-import { useTransactions } from "../../hooks/useTransactions";
+import { Box, Icon, Text } from "@chakra-ui/react";
+import { BsGraphUpArrow } from "react-icons/bs";
 
-export const HighestCard = () => {
-  const { highestIncome, highestExpense } = useTransactions();
-  const [viewType, setViewType] = useState<"income" | "expense">("income");
+type HighestCardProps = {
+  type: string;
+  amount: number;
+  date: string;
+};
 
-  const selected = viewType === "income" ? highestIncome : highestExpense;
-
+export const HighestCard = ({ type, amount, date }: HighestCardProps) => {
   return (
     <Box
-      onClick={() => setViewType(viewType === "income" ? "expense" : "income")}
-      cursor="pointer"
-      p={4}
+      mt={8}
+      mb={4}
+      p={7}
       bg="transparent"
       borderRadius="lg"
       border="1px solid #605f5f37"
       boxShadow="5px 5px 10px #605f5f37"
       w="270px"
     >
+      <Icon
+        bgColor="#e4e4e7c3"
+        borderRadius="full"
+        p={3}
+        color="gray.600"
+        boxSize="60px"
+        as={BsGraphUpArrow as React.ElementType}
+      />
       <Text fontWeight="bold" color="gray.600">
-        Highest {viewType === "income" ? "Income" : "Expense"}
+        Highest {type === "income" ? "Income" : "Expense"}
       </Text>
-
-      {selected ? (
-        <>
-          <Text
-            fontSize="2xl"
-            color={viewType === "income" ? "green.600" : "red.600"}
-          >
-            Rp {selected.amount.toLocaleString("id-ID")}
-          </Text>
-          <Text fontSize="sm" color="gray.500">
-            {selected.type}
-          </Text>
-          <Text fontSize="xs" color="gray.400">
-            {new Date(selected.date).toLocaleDateString("id-ID")}
-          </Text>
-        </>
-      ) : (
-        <Text>No data</Text>
-      )}
+      <Text fontSize="2xl" color={type === "income" ? "green.600" : "red.600"}>
+        Rp {amount}
+      </Text>
+      <Text fontSize="sm" color="gray.500">
+        {type}
+      </Text>
+      <Text fontSize="xs" color="gray.400">
+        {new Date(date).toLocaleDateString("id-ID")}
+      </Text>
     </Box>
   );
 };

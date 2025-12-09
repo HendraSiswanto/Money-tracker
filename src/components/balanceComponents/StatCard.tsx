@@ -16,6 +16,7 @@ type Props = {
   iconColor: string;
   fontColor: string;
   icon: React.ElementType;
+    onClick?: () => void;
 };
 
 export const StatCard = ({
