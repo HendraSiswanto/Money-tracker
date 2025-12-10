@@ -158,13 +158,37 @@ export function useTransactions() {
           (lastIncome - lastExpense)) *
         100;
 
-const highestIncome = transactions
-  .filter(t => t.outcome.toLowerCase() === "income")
-  .sort((a, b) => b.amount - a.amount)[0] || null;
+  const highestIncome =
+    transactions
+      .filter((t) => t.outcome.toLowerCase() === "income")
+      .sort((a, b) => b.amount - a.amount)[0] || null;
 
-const highestExpense = transactions
-  .filter(t => t.outcome.toLowerCase() === "expense")
-  .sort((a, b) => b.amount - a.amount)[0] || null;
+  const highestExpense =
+    transactions
+      .filter((t) => t.outcome.toLowerCase() === "expense")
+      .sort((a, b) => b.amount - a.amount)[0] || null;
+  const highestBalance = (() => {
+    let runningBalance = 0;
+    let maxBalance = 0;
+
+    const sortedByDate = [...transactions].sort(
+      (a, b) => a.timestamp - b.timestamp
+    );
+
+    sortedByDate.forEach((t) => {
+      if (t.outcome === "income") {
+        runningBalance += t.amount;
+      } else {
+        runningBalance -= t.amount;
+      }
+      if (runningBalance > maxBalance) {
+        maxBalance = runningBalance;
+      }
+    });
+
+    return maxBalance;
+  })();
+
   return {
     transactions: filtered,
     isLoading,
@@ -182,5 +206,6 @@ const highestExpense = transactions
     balanceGrowth,
     highestExpense,
     highestIncome,
+    highestBalance
   };
 }

@@ -4,8 +4,8 @@ import { BsGraphUpArrow } from "react-icons/bs";
 type HighestCardProps = {
   title: string;
   amount: number;
-  date: string;
-  type: "income" | "expense";
+  date?: string;
+  type: "income" | "expense" | "balance";
 };
 
 export const HighestCard = ({
@@ -14,6 +14,14 @@ export const HighestCard = ({
   amount,
   date,
 }: HighestCardProps) => {
+  const formatOutcome = (outcome: string) =>
+    outcome.charAt(0).toUpperCase() + outcome.slice(1);
+  const label =
+    type === "income"
+      ? "Highest Income"
+      : type === "expense"
+      ? "Highest Expense"
+      : "Highest Balance";
   return (
     <Box
       mt={8}
@@ -34,16 +42,20 @@ export const HighestCard = ({
         as={BsGraphUpArrow as React.ElementType}
       />
       <Text fontWeight="bold" color="gray.600">
-        Highest {type === "income" ? "Income" : "Expense"}
+        {label}
       </Text>
-      <Text fontSize="2xl" fontWeight="bold" color={type === "income" ?" #1C4532" : "#45241cff"}>
+      <Text
+        fontSize="2xl"
+        fontWeight="bold"
+        color={type === "income" ? " #1C4532" : type ==="expense"? "#45241cff" : "gray.600"}
+      >
         Rp {amount.toLocaleString("id-ID")}
       </Text>
       <Text fontSize="sm" color="gray.500">
-        {title}
+        {formatOutcome(title)}
       </Text>
       <Text fontSize="xs" color="gray.400">
-        {new Date(date).toLocaleDateString("id-ID")}
+        {date ? new Date(date).toLocaleDateString("id-ID") : "Your Highest Saving!"}
       </Text>
     </Box>
   );

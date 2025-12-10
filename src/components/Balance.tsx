@@ -20,8 +20,11 @@ export default function Balance() {
     balanceGrowth,
     highestExpense,
     highestIncome,
+    highestBalance,
   } = useTransactions();
-  const [active, setActive] = useState<"income" | "expense">("income");
+  const [active, setActive] = useState<"income" | "expense" | "balance">(
+    "income"
+  );
   return (
     <>
       <SimpleGrid columns={{ base: 1, md: 4 }} ml={6} mt={6} mb={4}>
@@ -54,19 +57,26 @@ export default function Balance() {
           value={balance}
           percent={balanceGrowth.toFixed(0)}
           iconColor={balanceGrowth > 0 ? "#1C4532" : "#45241cff"}
+          onClick={() => setActive("balance")}
+          activeColor="rgba(100, 100, 100, 0.10)"
+          active={active === "balance"}
         />
         <HighestCard
           type={active}
-          title={
-            active === "income" ? highestIncome?.type : highestExpense?.type
-          }
+          title={active}
           date={
-            active === "income" ? highestIncome?.date : highestExpense?.date
+            active === "income"
+              ? highestIncome?.date
+              : active === "expense"
+              ? highestExpense?.date
+              : undefined
           }
           amount={
             active === "income"
               ? highestIncome?.amount ?? 0
-              : highestExpense?.amount ?? 0
+              : active === "expense"
+              ? highestExpense?.amount ?? 0
+              : highestBalance
           }
         ></HighestCard>
       </SimpleGrid>
