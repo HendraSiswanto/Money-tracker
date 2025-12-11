@@ -26,10 +26,11 @@ export default function Balance() {
   const [active, setActive] = useState<"income" | "expense" | "balance">(
     "income"
   );
+
   return (
-    <Flex flexDirection="column" align="flex-start" p={5} w="100%">
+    <Flex flexDirection="column" align="flex-start" p={3} w="100%">
       <Box w="97%">
-        <SimpleGrid columns={{ base: 1, md: 4 }} spacing="60px" mb={4}>
+        <SimpleGrid columns={{ base: 1, md: 4 }} spacing="60px">
           <StatCard
             icon={BsCurrencyBitcoin}
             title="Total Income"
