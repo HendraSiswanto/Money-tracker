@@ -1,6 +1,4 @@
-
-import { useTransactions } from "../../hooks/useTransactions";
-import { Bar } from "react-chartjs-2";
+import { Box, Text } from "@chakra-ui/react";
 import {
   Chart as ChartJS,
   BarElement,
@@ -9,27 +7,53 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { Bar } from "react-chartjs-2";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
-const BarCard = () => {
-  const { transactions } = useTransactions();
+type BarCardProps = {
+  active: "income" | "expense" | "balance";
+  transactions: any[];
+};
 
-  const incomeTotal = transactions
-    .filter((t) => t.outcome === "income")
-    .reduce((sum, t) => sum + t.amount, 0);
+export default function BarCard({ active, transactions }: BarCardProps) {
+ const categoryTotals: Record<string, number> = {};
 
-  const expenseTotal = transactions
-    .filter((t) => t.outcome === "expense")
-    .reduce((sum, t) => sum + t.amount, 0);
+  transactions.forEach((t) => {
+    const category = t.category || "Unknown";
 
-  const chartData = {
-    labels: ["Income", "Expense"],
+    if (!categoryTotals[category]) {
+      categoryTotals[category] = 0;
+    }
+
+    if (active === "balance") {
+      categoryTotals[category] +=
+        t.outcome === "income" ? t.amount : -t.amount;
+    } else if (t.outcome === active) {
+      categoryTotals[category] += t.amount;
+    }
+  });
+
+  const labels = Object.keys(categoryTotals);
+  const values = Object.values(categoryTotals);
+
+  const data = {
+    labels,
     datasets: [
       {
-        label: "Balance Comparison",
-        data: [incomeTotal, expenseTotal],
-        backgroundColor: ["#1C4532", "#8B0000"],
+        label:
+          active === "income"
+            ? "Income by Category"
+            : active === "expense"
+            ? "Expense by Category"
+            : "Balance by Category",
+        data: values,
+        backgroundColor:
+          active === "income"
+            ? "#1C4532"
+            : active === "expense"
+            ? "#45241cff"
+            : "#4A5568",
         borderRadius: 6,
       },
     ],
@@ -38,25 +62,39 @@ const BarCard = () => {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: (context: any) =>
-            `Rp ${context.raw.toLocaleString("id-ID")}`,
-        },
-      },
-    },
     scales: {
-      y: { beginAtZero: true },
+      x: {
+        grid: { display: false },
+        ticks: { color: "#777" },
+      },
+      y: {
+        ticks: { color: "#999" },
+        grid: { color: "#e5e5e5" },
+      },
     },
   };
 
   return (
-    <div style={{ width: "100%", height: 300 }}>
-      <Bar data={chartData} options={options} />
-    </div>
-  );
-};
+    <Box
+    width="full"
+  height="280px"
+      p={6}
+      bg="transparent"
+      borderRadius="lg"
+      border="1px solid #605f5f37"
+      boxShadow="5px 5px 10px #605f5f37"
+    >
+      <Text fontWeight="bold" mb={4} color="gray.600">
+        {active === "income"
+          ? "Income By Category"
+          : active === "expense"
+          ? "Expense By Category"
+          : "Balance By Category"}
+      </Text>
+      <Box h="85%">
 
-export default BarCard;
+      <Bar data={data} options={options} />
+      </Box>
+    </Box>
+  );
+}

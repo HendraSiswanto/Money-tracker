@@ -170,6 +170,7 @@ export function useTransactions() {
   const highestBalance = (() => {
     let runningBalance = 0;
     let maxBalance = 0;
+    let maxDate: string | null = null;
 
     const sortedByDate = [...transactions].sort(
       (a, b) => a.timestamp - b.timestamp
@@ -181,14 +182,18 @@ export function useTransactions() {
       } else {
         runningBalance -= t.amount;
       }
+
       if (runningBalance > maxBalance) {
         maxBalance = runningBalance;
+        maxDate = t.date; 
       }
     });
 
-    return maxBalance;
+    return {
+      amount: maxBalance,
+      date: maxDate,
+    };
   })();
-
   return {
     transactions: filtered,
     isLoading,
@@ -206,6 +211,6 @@ export function useTransactions() {
     balanceGrowth,
     highestExpense,
     highestIncome,
-    highestBalance
+    highestBalance,
   };
 }

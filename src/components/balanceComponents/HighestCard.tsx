@@ -4,7 +4,7 @@ import { BsGraphUpArrow } from "react-icons/bs";
 type HighestCardProps = {
   title: string;
   amount: number;
-  date?: string;
+  date: string;
   type: "income" | "expense" | "balance";
 };
 
@@ -55,7 +55,7 @@ export const HighestCard = ({
         {formatOutcome(title)}
       </Text>
       <Text fontSize="xs" color="gray.400">
-        {date ? new Date(date).toLocaleDateString("id-ID") : "Your Highest Saving!"}
+        {new Date(date).toLocaleDateString("id-ID")}
       </Text>
     </Box>
   );
