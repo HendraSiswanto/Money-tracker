@@ -9,6 +9,7 @@ import {
 } from "react-icons/bs";
 import { HighestCard } from "./balanceComponents/HighestCard";
 import { useState } from "react";
+import ReportOverview from "./balanceComponents/reportOverview";
 
 export default function Balance() {
   const {
@@ -26,11 +27,12 @@ export default function Balance() {
   const [active, setActive] = useState<"income" | "expense" | "balance">(
     "income"
   );
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
 
   return (
-    <Flex flexDirection="column" align="flex-start" p={3} w="100%">
+    <Flex flexDirection="column" align="flex-start" p={1} w="100%">
       <Box w="97%">
-        <SimpleGrid columns={{ base: 1, md: 4 }} spacing="60px">
+        <SimpleGrid columns={{ base: 1, md: 4 }} spacing="72px">
           <StatCard
             icon={BsCurrencyBitcoin}
             title="Total Income"
@@ -85,15 +87,17 @@ export default function Balance() {
         </SimpleGrid>
       </Box>
 
-      <Box mt={5} w="97%">
-        <BarCard active={active} transactions={transactions} />
+      <Box mt={3} w="97%">
+        <BarCard active={active} transactions={transactions}  selectedMonth={selectedMonth}
+        onMonthChange={setSelectedMonth} />
       </Box>
 
-      <Grid
-        templateColumns={{ base: "1fr", md: "1fr 1fr" }}
-        gap={4}
-        mt={6}
-      ></Grid>
+      <Grid templateColumns={{ base: "1fr", md: "1fr 2fr" }} gap={4} mt={2}>
+        <Box width="400px" h="160px" >
+
+        <ReportOverview selectedMonth={selectedMonth}/>
+        </Box>
+      </Grid>
     </Flex>
   );
 }

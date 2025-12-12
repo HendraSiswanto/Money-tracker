@@ -7,7 +7,6 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { useState } from "react";
 import { Bar } from "react-chartjs-2";
 import type { ChartEvent, ActiveElement } from "chart.js";
 import dataExpense from "../../data/dataExpense";
@@ -18,12 +17,12 @@ ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 type BarCardProps = {
   active: "income" | "expense" | "balance";
   transactions: any[];
+   selectedMonth: number;
+  onMonthChange: (m: number) => void;
 };
 
-export default function BarCard({ active, transactions }: BarCardProps) {
-  const [selectedMonth, setSelectedMonth] = useState<number>(
-    new Date().getMonth()
-  );
+export default function BarCard({ active, transactions ,selectedMonth, onMonthChange}: BarCardProps) {
+ 
   const categories =
     active === "income"
       ? dataIncome.map((c) => c.in)
@@ -73,15 +72,23 @@ export default function BarCard({ active, transactions }: BarCardProps) {
     responsive: true,
     maintainAspectRatio: false,
 
-    labels: {
-      cursor: "pointer",
-    },
     onHover: (event: ChartEvent, chartElement: ActiveElement[]) => {
       if (chartElement.length > 0) {
         (event.native?.target as HTMLElement).style.cursor = "pointer";
       } else {
         (event.native?.target as HTMLElement).style.cursor = "default";
       }
+    },
+
+    plugins: {
+      legend: {
+        onHover: (event: ChartEvent) => {
+          (event.native?.target as HTMLElement).style.cursor = "pointer";
+        },
+        onLeave: (event: ChartEvent) => {
+          (event.native?.target as HTMLElement).style.cursor = "default";
+        },
+      },
     },
     scales: {
       x: {
@@ -97,9 +104,8 @@ export default function BarCard({ active, transactions }: BarCardProps) {
 
   return (
     <Box
-      width="full"
-      height="320px"
-      p={6}
+      height="290px"
+      p={5}
       bg="transparent"
       borderRadius="lg"
       border="1px solid #605f5f37"
@@ -108,7 +114,7 @@ export default function BarCard({ active, transactions }: BarCardProps) {
       <Flex
         flexDirection={"row"}
         alignItems="center"
-        mb={4}
+        mb={2}
         justifyContent="space-between"
       >
         <Text fontWeight="bold" color="gray.600">
@@ -123,11 +129,11 @@ export default function BarCard({ active, transactions }: BarCardProps) {
           bg="gray.600"
           width="200px"
           value={selectedMonth}
-          onChange={(e) => setSelectedMonth(Number(e.target.value))}
+          onChange={(e) => onMonthChange(Number(e.target.value))}
         >
           {Array.from({ length: 12 }).map((_, i) => (
             <option key={i} value={i}>
-              {new Date(0, i).toLocaleString("en-US", { month: "long" })}
+              {new Date(0, i).toLocaleString("id-ID", { month: "long" })}
             </option>
           ))}
         </Select>

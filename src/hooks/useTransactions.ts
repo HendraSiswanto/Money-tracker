@@ -142,6 +142,7 @@ export function useTransactions() {
   const lastExpense = lastMonthTransactions
     .filter((t) => t.outcome === "expense")
     .reduce((sum, t) => sum + t.amount, 0);
+    const monthSavings = currentIncome - currentExpense;
 
   const incomeGrowth =
     lastIncome === 0 ? 100 : ((currentIncome - lastIncome) / lastIncome) * 100;
@@ -212,5 +213,8 @@ export function useTransactions() {
     highestExpense,
     highestIncome,
     highestBalance,
+    currentExpense,
+    currentIncome,
+    monthSavings
   };
 }
