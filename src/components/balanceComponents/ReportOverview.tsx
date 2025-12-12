@@ -9,7 +9,7 @@ type Props = {
   selectedMonth: number;
 };
 
-export default function OverviewChart({ selectedMonth }: Props) {
+export default function ReportOverview({ selectedMonth }: Props) {
   const { transactions } = useTransactions();
 
   const filtered = transactions.filter((t) => {
@@ -43,9 +43,13 @@ export default function OverviewChart({ selectedMonth }: Props) {
       legend: {
         position: "right" as const,
         labels: {
+          color: "#1C4532",
           usePointStyle: true,
           pointStyle: "circle",
           padding: 10,
+          font: {
+            size: 13,
+          },
         },
       },
     },
@@ -57,7 +61,7 @@ export default function OverviewChart({ selectedMonth }: Props) {
     <Box
       display="flex"
       justifyContent="center"
-      bg="whiteAlpha.50"
+      bg="transparent"
       borderRadius="lg"
       border="1px solid #605f5f37"
       boxShadow="5px 5px 10px #605f5f37"
@@ -76,7 +80,7 @@ export default function OverviewChart({ selectedMonth }: Props) {
           <Doughnut data={data} options={options} />
         </Box>
 
-        <Flex flexDir="column" justifyContent="center" >
+        <Flex flexDir="column" justifyContent="center" gap="2px">
           <Text fontSize="sm" fontWeight="bold" color="#1C4532">
             Rp {income.toLocaleString()}
           </Text>

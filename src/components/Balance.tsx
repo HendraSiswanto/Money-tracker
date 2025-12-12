@@ -9,7 +9,8 @@ import {
 } from "react-icons/bs";
 import { HighestCard } from "./balanceComponents/HighestCard";
 import { useState } from "react";
-import ReportOverview from "./balanceComponents/reportOverview";
+import ReportOverview from "./balanceComponents/ReportOverview";
+import LineOverview from "./balanceComponents/LineOverview";
 
 export default function Balance() {
   const {
@@ -97,6 +98,7 @@ export default function Balance() {
 
         <ReportOverview selectedMonth={selectedMonth}/>
         </Box>
+        <LineOverview active={active} transactions={transactions} selectedMonth={selectedMonth}></LineOverview>
       </Grid>
     </Flex>
   );
