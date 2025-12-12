@@ -9,6 +9,7 @@ import {
 } from "chart.js";
 import { useState } from "react";
 import { Bar } from "react-chartjs-2";
+import type { ChartEvent, ActiveElement } from "chart.js";
 import dataExpense from "../../data/dataExpense";
 import dataIncome from "../../data/dataIncome";
 
@@ -62,7 +63,7 @@ export default function BarCard({ active, transactions }: BarCardProps) {
             ? "#45241cff"
             : "#4A5568",
         borderRadius: 6,
-        categoryPercentage: 0.6,
+        categoryPercentage: 0.3,
         barPercentage: 0.6,
       },
     ],
@@ -71,6 +72,17 @@ export default function BarCard({ active, transactions }: BarCardProps) {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+
+    labels: {
+      cursor: "pointer",
+    },
+    onHover: (event: ChartEvent, chartElement: ActiveElement[]) => {
+      if (chartElement.length > 0) {
+        (event.native?.target as HTMLElement).style.cursor = "pointer";
+      } else {
+        (event.native?.target as HTMLElement).style.cursor = "default";
+      }
+    },
     scales: {
       x: {
         grid: { display: false },
@@ -107,6 +119,8 @@ export default function BarCard({ active, transactions }: BarCardProps) {
             : "Balance By Category"}
         </Text>
         <Select
+          cursor="pointer"
+          bg="gray.600"
           width="200px"
           value={selectedMonth}
           onChange={(e) => setSelectedMonth(Number(e.target.value))}
