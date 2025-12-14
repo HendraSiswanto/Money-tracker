@@ -18,6 +18,8 @@ import TrSkeleton from "./skeleton/HisSkeleton";
 import { useTransactions } from "../hooks/useTransactions";
 import BalanceCard from "./charts/UserCard";
 import LineCard from "./charts/LineCard";
+import useCategories from "../hooks/useCategories";
+
 
 interface Props {
   dataExpense: TypeExpense;
@@ -31,6 +33,8 @@ interface allDataIncome {
   date: string;
   note?: string;
   timestamp: number;
+  userId:string;
+  categoryId:number
 }
 
 const Transaction: React.FC = () => {
@@ -44,6 +48,8 @@ const Transaction: React.FC = () => {
   } = useTransactions();
   const [changeTipe, setTipe] = useState<Props>({} as Props);
   const [selected, setSelected] = useState("income");
+  const { categories} = useCategories("test-user");
+
 
   const rupiahFormat = new Intl.NumberFormat("id-ID", {
     style: "currency",
@@ -52,7 +58,11 @@ const Transaction: React.FC = () => {
   });
 
   const handleSave = async (item: allDataIncome) => {
-    await saveTransaction(item, item.outcome as "income" | "expense");
+    await saveTransaction( {
+      ...item,
+      userId: "test-user",      
+      categoryId: item.categoryId,
+    }, item.outcome as "income" | "expense");
   };
 
   const latestFive = (transactions ?? []).slice(0, 5);
@@ -121,6 +131,7 @@ const Transaction: React.FC = () => {
             </Box>
             {selected === "income" ? (
               <Income
+              categories={categories}
                 selectedType={changeTipe.dataIncome}
                 onSelectType={(dataIncome) =>
                   setTipe({ ...changeTipe, dataIncome })

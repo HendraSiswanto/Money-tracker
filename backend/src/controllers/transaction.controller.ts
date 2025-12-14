@@ -12,7 +12,12 @@ function convertBigInt(obj: any) {
 export const transactionController = {
   getAll: async (_req: Request, res: Response) => {
     try {
+      const userId = _req.headers["x-user-id"] as string;
+
+      if (!userId) return res.status(400).json({ error: "Missing userId" });
       const transactions = await prisma.transaction.findMany({
+        where: { userId },
+        include: { category: true },
         orderBy: { timestamp: "desc" },
       });
 
@@ -24,8 +29,20 @@ export const transactionController = {
 
   create: async (req: Request, res: Response) => {
     try {
-      const { outcome, type, amount, note, date, timestamp } = req.body;
+      const {
+        outcome,
+        type,
+        amount,
+        note,
+        date,
+        timestamp,
+        categoryId,
+        userId,
+      } = req.body;
 
+      if (!userId || !categoryId) {
+        return res.status(400).json({ error: "Missing userId or categoryId" });
+      }
       const numericAmount = parseInt(String(amount).replace(/\D/g, ""));
 
       const newTransaction = await prisma.transaction.create({
@@ -36,6 +53,8 @@ export const transactionController = {
           note: note ?? "",
           date: new Date(date),
           timestamp: BigInt(timestamp),
+          userId,
+          categoryId,
         },
       });
 
@@ -70,7 +89,8 @@ export const transactionController = {
         return res.status(404).json({ error: "Transaction not found" });
       }
 
-      const { amount, note, date, outcome, type, timestamp } = req.body;
+      const { amount, note, date, outcome, type, timestamp, categoryId } =
+        req.body;
 
       const updated = await prisma.transaction.update({
         where: { id },
@@ -81,6 +101,7 @@ export const transactionController = {
           outcome: outcome ?? existing.outcome,
           type: type ?? existing.type,
           timestamp: timestamp ? BigInt(timestamp) : existing.timestamp,
+          categoryId,
         },
       });
 
@@ -92,13 +113,16 @@ export const transactionController = {
   },
   summary: async (_req: Request, res: Response) => {
     try {
+      const userId = _req.headers["x-user-id"] as string;
+
+      if (!userId) return res.status(400).json({ error: "Missing userId" });
       const income = await prisma.transaction.aggregate({
-        where: { type: "Income" },
+        where: { userId, type: "Income" },
         _sum: { amount: true },
       });
 
       const expense = await prisma.transaction.aggregate({
-        where: { type: "Expense" },
+        where: { userId, type: "Expense" },
         _sum: { amount: true },
       });
 
@@ -106,7 +130,8 @@ export const transactionController = {
         convertBigInt({
           income: income._sum.amount || 0,
           expense: expense._sum.amount || 0,
-          balance: Number(income._sum.amount || 0) - Number(expense._sum.amount || 0),
+          balance:
+            Number(income._sum.amount || 0) - Number(expense._sum.amount || 0),
         })
       );
     } catch (err) {

@@ -8,6 +8,8 @@ export interface Transaction {
   note?: string;
   timestamp: number;
   outcome: "income" | "expense";
+  userId: string;
+  categoryId: number;
 }
 
 export async function getTransactions(): Promise<Transaction[]> {
@@ -22,6 +24,8 @@ export async function createTransaction(data: {
   note?: string;
   date?: string | null;
   timestamp?: number;
+  userId: string;
+  categoryId: number;
 }) {
   const res = await fetch(`${API_URL}/transactions`, {
     method: "POST",
@@ -51,6 +55,8 @@ export async function updateTransaction(data: {
   note?: string;
   timestamp: number;
   outcome: string;
+  userId: string;
+  categoryId: number;
 }) {
   const safeDate =
     data.date && !isNaN(new Date(data.date).getTime())

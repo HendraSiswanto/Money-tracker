@@ -5,7 +5,7 @@ import {
   updateTransaction,
   getTransactions,
 } from "../api/transaction";
-import type { Data } from "../data/types";
+import type { Data } from "../components/types/types";
 
 export type TransactionType = {
   id?: number;
@@ -15,6 +15,8 @@ export type TransactionType = {
   date: string;
   note?: string;
   timestamp: number;
+  userId: string;
+  categoryId: number;
 };
 
 export type SortOption = "newest" | "oldest" | "high" | "low";
@@ -32,7 +34,11 @@ export function useTransactions() {
 
   const loadTransactions = async () => {
     setIsLoading(true);
-    const res = await fetch("http://localhost:3000/transactions");
+    const res = await fetch("http://localhost:3000/transactions", {
+      headers: {
+        "x-user-id": "test-user",
+      },
+    });
     const data: Data[] = await res.json();
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -56,6 +62,8 @@ export function useTransactions() {
         note: newData.note,
         date: newData.date,
         timestamp: Date.now(),
+        userId: "test-user",
+        categoryId: newData.categoryId,
       });
     } else {
       await updateTransaction({
@@ -66,6 +74,8 @@ export function useTransactions() {
         outcome: typeData,
         note: newData.note,
         date: newData.date,
+           userId: "test-user",
+        categoryId: newData.categoryId,
       });
     }
     const latest = await getTransactions();
@@ -142,7 +152,7 @@ export function useTransactions() {
   const lastExpense = lastMonthTransactions
     .filter((t) => t.outcome === "expense")
     .reduce((sum, t) => sum + t.amount, 0);
-    const monthSavings = currentIncome - currentExpense;
+  const monthSavings = currentIncome - currentExpense;
 
   const incomeGrowth =
     lastIncome === 0 ? 100 : ((currentIncome - lastIncome) / lastIncome) * 100;
@@ -186,7 +196,7 @@ export function useTransactions() {
 
       if (runningBalance > maxBalance) {
         maxBalance = runningBalance;
-        maxDate = t.date; 
+        maxDate = t.date;
       }
     });
 
@@ -215,6 +225,6 @@ export function useTransactions() {
     highestBalance,
     currentExpense,
     currentIncome,
-    monthSavings
+    monthSavings,
   };
 }

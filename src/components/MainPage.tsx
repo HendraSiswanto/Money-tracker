@@ -13,6 +13,7 @@ import Logo from "../assets/Vector2.svg";
 import Transaction from "./Transaction";
 import History from "./History";
 import Balance from "./Balance";
+import Category from "./Category";
 
 interface Props {
   onSelectImage: (imageData: Sided) => void;
@@ -28,6 +29,8 @@ const MainPage = ({ onSelectImage, selectImage }: Props) => {
         return <Transaction />;
       case "Balance":
         return <Balance />;
+      case "Category":
+        return <Category />;
       case "History":
         return <History />;
       default:

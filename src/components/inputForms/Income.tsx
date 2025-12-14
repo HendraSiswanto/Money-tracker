@@ -11,10 +11,11 @@ import {
 } from "@chakra-ui/react";
 import { BsArrowDownCircleFill } from "react-icons/bs";
 import type { TypeIncome } from "../../hooks/useIncome";
-import useType from "../../hooks/useIncome";
 import { useState, useRef } from "react";
+import type { Category } from "../types/CategoryTypes";
 
 interface Props {
+  categories: Category[];
   onSelectType: (dataIncome: TypeIncome) => void;
   selectedType: TypeIncome;
   saveIncome: (
@@ -25,15 +26,25 @@ interface Props {
       date: string;
       note: string;
       timestamp: number;
+      userId: string;
+      categoryId: number;
     },
     typeData: "income" | "expense"
   ) => void;
 }
 
-const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
+const Income = ({
+  onSelectType,
+  selectedType,
+  saveIncome,
+  categories,
+}: Props) => {
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
+    null
+  );
+
   const [rawAmount, setRawAmount] = useState<bigint>();
   const dateRef = useRef<HTMLInputElement | null>(null);
-  const { data } = useType();
   const [value, setValue] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [inputNote, setInputNote] = useState("");
@@ -69,6 +80,8 @@ const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
       date: value,
       note: inputNote,
       timestamp: Date.now(),
+      userId: "test-user",
+      categoryId: selectedCategoryId!,
     };
 
     saveIncome(payload, "income");
@@ -87,9 +100,11 @@ const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
             width="260px"
           >
             <Box display="flex" justifyContent="space-between">
-              {selectedType?.in || "Select Type Of Income"}
+              {selectedCategoryId
+                ? categories.find((c) => c.id === selectedCategoryId)?.name
+                : "Select Type Of Income"}
               <Box>
-                {selectedType?.emote || (
+                {categories.find((c) => c.id === selectedCategoryId)?.emote || (
                   <Icon
                     boxSize={5}
                     as={BsArrowDownCircleFill as React.ElementType}
@@ -99,18 +114,18 @@ const Income = ({ onSelectType, selectedType, saveIncome }: Props) => {
             </Box>
           </MenuButton>
           <MenuList bg="#1C4532">
-            {data.map((dataIncome) => (
+            {categories.map((cat) => (
               <MenuItem
                 _hover={{ bgColor: "#94b0a3db" }}
                 justifyContent="space-between"
                 bg="#1C4532"
-                key={dataIncome.id}
-                onClick={() => onSelectType(dataIncome)}
+                key={cat.id}
+                onClick={() => setSelectedCategoryId(cat.id)}
                 width="258px"
                 pl={3}
               >
-                {dataIncome.in}
-                <Box>{dataIncome.emote}</Box>
+                {cat.name}
+                <Box>{cat.emote}</Box>
               </MenuItem>
             ))}
           </MenuList>
