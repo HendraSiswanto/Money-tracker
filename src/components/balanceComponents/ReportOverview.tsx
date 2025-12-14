@@ -60,23 +60,29 @@ export default function ReportOverview({ selectedMonth }: Props) {
   return (
     <Box
       display="flex"
-      justifyContent="center"
       bg="transparent"
       borderRadius="lg"
       border="1px solid #605f5f37"
       boxShadow="5px 5px 10px #605f5f37"
+      
+      px={5}
       mt={6}
       h="220px"
-      alignItems="center"
       flexDir="column"
-      alignSelf="center"
     >
-      <Text pt={9} fontWeight="bold" color="gray.700">
-        Report Overview
-      </Text>
-
-      <Flex>
-        <Box width="200px">
+      <Flex gap={6} alignItems="center" justifyContent="center">
+        <Box
+          width="40px"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          whiteSpace="nowrap"
+        >
+          <Text fontWeight="bold" color="gray.700" transform="rotate(-90deg)">
+            Report Overview
+          </Text>
+        </Box>
+        <Box width="220px">
           <Doughnut data={data} options={options} />
         </Box>
 

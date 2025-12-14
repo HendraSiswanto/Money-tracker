@@ -89,16 +89,25 @@ export default function Balance() {
       </Box>
 
       <Box mt={3} w="97%">
-        <BarCard active={active} transactions={transactions}  selectedMonth={selectedMonth}
-        onMonthChange={setSelectedMonth} />
+        <BarCard
+          active={active}
+          transactions={transactions}
+          selectedMonth={selectedMonth}
+          onMonthChange={setSelectedMonth}
+        />
       </Box>
 
-      <Grid templateColumns={{ base: "1fr", md: "1fr 2fr" }} gap={4} mt={2}>
-        <Box width="400px" h="160px" >
-
-        <ReportOverview selectedMonth={selectedMonth}/>
+      <Grid templateColumns={{ base: "1fr", md: "auto 1fr" }} gap={5} w="97%" mt={2}>
+        <Box w="fit-content" h="160px">
+          <ReportOverview selectedMonth={selectedMonth} />
         </Box>
-        <LineOverview active={active} transactions={transactions} selectedMonth={selectedMonth}></LineOverview>
+        <Box w="max-content">
+          <LineOverview
+            active={active}
+            transactions={transactions}
+            selectedMonth={selectedMonth}
+          ></LineOverview>
+        </Box>
       </Grid>
     </Flex>
   );

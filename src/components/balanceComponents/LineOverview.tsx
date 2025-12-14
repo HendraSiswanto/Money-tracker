@@ -45,53 +45,54 @@ export default function ExpenseActivity({
 
     if (active === "income") {
       return dayTrans
-        .filter((t) => t.category === "income")
+        .filter((t) => t.outcome === "income")
         .reduce((sum, t) => sum + t.amount, 0);
     }
 
     if (active === "expense") {
       return dayTrans
-        .filter((t) => t.category === "expense")
+        .filter((t) => t.outcome === "expense")
         .reduce((sum, t) => sum + t.amount, 0);
     }
     const income = dayTrans
-      .filter((t) => t.category === "income")
+      .filter((t) => t.outcome === "income")
       .reduce((sum, t) => sum + t.amount, 0);
     const expense = dayTrans
-      .filter((t) => t.category === "expense")
+      .filter((t) => t.outcome === "expense")
       .reduce((sum, t) => sum + t.amount, 0);
 
     return income - expense;
   });
+  const monthName = new Date(2025, selectedMonth).toLocaleString("en-US", {
+    month: "long",
+  });
 
   const data = {
-    label: uniqueDates.map((d) => {
-      `${d}`;
-    }),
+    labels: uniqueDates.map((d) => `${d}`),
     datasets: [
       {
         label:
           active === "income"
-            ? `Daily Income in ${selectedMonth}`
+            ? `Daily Income in ${monthName}`
             : active === "expense"
-            ? `Daily Expense in ${selectedMonth}`
-            : `Your Balance In ${selectedMonth}`,
+            ? `Daily Expense in ${monthName}`
+            : `Your Balance In ${monthName}`,
         data: dailyTotals,
         fill: false,
-       borderColor:
-        active === "income"
-          ? "#1C4532"
-          : active === "expense"
-          ? "#45241cff"
-          : "#1A202C",
-      tension: 0.3,
-      pointRadius: 4,
-      pointBackgroundColor:
-        active === "income"
-          ? "#1C4532"
-          : active === "expense"
-          ? "#45241cff"
-          : "#1A202C",
+        borderColor:
+          active === "income"
+            ? "#1C4532"
+            : active === "expense"
+            ? "#45241cff"
+            : "#1A202C",
+        tension: 0.3,
+        pointRadius: 4,
+        pointBackgroundColor:
+          active === "income"
+            ? "#1C4532"
+            : active === "expense"
+            ? "#45241cff"
+            : "#1A202C",
       },
     ],
   };
@@ -108,8 +109,6 @@ export default function ExpenseActivity({
     },
     scales: {
       y: {
-        min: 1000,
-        max: 3000,
         ticks: { color: "#666" },
         grid: { color: "#e5e5e5" },
       },
@@ -122,17 +121,14 @@ export default function ExpenseActivity({
 
   return (
     <Box
+      mt={6}
       p={6}
+      bg="transparent"
       borderRadius="lg"
-      border="1px solid #e5e5e5"
-      boxShadow="md"
-      bg="white"
-      height="350px"
+      border="1px solid #605f5f37"
+      boxShadow="5px 5px 10px #605f5f37"
+      height="220px"
     >
-      <Text fontSize="xl" fontWeight="bold" mb={4}>
-        Expense Activity
-      </Text>
-
       <Line data={data} options={options} />
     </Box>
   );
