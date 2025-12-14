@@ -1,5 +1,4 @@
 "use client";
-import { Link as RouterLink } from "react-router-dom";
 
 import {
   Box,
@@ -16,12 +15,12 @@ import {
 } from "@chakra-ui/react";
 import Vector1 from "../assets/Vector.svg";
 import Vector2 from "../assets/Vector1.svg";
-import Icon from "../assets/Icon.svg";
 import { useState } from "react";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
-import { useLogin } from "../hooks/useLogin";
+import { useRegister } from "../hooks/useRegister";
 
-const Login = () => {
+const Register = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
@@ -30,26 +29,16 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await useLogin(email, password);
-      localStorage.setItem("token", res.token);
-      localStorage.setItem("userId", res.userId);
-
-      window.location.href = "/transaction";
+      await useRegister(name, email, password);
+      alert("Account created! Please log in.");
+      window.location.href = "/login";
     } catch (err: any) {
-      alert("Login failed: " + err.response?.data?.error);
+      alert("Register failed: " + err.response?.data?.error);
     }
   };
 
   return (
-    <Box
-      bgColor="#1C4532"
-      position="fixed"
-      top={0}
-      left={0}
-      right={0}
-      bottom={0}
-      overflow="hidden"
-    >
+    <>
       <Box
         textAlign="center"
         bgColor="#F7FAFC"
@@ -59,7 +48,7 @@ const Login = () => {
         bottom="-1"
         borderRightRadius="14px"
       >
-        <HStack justifyContent="center" pt="98px" flex="">
+        <HStack justifyContent="center" pt="98px">
           <Text
             fontSize="46px"
             color="#1C4532"
@@ -67,26 +56,9 @@ const Login = () => {
             letterSpacing={2}
           >
             M
-            <Image
-              display="inline"
-              height="38px"
-              marginLeft="0.5px"
-              marginRight="-2"
-              pb="-1"
-              pt="3px"
-              src={Vector1}
-            />{" "}
+            <Image display="inline" height="38px" src={Vector1} />
             N
-            <Image
-              display="inline"
-              height="38px"
-              marginLeft="0.5px"
-              marginRight="-2"
-              pb="-1"
-              pt="3px"
-              src={Vector2}
-            />{" "}
-            Y
+            <Image display="inline" height="38px" src={Vector2} />Y
           </Text>
           <Text
             ml="7"
@@ -100,17 +72,39 @@ const Login = () => {
         </HStack>
 
         <Text fontSize="48px" color="#171923" fontWeight="750" pb={3}>
-          Sign in
+          Create Account
         </Text>
 
         <Text fontSize="18px" color="#718096" pb={5}>
-          Don't have an account?{" "}
-          <Link as={RouterLink} to="/Register" fontWeight="500" color="#1C4532">
-            Create Now
+          Already have an account?{" "}
+          <Link href="/login" fontWeight="500" color="#1C4532">
+            Sign In
           </Link>
         </Text>
+
         <form onSubmit={onSubmit}>
           <Stack gap="2" align="flex-start" maxW="sm" color="#718096">
+            {/* Name */}
+            <Text fontSize="16px" ml="70px">
+              Name
+            </Text>
+            <Input
+              _placeholder={{ color: "#4A5568" }}
+              _hover={{ borderColor: "#CBD5E0" }}
+              ml="73px"
+              bgColor="#F7FAFC"
+              borderColor="#CBD5E0"
+              textColor="#4A5568"
+              type="text"
+              borderRadius="12px"
+              placeholder="John Doe"
+              height="50px"
+              width="528px"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+
+            {/* Email */}
             <Text fontSize="16px" ml="70px">
               E-mail
             </Text>
@@ -129,6 +123,8 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+
+            {/* Password */}
             <Text fontSize="16px" ml="70px">
               Password
             </Text>
@@ -172,9 +168,9 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </InputGroup>
+
             <Button
               _hover={{ bgColor: "#173929ff", color: "#F7FAFC" }}
-              onClick={onSubmit}
               mt={5}
               borderRadius="20px"
               width="528px"
@@ -182,13 +178,13 @@ const Login = () => {
               ml="73px"
               bgColor="#1C4532"
               color="#F7FAFC"
+              type="submit"
             >
-              Sign In
+              Create Account
             </Button>
           </Stack>
         </form>
       </Box>
-
       <Box
         justifyContent="center"
         position="absolute"
@@ -235,47 +231,8 @@ const Login = () => {
           Learn More
         </Button>
       </Box>
-      <Box
-        position="absolute"
-        bgColor="#F7FAFC"
-        textAlign="center"
-        width="275px"
-        height="85px"
-        display="inline"
-        right="242px"
-        mt={497}
-        alignContent="center"
-        borderRadius="10px"
-      >
-        <Box pl={7} display="flex" flex="inline" alignItems="center">
-          <Image src={Icon} />
-          <Box display="inline-block" ml="30px" justifyItems="left">
-            <Text fontSize="14px" fontWeight="medium" color="#1C4532">
-              Earning
-            </Text>
-            <Text fontWeight="bold" fontSize="24px" color="#1C4532">
-              $999.99
-            </Text>
-          </Box>
-        </Box>
-        <Box
-          position="absolute"
-          textAlign="center"
-          width="275px"
-          height="85px"
-          display="inline"
-          right="88px"
-          mt={5}
-          alignContent="center"
-          borderRadius="10px"
-        >
-          <Text color="#a2acbaff" width="450px" fontSize="20px">
-            Analyzing your money expense and track it for comfortable money
-          </Text>
-        </Box>
-      </Box>
-    </Box>
+    </>
   );
 };
 
-export default Login;
+export default Register;

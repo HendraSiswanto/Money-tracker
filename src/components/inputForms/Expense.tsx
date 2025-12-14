@@ -11,10 +11,11 @@ import {
 } from "@chakra-ui/react";
 import { BsArrowDownCircleFill } from "react-icons/bs";
 import type { TypeExpense } from "../../hooks/useExpense";
-import useType from "../../hooks/useExpense";
 import { useState, useRef } from "react";
+import type { Category } from "../types/CategoryTypes";
 
 interface Props {
+  categories: Category[];
   onSelectType: (dataExpense: TypeExpense) => void;
   selectedType: TypeExpense;
   saveExpense: (
@@ -25,15 +26,24 @@ interface Props {
       date: string;
       note: string;
       timestamp: number;
+      userId: string;
+      categoryId: number;
     },
     typeData: "income" | "expense"
   ) => void;
 }
 
-const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
+const Expense = ({
+  onSelectType,
+  selectedType,
+  saveExpense,
+  categories,
+}: Props) => {
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
+    null
+  );
   const [rawAmount, setRawAmount] = useState<bigint>();
   const dateRef = useRef<HTMLInputElement | null>(null);
-  const { data } = useType();
   const [value, setValue] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [inputNote, setInputNote] = useState("");
@@ -69,10 +79,12 @@ const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
       date: value,
       note: inputNote,
       timestamp: Date.now(),
+      userId: "test-user",
+      categoryId: selectedCategoryId!,
     };
 
-      saveExpense(payload, "expense");
-      handleReset();
+    saveExpense(payload, "expense");
+    handleReset();
   };
   return (
     <>
@@ -86,9 +98,11 @@ const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
             width="260px"
           >
             <Box display="flex" justifyContent="space-between">
-              {selectedType?.out || "Select Type Of Expense"}
+              {selectedCategoryId
+                ? categories.find((c) => c.id === selectedCategoryId)?.name
+                : "Select Type Of Expense"}
               <Box>
-                {selectedType?.emote || (
+                {categories.find((c) => c.id === selectedCategoryId)?.emote || (
                   <Icon
                     boxSize={5}
                     as={BsArrowDownCircleFill as React.ElementType}
@@ -98,18 +112,18 @@ const Expense = ({ onSelectType, selectedType, saveExpense }: Props) => {
             </Box>
           </MenuButton>
           <MenuList bg="#45241cff">
-            {data.map((dataExpense) => (
+            {categories.map((cat) => (
               <MenuItem
                 _hover={{ bgColor: "#584642d4" }}
                 justifyContent="space-between"
                 bg="#45241cff"
-                key={dataExpense.id}
-                onClick={() => onSelectType(dataExpense)}
+                key={cat.id}
+                onClick={() => setSelectedCategoryId(cat.id)}
                 width="258px"
                 pl={3}
               >
-                {dataExpense.out}
-                <Box>{dataExpense.emote}</Box>
+                {cat.name}
+                <Box>{cat.emote}</Box>
               </MenuItem>
             ))}
           </MenuList>

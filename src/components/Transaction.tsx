@@ -140,6 +140,7 @@ const Transaction: React.FC = () => {
               />
             ) : (
               <Expense
+               categories={categories}
                 selectedType={changeTipe.dataExpense}
                 onSelectType={(dataExpense) =>
                   setTipe({ ...changeTipe, dataExpense })
