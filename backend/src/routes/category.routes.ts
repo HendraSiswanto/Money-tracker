@@ -7,5 +7,6 @@ router.get("/:userId", CategoryController.getAll);
 router.post("/", CategoryController.create);
 router.patch("/:id", CategoryController.update);
 router.delete("/:id", CategoryController.delete);
+router.post("/seed", CategoryController.seedDefaults);
 
 export default router;
