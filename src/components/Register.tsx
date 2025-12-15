@@ -16,6 +16,7 @@ import {
 import Vector1 from "../assets/Vector.svg";
 import Vector2 from "../assets/Vector1.svg";
 import { useState } from "react";
+import Icon from "../assets/Icon.svg";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { useRegister } from "../hooks/useRegister";
 
@@ -109,7 +110,6 @@ const Register = () => {
 
         <form onSubmit={onSubmit}>
           <Stack gap="2" align="flex-start" maxW="sm" color="#718096">
-            {/* Name */}
             <Text fontSize="16px" ml="70px">
               Name
             </Text>
@@ -128,8 +128,6 @@ const Register = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-
-            {/* Email */}
             <Text fontSize="16px" ml="70px">
               E-mail
             </Text>
@@ -255,6 +253,45 @@ const Register = () => {
         >
           Learn More
         </Button>
+      </Box>
+       <Box
+        position="absolute"
+        bgColor="#F7FAFC"
+        textAlign="center"
+        width="275px"
+        height="85px"
+        display="inline"
+        right="242px"
+        mt={497}
+        alignContent="center"
+        borderRadius="10px"
+      >
+        <Box pl={7} display="flex" flex="inline" alignItems="center">
+          <Image src={Icon} />
+          <Box display="inline-block" ml="30px" justifyItems="left">
+            <Text fontSize="14px" fontWeight="medium" color="#1C4532">
+              Earning
+            </Text>
+            <Text fontWeight="bold" fontSize="24px" color="#1C4532">
+              $999.99
+            </Text>
+          </Box>
+        </Box>
+        <Box
+          position="absolute"
+          textAlign="center"
+          width="275px"
+          height="85px"
+          display="inline"
+          right="88px"
+          mt={5}
+          alignContent="center"
+          borderRadius="10px"
+        >
+          <Text color="#a2acbaff" width="450px" fontSize="20px">
+            Analyzing your money expense and track it for comfortable money
+          </Text>
+        </Box>
       </Box>
     </Box>
   );
