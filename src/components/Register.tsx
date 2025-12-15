@@ -38,7 +38,15 @@ const Register = () => {
   };
 
   return (
-    <>
+    <Box
+      bgColor="#1C4532"
+      position="fixed"
+      top={0}
+      left={0}
+      right={0}
+      bottom={0}
+      overflow="hidden"
+    >
       <Box
         textAlign="center"
         bgColor="#F7FAFC"
@@ -56,9 +64,26 @@ const Register = () => {
             letterSpacing={2}
           >
             M
-            <Image display="inline" height="38px" src={Vector1} />
+            <Image
+              display="inline"
+              height="38px"
+              marginLeft="0.5px"
+              marginRight="-2"
+              pb="-1"
+              pt="3px"
+              src={Vector1}
+            />{" "}
             N
-            <Image display="inline" height="38px" src={Vector2} />Y
+            <Image
+              display="inline"
+              height="38px"
+              marginLeft="0.5px"
+              marginRight="-2"
+              pb="-1"
+              pt="3px"
+              src={Vector2}
+            />{" "}
+            Y
           </Text>
           <Text
             ml="7"
@@ -231,7 +256,7 @@ const Register = () => {
           Learn More
         </Button>
       </Box>
-    </>
+    </Box>
   );
 };
 
