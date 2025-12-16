@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import MainPage from "./components/MainPage";
-import Login from "./components/Login"; // <-- import Login
+import Login from "./components/Login";
 import type { Sided } from "./hooks/useImage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./components/Register";

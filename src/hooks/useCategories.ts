@@ -6,11 +6,15 @@ const API_URL = "http://localhost:3000";
 export default function useCategories(userId: string | undefined) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const token = localStorage.getItem("token");
   const fetchCategories = async () => {
     if (!userId) return;
 
-    const res = await fetch(`${API_URL}/categories/${userId}`);
+    const res = await fetch(`${API_URL}/categories/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const data = await res.json();
     setCategories(data);
   };
@@ -18,12 +22,19 @@ export default function useCategories(userId: string | undefined) {
   const seedIfEmpty = async () => {
     if (!userId) return;
 
-    const res = await fetch(`${API_URL}/categories/${userId}`);
+    const res = await fetch(`${API_URL}/categories/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const data = await res.json();
 
     if (data.length === 0) {
       await fetch(`${API_URL}/categories/seed/${userId}`, {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       await fetchCategories();
     }

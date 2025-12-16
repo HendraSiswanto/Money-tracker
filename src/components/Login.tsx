@@ -34,7 +34,7 @@ const Login = () => {
       localStorage.setItem("token", res.token);
       localStorage.setItem("userId", res.userId);
 
-      window.location.href = "/transaction";
+      window.location.href = "/";
     } catch (err: any) {
       alert("Login failed: " + err.response?.data?.error);
     }

@@ -23,6 +23,7 @@ export type SortOption = "newest" | "oldest" | "high" | "low";
 export type FilterOption = "all" | "income" | "expense";
 
 export function useTransactions() {
+  const token = localStorage.getItem("token");
   const [transactions, setTransactions] = useState<TransactionType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [sortOption, setSortOption] = useState<SortOption>("newest");
@@ -36,7 +37,8 @@ export function useTransactions() {
     setIsLoading(true);
     const res = await fetch("http://localhost:3000/transactions", {
       headers: {
-        "x-user-id": "test-user",
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
     });
     const data: Data[] = await res.json();
@@ -74,7 +76,7 @@ export function useTransactions() {
         outcome: typeData,
         note: newData.note,
         date: newData.date,
-           userId: "test-user",
+        userId: "test-user",
         categoryId: newData.categoryId,
       });
     }
