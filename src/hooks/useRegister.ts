@@ -5,6 +5,6 @@ export async function useRegister(
   email: string,
   password: string
 ) {
-  const res = await api.post("/auth/register", { name, email, password });
+  const res = await api.post("/register", { name, email, password });
   return res.data;
 }
