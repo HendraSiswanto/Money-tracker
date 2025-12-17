@@ -16,7 +16,7 @@ export const CategoryController = {
 
   seedDefaults: async (req: Request, res: Response) => {
     try {
-      const { userId } = req.body;
+      const { userId } = req.params;
 
       if (!userId) return res.status(400).json({ error: "userId is required" });
 
