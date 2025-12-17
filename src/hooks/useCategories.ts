@@ -8,9 +8,7 @@ export default function useCategories(userId: string | undefined) {
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
   const fetchCategories = async () => {
-    if (!userId) return;
-
-    const res = await fetch(`${API_URL}/categories/${userId}`, {
+    const res = await fetch(`${API_URL}/categories`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -20,9 +18,7 @@ export default function useCategories(userId: string | undefined) {
   };
 
   const seedIfEmpty = async () => {
-    if (!userId) return;
-
-    const res = await fetch(`${API_URL}/categories/${userId}`, {
+    const res = await fetch(`${API_URL}/categories`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -30,12 +26,15 @@ export default function useCategories(userId: string | undefined) {
     const data = await res.json();
 
     if (data.length === 0) {
+       const userId = localStorage.getItem("userId");
       await fetch(`${API_URL}/categories/seed/${userId}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
         },
+         body: JSON.stringify({ userId }),
       });
+
       await fetchCategories();
     }
   };

@@ -4,7 +4,7 @@ import { defaultCategories } from "../../data/defaultCategories";
 export const CategoryController = {
   getAll: async (req: Request, res: Response) => {
     try {
-      const { userId } = req.params;
+      const userId = req.userId;
       if (!userId) return res.status(400).json({ error: "Missing userId" });
 
       const categories = await CategoryService.getAll(userId);
