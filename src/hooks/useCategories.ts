@@ -3,7 +3,7 @@ import type { Category } from "../components/types/CategoryTypes";
 
 const API_URL = "http://localhost:3000";
 
-export default function useCategories(userId: string | undefined) {
+export default function useCategories() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
@@ -26,13 +26,11 @@ export default function useCategories(userId: string | undefined) {
     const data = await res.json();
 
     if (data.length === 0) {
-       const userId = localStorage.getItem("userId");
-      await fetch(`${API_URL}/categories/seed/${userId}`, {
+      await fetch(`${API_URL}/categories/seed`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
         },
-         body: JSON.stringify({ userId }),
       });
 
       await fetchCategories();
@@ -40,7 +38,6 @@ export default function useCategories(userId: string | undefined) {
   };
 
   useEffect(() => {
-    if (!userId) return;
 
     const init = async () => {
       await seedIfEmpty();
@@ -49,7 +46,7 @@ export default function useCategories(userId: string | undefined) {
     };
 
     init();
-  }, [userId]);
+  }, []);
 
   return {
     categories,

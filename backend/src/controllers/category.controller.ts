@@ -16,10 +16,11 @@ export const CategoryController = {
 
   seedDefaults: async (req: Request, res: Response) => {
     try {
-      const { userId } = req.params;
+      const userId = req.userId;
 
-      if (!userId) return res.status(400).json({ error: "userId is required" });
-
+      if (!userId) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
       const existing = await CategoryService.getAll(userId);
 
       if (existing.length > 0) return res.json(existing);
