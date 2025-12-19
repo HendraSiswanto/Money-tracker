@@ -17,7 +17,7 @@ export const transactionController = {
         return res.status(400).json({ error: "Missing userId" });
       }
       const transactions = await prisma.transaction.findMany({
-        where: { userId},
+        where: { userId },
         include: { category: true },
         orderBy: { timestamp: "desc" },
       });
@@ -36,16 +36,23 @@ export const transactionController = {
       if (!req.userId || !categoryId) {
         return res.status(400).json({ error: "Missing userId or categoryId" });
       }
-      const numericAmount = parseInt(String(amount).replace(/\D/g, ""));
+
+      if (!outcome || !type) {
+        return res.status(400).json({ error: "Missing outcome or type" });
+      }
+
+      if (amount === undefined || isNaN(Number(amount))) {
+        return res.status(400).json({ error: "Invalid amount" });
+      }
 
       const newTransaction = await prisma.transaction.create({
         data: {
           outcome,
-          type: type,
-          amount: numericAmount,
+          type,
+          amount: Number(amount),
           note: note ?? "",
-          date: new Date(date),
-          timestamp: BigInt(timestamp),
+          date: date ? new Date(date) : new Date(),
+          timestamp: timestamp ? BigInt(timestamp) : BigInt(Date.now()),
           userId: req.userId,
           categoryId,
         },
@@ -53,8 +60,8 @@ export const transactionController = {
 
       res.json(convertBigInt(newTransaction));
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: "Failed to create data" });
+      console.error("CREATE TRANSACTION ERROR:", err);
+      res.status(500).json({ error: "Failed to create transaction" });
     }
   },
 

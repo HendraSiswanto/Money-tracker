@@ -10,14 +10,12 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { BsArrowDownCircleFill } from "react-icons/bs";
-import type { TypeIncome } from "../../hooks/useIncome";
 import { useState, useRef } from "react";
 import type { Category } from "../types/CategoryTypes";
 
 interface Props {
   categories: Category[];
-  onSelectType: (dataIncome: TypeIncome) => void;
-  selectedType: TypeIncome;
+
   saveIncome: (
     data: {
       outcome: string;
@@ -33,8 +31,6 @@ interface Props {
 }
 
 const Income = ({
-  onSelectType,
-  selectedType,
   saveIncome,
   categories,
 }: Props) => {
@@ -68,21 +64,38 @@ const Income = ({
     setValue("");
     setInputValue("");
     setInputNote("");
-    onSelectType({ id: 0, in: "", emote: "" });
+  
   };
 
   const handleSaveIncome = async () => {
+  const selectedCategory = categories.find(
+  (c) => c.id === selectedCategoryId
+)!;
+
+    if (!selectedCategoryId) {
+      console.log("NO CATEGORY");
+      return;
+    }
+
+
+    if (!rawAmount || rawAmount <= 0n) {
+      console.log("INVALID AMOUNT");
+      return;
+    }
+
     const payload = {
       outcome: "income",
-      type: selectedType?.in,
+      type: selectedCategory.name,
       amount: Number(rawAmount),
       date: value,
       note: inputNote,
       timestamp: Date.now(),
-      categoryId: selectedCategoryId!,
+      categoryId: selectedCategoryId,
     };
 
-    saveIncome(payload, "income");
+    console.log("SENDING:", payload);
+
+    await saveIncome(payload, "income");
     handleReset();
   };
 

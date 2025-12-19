@@ -39,8 +39,15 @@ export async function createTransaction(data: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      amount: Number(data.amount),
+    }),
   });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error || "Create transaction failed");
+  }
   return res.json();
 }
 

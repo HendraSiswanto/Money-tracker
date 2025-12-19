@@ -15,7 +15,6 @@ export type TransactionType = {
   date: string;
   note?: string;
   timestamp: number;
-  userId: string;
   categoryId: number;
 };
 

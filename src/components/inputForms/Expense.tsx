@@ -10,14 +10,11 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { BsArrowDownCircleFill } from "react-icons/bs";
-import type { TypeExpense } from "../../hooks/useExpense";
 import { useState, useRef } from "react";
 import type { Category } from "../types/CategoryTypes";
 
 interface Props {
   categories: Category[];
-  onSelectType: (dataExpense: TypeExpense) => void;
-  selectedType: TypeExpense;
   saveExpense: (
     data: {
       outcome: string;
@@ -26,19 +23,13 @@ interface Props {
       date: string;
       note: string;
       timestamp: number;
-      userId: string;
       categoryId: number;
     },
     typeData: "income" | "expense"
   ) => void;
 }
 
-const Expense = ({
-  onSelectType,
-  selectedType,
-  saveExpense,
-  categories,
-}: Props) => {
+const Expense = ({ saveExpense, categories }: Props) => {
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
     null
   );
@@ -69,17 +60,18 @@ const Expense = ({
     setValue("");
     setInputValue("");
     setInputNote("");
-    onSelectType({ id: 0, out: "", emote: "" });
   };
   const handleSaveExpense = async () => {
+    const selectedCategory = categories.find(
+      (c) => c.id === selectedCategoryId
+    )!;
     const payload = {
       outcome: "expense",
-      type: selectedType?.out,
+      type: selectedCategory.name,
       amount: Number(rawAmount),
       date: value,
       note: inputNote,
       timestamp: Date.now(),
-      userId: "test-user",
       categoryId: selectedCategoryId!,
     };
 
@@ -206,7 +198,7 @@ const Expense = ({
             <Button
               bgColor="#1C4532"
               _hover={{ bgColor: "#1c4532db" }}
-              isDisabled={!selectedType?.out || !inputValue || !value}
+              isDisabled={!selectedCategoryId || !inputValue || !value}
               onClick={handleSaveExpense}
             >
               Save

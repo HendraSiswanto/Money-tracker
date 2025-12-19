@@ -10,9 +10,6 @@ import {
 } from "@chakra-ui/react";
 import Expense from "./inputForms/Expense";
 import { useState } from "react";
-import type { TypeExpense } from "../hooks/useExpense";
-import type { TypeIncome } from "../hooks/useIncome";
-
 import Income from "./inputForms/Income";
 import TrSkeleton from "./skeleton/HisSkeleton";
 import { useTransactions } from "../hooks/useTransactions";
@@ -20,11 +17,6 @@ import BalanceCard from "./charts/UserCard";
 import LineCard from "./charts/LineCard";
 import useCategories from "../hooks/useCategories";
 
-
-interface Props {
-  dataExpense: TypeExpense;
-  dataIncome: TypeIncome;
-}
 interface allDataIncome {
   id?: number;
   outcome: string;
@@ -33,8 +25,8 @@ interface allDataIncome {
   date: string;
   note?: string;
   timestamp: number;
-  userId:string;
-  categoryId:number
+
+  categoryId: number;
 }
 
 const Transaction: React.FC = () => {
@@ -46,10 +38,8 @@ const Transaction: React.FC = () => {
     totalExpense,
     totalIncome,
   } = useTransactions();
-  const [changeTipe, setTipe] = useState<Props>({} as Props);
   const [selected, setSelected] = useState("income");
-  const { categories} = useCategories();
-
+  const { categories } = useCategories();
 
   const rupiahFormat = new Intl.NumberFormat("id-ID", {
     style: "currency",
@@ -58,10 +48,13 @@ const Transaction: React.FC = () => {
   });
 
   const handleSave = async (item: allDataIncome) => {
-    await saveTransaction( {
-      ...item,   
-      categoryId: item.categoryId,
-    }, item.outcome as "income" | "expense");
+    await saveTransaction(
+      {
+        ...item,
+        categoryId: item.categoryId,
+      },
+      item.outcome as "income" | "expense"
+    );
   };
 
   const latestFive = (transactions ?? []).slice(0, 5);
@@ -129,23 +122,9 @@ const Transaction: React.FC = () => {
               </Button>
             </Box>
             {selected === "income" ? (
-              <Income
-              categories={categories}
-                selectedType={changeTipe.dataIncome}
-                onSelectType={(dataIncome) =>
-                  setTipe({ ...changeTipe, dataIncome })
-                }
-                saveIncome={handleSave}
-              />
+              <Income categories={categories} saveIncome={handleSave} />
             ) : (
-              <Expense
-               categories={categories}
-                selectedType={changeTipe.dataExpense}
-                onSelectType={(dataExpense) =>
-                  setTipe({ ...changeTipe, dataExpense })
-                }
-                saveExpense={handleSave}
-              />
+              <Expense categories={categories} saveExpense={handleSave} />
             )}
           </Card>
         </Flex>
