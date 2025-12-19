@@ -13,7 +13,12 @@ export interface Transaction {
 }
 
 export async function getTransactions(): Promise<Transaction[]> {
-  const res = await fetch(`${API_URL}/transactions`);
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_URL}/transactions`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return res.json();
 }
 
@@ -24,12 +29,16 @@ export async function createTransaction(data: {
   note?: string;
   date?: string | null;
   timestamp?: number;
-  userId: string;
+
   categoryId: number;
 }) {
+  const token = localStorage.getItem("token");
   const res = await fetch(`${API_URL}/transactions`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(data),
   });
   return res.json();
@@ -55,7 +64,6 @@ export async function updateTransaction(data: {
   note?: string;
   timestamp: number;
   outcome: string;
-  userId: string;
   categoryId: number;
 }) {
   const safeDate =

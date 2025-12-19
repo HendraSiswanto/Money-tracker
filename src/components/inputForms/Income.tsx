@@ -26,7 +26,6 @@ interface Props {
       date: string;
       note: string;
       timestamp: number;
-      userId: string;
       categoryId: number;
     },
     typeData: "income" | "expense"
@@ -80,7 +79,6 @@ const Income = ({
       date: value,
       note: inputNote,
       timestamp: Date.now(),
-      userId: "test-user",
       categoryId: selectedCategoryId!,
     };
 

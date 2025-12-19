@@ -64,7 +64,6 @@ export function useTransactions() {
         note: newData.note,
         date: newData.date,
         timestamp: Date.now(),
-        userId: "test-user",
         categoryId: newData.categoryId,
       });
     } else {
@@ -76,7 +75,6 @@ export function useTransactions() {
         outcome: typeData,
         note: newData.note,
         date: newData.date,
-        userId: "test-user",
         categoryId: newData.categoryId,
       });
     }
