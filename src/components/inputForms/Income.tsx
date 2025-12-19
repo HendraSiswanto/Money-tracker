@@ -210,7 +210,7 @@ const Income = ({
             <Button
               bgColor="#1C4532"
               _hover={{ bgColor: "#1c4532db" }}
-              isDisabled={!selectedType?.in || !inputValue || !value}
+              isDisabled={!selectedCategoryId || !inputValue || !value}
               onClick={handleSaveIncome}
             >
               Save

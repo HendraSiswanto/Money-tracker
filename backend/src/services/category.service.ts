@@ -9,14 +9,16 @@ export const CategoryService = {
   },
 
    seedDefaults: (userId: string, categories: any[]) => {
-    return prisma.category.createMany({
-      data: categories.map(c => ({
-        ...c,
-        type: c.type as CategoryType,
-        userId
-      })),
-    });
-  },
+  return prisma.category.createMany({
+    data: categories.map(c => ({
+      name: c.name,
+      emote: c.emote,
+      color: c.color,
+      type: c.type,
+      userId,
+    })),
+  });
+},
   
   create: (data: {
     userId: string;

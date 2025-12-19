@@ -4,7 +4,8 @@ import { defaultCategories } from "../../data/defaultCategories";
 export const CategoryController = {
   getAll: async (req: Request, res: Response) => {
     try {
-      const userId = req.userId;
+      const userId = (req as any).userId;
+
       if (!userId) return res.status(400).json({ error: "Missing userId" });
 
       const categories = await CategoryService.getAll(userId);
@@ -15,23 +16,16 @@ export const CategoryController = {
   },
 
   seedDefaults: async (req: Request, res: Response) => {
-    try {
-      const userId = req.userId;
+    const userId = req.userId!;
+    const existing = await CategoryService.getAll(userId);
 
-      if (!userId) {
-        return res.status(401).json({ error: "Unauthorized" });
-      }
-      const existing = await CategoryService.getAll(userId);
-
-      if (existing.length > 0) return res.json(existing);
-
-      await CategoryService.seedDefaults(userId, defaultCategories);
-
-      const fresh = await CategoryService.getAll(userId);
-      res.json(fresh);
-    } catch (err) {
-      res.status(500).json({ error: "Failed to seed categories" });
+    if (existing.length > 0) {
+      return res.json(existing);
     }
+
+    await CategoryService.seedDefaults(userId, defaultCategories);
+    const fresh = await CategoryService.getAll(userId);
+    res.json(fresh);
   },
   create: async (req: Request, res: Response) => {
     try {

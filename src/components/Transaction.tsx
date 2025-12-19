@@ -48,7 +48,7 @@ const Transaction: React.FC = () => {
   } = useTransactions();
   const [changeTipe, setTipe] = useState<Props>({} as Props);
   const [selected, setSelected] = useState("income");
-  const { categories} = useCategories("test-user");
+  const { categories} = useCategories();
 
 
   const rupiahFormat = new Intl.NumberFormat("id-ID", {
@@ -59,8 +59,7 @@ const Transaction: React.FC = () => {
 
   const handleSave = async (item: allDataIncome) => {
     await saveTransaction( {
-      ...item,
-      userId: "test-user",      
+      ...item,   
       categoryId: item.categoryId,
     }, item.outcome as "income" | "expense");
   };
