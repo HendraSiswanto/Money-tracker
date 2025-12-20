@@ -58,6 +58,13 @@ const Transaction: React.FC = () => {
   };
 
   const latestFive = (transactions ?? []).slice(0, 5);
+  const incomeCategories = categories.filter(
+  (c) => c.type === "income"
+);
+
+const expenseCategories = categories.filter(
+  (c) => c.type === "expense"
+);
   return (
     <>
       <Container display="flex" flexDirection="row" maxW="container.xl" mt={8}>
@@ -122,9 +129,9 @@ const Transaction: React.FC = () => {
               </Button>
             </Box>
             {selected === "income" ? (
-              <Income categories={categories} saveIncome={handleSave} />
+              <Income categories={incomeCategories} saveIncome={handleSave} />
             ) : (
-              <Expense categories={categories} saveExpense={handleSave} />
+              <Expense categories={expenseCategories} saveExpense={handleSave} />
             )}
           </Card>
         </Flex>

@@ -1,7 +1,7 @@
 export interface Category {
   id: number;
   name: string;
-  outcome: "income" | "expense"; 
+  type:string;
   emote?: string; 
   user_id: string;
   color: string

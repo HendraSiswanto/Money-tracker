@@ -25,7 +25,7 @@ type LineOverviewProps = {
   selectedMonth: number;
 };
 
-export default function ExpenseActivity({
+export default function LineOverview({
   active,
   transactions,
   selectedMonth,
