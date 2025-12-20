@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, SimpleGrid } from "@chakra-ui/react";
+import { Box, Container, Flex, Grid, SimpleGrid } from "@chakra-ui/react";
 import { StatCard } from "./balanceComponents/StatCard";
 import BarCard from "./balanceComponents/BarCard";
 import { useTransactions } from "../hooks/useTransactions";
@@ -31,9 +31,11 @@ export default function Balance() {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
 
   return (
-    <Flex flexDirection="column" align="flex-start" p={1} w="100%">
-      <Box w="97%">
-        <SimpleGrid columns={{ base: 1, md: 4 }} spacing="72px">
+    <Container maxW="container.xl">
+
+    <Flex flexDirection="column" align="flex-start" p={1}  >
+      <Box>
+        <SimpleGrid columns={{ base: 1, md: 4 }} w="100%" spacing={4}>
           <StatCard
             icon={BsCurrencyBitcoin}
             title="Total Income"
@@ -88,7 +90,7 @@ export default function Balance() {
         </SimpleGrid>
       </Box>
 
-      <Box mt={3} w="97%">
+      <Box mt={3} w="full">
         <BarCard
           active={active}
           transactions={transactions}
@@ -110,5 +112,6 @@ export default function Balance() {
         </Box>
       </Grid>
     </Flex>
+    </Container>
   );
 }

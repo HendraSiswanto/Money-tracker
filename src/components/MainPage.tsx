@@ -87,7 +87,7 @@ const MainPage = ({ onSelectImage, selectImage }: Props) => {
             ))}
           </List>
         </Box>
-        <Box flex={1} ml="125px">
+        <Box flex={1} ml="50px">
           {renderPage()}
         </Box>
       </Flex>
