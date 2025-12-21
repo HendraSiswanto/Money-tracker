@@ -30,14 +30,14 @@ export const StatCard = ({
   icon,
   active = false,
   onClick,
-  activeColor = "rgba(0,0,0,0.05)"
+  activeColor = "rgba(0,0,0,0.05)",
 }: Props) => {
   const isNegative = percent.includes("-");
 
   return (
     <Box
-      mt={8}
-      mb={4}
+      h="100%"
+      w="100%"
       p={7}
       transform={active ? "scale(1.02)" : "scale(1)"}
       transition="all 0.15s ease"
@@ -45,7 +45,6 @@ export const StatCard = ({
       borderRadius="lg"
       border={active ? "2px solid #1C4532" : "1px solid #605f5f37"}
       boxShadow={active ? "0 0 12px #1C453260" : "5px 5px 10px #605f5f37"}
-      w="270px"
       onClick={onClick}
       cursor="pointer"
     >
@@ -58,11 +57,7 @@ export const StatCard = ({
           boxSize="60px"
           as={icon as React.ElementType}
         />
-        <StatLabel
-          fontSize="sm"
-          fontWeight="bold"
-          color="gray.600"
-        >
+        <StatLabel fontSize="sm" fontWeight="bold" color="gray.600">
           {title}
         </StatLabel>
         <StatNumber fontWeight="semibold" color={fontColor}>
@@ -79,8 +74,7 @@ export const StatCard = ({
             as={isNegative ? FiArrowDownRight : FiArrowUpRight}
             color={iconColor}
           />
-          {percent}%
-          <Text color="gray.600">vs last 30 days</Text>
+          {percent}%<Text color="gray.600">vs last 30 days</Text>
         </StatHelpText>
       </Stat>
     </Box>

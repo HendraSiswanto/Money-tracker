@@ -24,14 +24,13 @@ export const HighestCard = ({
       : "Highest Balance";
   return (
     <Box
-      mt={8}
-      mb={4}
+     
       p={7}
       bg="transparent"
       borderRadius="lg"
       border="1px solid #605f5f37"
       boxShadow="5px 5px 10px #605f5f37"
-      w="270px"
+      w="100%"
     >
       <Icon
         bgColor="#e4e4e7c3"
