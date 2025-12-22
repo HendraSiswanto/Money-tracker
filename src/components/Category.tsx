@@ -1,117 +1,141 @@
-import { Box, Flex, Text, Button, Grid, IconButton } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Heading,
+  Icon,
+  Text,
+  IconButton,
+  Container,
+  ButtonGroup,
+} from "@chakra-ui/react";
+import {
+  BsPencil,
+  BsTrash,
+  BsPlusCircle,
+  BsArrowDownCircle,
+  BsArrowUpCircle,
+} from "react-icons/bs";
 import { useState } from "react";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
+import useCategories from "../hooks/useCategories";
 
-type Category = {
-  id: number;
-  name: string;
-  type: "income" | "expense";
-  color: string;
-  icon?: string;
-};
+export default function CategoryPage() {
+  const { categories } = useCategories();
+  const [activeType, setActiveType] = useState<"income" | "expense">("income");
 
-export default function Category() {
-  // Temp static categories (replace later with API or localStorage)
-  const [categories, setCategories] = useState<Category[]>([
-    { id: 1, name: "Salary", type: "income", color: "#1C4532" },
-    { id: 2, name: "Freelance", type: "income", color: "#276749" },
-    { id: 3, name: "Food", type: "expense", color: "#C53030" },
-    { id: 4, name: "Shopping", type: "expense", color: "#9B2C2C" },
-  ]);
-
-  const incomeCategories = categories.filter((c) => c.type === "income");
-  const expenseCategories = categories.filter((c) => c.type === "expense");
+  const filteredCategories = categories.filter(
+    (cat) => cat.type === activeType
+  );
 
   return (
-    <Box p={5}>
+    <Container maxW="container.xl" mt={8}>
+      {/* Header */}
+      <Flex justify="space-between" align="center" mb={6} wrap="wrap" gap={4}>
+        <Box>
+          <Heading
+            size="lg"
+            bgGradient="linear(to-r, #1C4532, #38A169)"
+            bgClip="text"
+          >
+            Categories
+          </Heading>
+          <Text fontSize="sm" color="gray.500">
+            Manage your income and expense categories
+          </Text>
+        </Box>
 
-      <Flex justify="space-between" align="center" mb={5}>
-        <Text fontSize="2xl" fontWeight="bold" color="gray.700">
-          Categories
-        </Text>
-        <Button colorScheme="teal">+ Add Category</Button>
+        <Button
+          leftIcon={<BsPlusCircle />}
+          bg="#1C4532"
+          color="white"
+          _hover={{ bg: "#1c4532db" }}
+        >
+          New Category
+        </Button>
       </Flex>
 
-      {/* Income Section */}
-      <Box mb={8}>
-        <Text fontSize="lg" fontWeight="bold" color="#1C4532" mb={3}>
-          Income Categories
+      <Flex mb={6} justify="space-between" align="center" wrap="wrap" gap={4}>
+        <ButtonGroup isAttached variant="outline">
+          <Button
+            leftIcon={<BsArrowUpCircle />}
+            onClick={() => setActiveType("income")}
+            bg={activeType === "income" ? "#1C4532" : "transparent"}
+            color={activeType === "income" ? "white" : "gray.600"}
+            _hover={{ bg: activeType === "income" ? "#1c4532db" : "gray.100" }}
+          >
+            Income
+          </Button>
+          <Button
+            leftIcon={<BsArrowDownCircle />}
+            onClick={() => setActiveType("expense")}
+            bg={activeType === "expense" ? "#45241c" : "transparent"}
+            color={activeType === "expense" ? "white" : "gray.600"}
+            _hover={{ bg: activeType === "expense" ? "#45241cd4" : "gray.100" }}
+          >
+            Expense
+          </Button>
+        </ButtonGroup>
+
+        <Text fontSize="sm" color="gray.500">
+          Showing {filteredCategories.length}{" "}
+          {activeType === "income" ? "income" : "expense"} categories
         </Text>
+      </Flex>
+      <Grid
+        templateColumns={{
+          base: "1fr",
+          sm: "repeat(2, 1fr)",
+          md: "repeat(3, 1fr)",
+          lg: "repeat(4, 1fr)",
+        }}
+        gap={4}
+      >
+        {filteredCategories.map((cat) => (
+          <Box
+            key={cat.id}
+            p={4}
+            border="1px solid"
+            borderColor="gray.200"
+            borderRadius="lg"
+            boxShadow="sm"
+            transition="all 0.2s"
+            _hover={{ boxShadow: "md", transform: "translateY(-2px)" }}
+          >
+            <Flex justify="space-between" align="center">
+              <Text fontSize="2xl">{cat.emote}</Text>
 
-        <Grid templateColumns="repeat(auto-fill, minmax(140px, 1fr))" gap={4}>
-          {incomeCategories.map((cat) => (
-            <Box
-              key={cat.id}
-              p={3}
-              border="1px solid #e5e5e5"
-              borderRadius="md"
-              bg="whiteAlpha.50"
-            >
-              <Flex justify="space-between" align="center">
-                <Text fontWeight="bold" color={cat.color}>
-                  {cat.name}
-                </Text>
-
-                <Flex gap={1}>
-                  <IconButton
-                    aria-label="edit"
-                    size="sm"
-                    icon={<FiEdit />}
-                    variant="ghost"
-                  />
-                  <IconButton
-                    aria-label="delete"
-                    size="sm"
-                    icon={<FiTrash2 />}
-                    variant="ghost"
-                  />
-                </Flex>
+              <Flex gap={1}>
+                <IconButton
+                  aria-label="Edit category"
+                  icon={<Icon as={BsPencil} />}
+                  size="sm"
+                  variant="ghost"
+                />
+                <IconButton
+                  aria-label="Delete category"
+                  icon={<Icon as={BsTrash} />}
+                  size="sm"
+                  variant="ghost"
+                  colorScheme="red"
+                />
               </Flex>
-            </Box>
-          ))}
-        </Grid>
-      </Box>
+            </Flex>
 
-      {/* Expense Section */}
-      <Box mb={8}>
-        <Text fontSize="lg" fontWeight="bold" color="#C53030" mb={3}>
-          Expense Categories
-        </Text>
-
-        <Grid templateColumns="repeat(auto-fill, minmax(140px, 1fr))" gap={4}>
-          {expenseCategories.map((cat) => (
-            <Box
-              key={cat.id}
-              p={3}
-              border="1px solid #e5e5e5"
-              borderRadius="md"
-              bg="whiteAlpha.50"
+            <Text mt={3} fontWeight="bold">
+              {cat.name}
+            </Text>
+            <Text
+              fontSize="xs"
+              mt={1}
+              fontWeight="semibold"
+              color={cat.type === "income" ? "#1C4532" : "#45241c"}
             >
-              <Flex justify="space-between" align="center">
-                <Text fontWeight="bold" color={cat.color}>
-                  {cat.name}
-                </Text>
-
-                <Flex gap={1}>
-                  <IconButton
-                    aria-label="edit"
-                    size="sm"
-                    icon={<FiEdit />}
-                    variant="ghost"
-                  />
-                  <IconButton
-                    aria-label="delete"
-                    size="sm"
-                    icon={<FiTrash2 />}
-                    variant="ghost"
-                  />
-                </Flex>
-              </Flex>
-            </Box>
-          ))}
-        </Grid>
-      </Box>
-
-    </Box>
+              {cat.type.toUpperCase()}
+            </Text>
+          </Box>
+        ))}
+      </Grid>
+    </Container>
   );
 }
