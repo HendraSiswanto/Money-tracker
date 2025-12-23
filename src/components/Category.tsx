@@ -30,9 +30,9 @@ export default function CategoryPage() {
 
   return (
     <Container maxW="container.xl" mt={8}>
-      {/* Header */}
+
       <Flex justify="space-between" align="center" mb={6} wrap="wrap" gap={4}>
-        <Box>
+        <Box borderBottom="1px" borderBottomColor="#1C4532" pb={1} >
           <Heading
             size="lg"
             bgGradient="linear(to-r, #1C4532, #38A169)"
@@ -111,6 +111,7 @@ export default function CategoryPage() {
                   icon={<Icon as={BsPencil} />}
                   size="sm"
                   variant="ghost"
+                  color={cat.type === "income" ? "#1C4532" : "#45241c"}
                 />
                 <IconButton
                   aria-label="Delete category"
@@ -122,7 +123,7 @@ export default function CategoryPage() {
               </Flex>
             </Flex>
 
-            <Text mt={3} fontWeight="bold">
+            <Text mt={3} color={cat.type === "income" ? "#1C4532" : "#45241c"} fontWeight="bold">
               {cat.name}
             </Text>
             <Text
