@@ -29,7 +29,8 @@ export const CategoryController = {
   },
   create: async (req: Request, res: Response) => {
     try {
-      const { userId, name, emote, type, color } = req.body;
+      const userId = (req as any).userId;
+      const { name, emote, type, color } = req.body;
 
       if (!userId || !name || !emote || !type) {
         return res

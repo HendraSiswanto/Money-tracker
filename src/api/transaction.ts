@@ -8,7 +8,6 @@ export interface Transaction {
   note?: string;
   timestamp: number;
   outcome: "income" | "expense";
-  userId: string;
   categoryId: number;
 }
 

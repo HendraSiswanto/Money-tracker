@@ -30,25 +30,38 @@ export function useTransactions() {
 
   useEffect(() => {
     loadTransactions();
-  }, [sortOption, filterOption]);
+  }, []);
 
   const loadTransactions = async () => {
-    setIsLoading(true);
-    const res = await fetch("http://localhost:3000/transactions", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-    const data: Data[] = await res.json();
-    const timer = setTimeout(() => {
+    try {
+      setIsLoading(true);
+
+      if (!token) {
+        throw new Error("No token found");
+      }
+
+      const res = await fetch("http://localhost:3000/transactions", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (res.status === 401) {
+        localStorage.removeItem("token");
+
+        return;
+      }
+
+      const data = await res.json();
+      setTransactions(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error(err);
+      setTransactions([]);
+    } finally {
       setIsLoading(false);
-    }, 800);
-    setTransactions(data ?? []);
-
-    return () => clearTimeout(timer);
+    }
   };
-
   const saveTransaction = async (
     newData: TransactionType,
     typeData: "income" | "expense"

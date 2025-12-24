@@ -13,9 +13,10 @@ export default function useCategories() {
 
   const loadCategories = async () => {
     setLoading(true);
+
     try {
       const data = await fetchCategories();
-      setCategories(data);
+      setCategories(Array.isArray(data) ? data : []);
     } finally {
       setLoading(false);
     }
@@ -34,14 +35,9 @@ export default function useCategories() {
     setCategories((prev) => [...prev, newCategory]);
   };
 
-  const editCategory = async (
-    id: number,
-    data: Partial<Category>
-  ) => {
+  const editCategory = async (id: number, data: Partial<Category>) => {
     const updated = await updateCategory(id, data);
-    setCategories((prev) =>
-      prev.map((c) => (c.id === id ? updated : c))
-    );
+    setCategories((prev) => prev.map((c) => (c.id === id ? updated : c)));
   };
 
   const removeCategory = async (id: number) => {
