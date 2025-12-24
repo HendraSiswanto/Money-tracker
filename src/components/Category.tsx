@@ -9,6 +9,7 @@ import {
   IconButton,
   Container,
   ButtonGroup,
+  Tooltip,
 } from "@chakra-ui/react";
 import {
   BsPencil,
@@ -19,8 +20,11 @@ import {
 } from "react-icons/bs";
 import { useState } from "react";
 import useCategories from "../hooks/useCategories";
+import { DeleteCategoryDialog } from "./categoryComponents/deleteCategoryDialog";
 
 export default function CategoryPage() {
+  const [selected, setSelected] = useState<any>(null);
+  const [isDeleteOpen, setDeleteOpen] = useState(false);
   const { categories, addCategory, editCategory, removeCategory } =
     useCategories();
   const [activeType, setActiveType] = useState<"income" | "expense">("income");
@@ -106,21 +110,36 @@ export default function CategoryPage() {
               <Text fontSize="2xl">{cat.emote}</Text>
 
               <Flex gap={1}>
-                <IconButton
-                  aria-label="Edit category"
-                  icon={<Icon as={BsPencil} />}
-                  size="sm"
-                  variant="ghost"
-                  color={cat.type === "income" ? "#1C4532" : "#45241c"}
-                />
-                <IconButton
-                  aria-label="Delete category"
-                  icon={<Icon as={BsTrash} />}
-                  size="sm"
-                  variant="ghost"
-                  colorScheme="red"
-                  onClick={() => removeCategory(cat.id)}
-                />
+                <Tooltip
+                  label="This category is used in transactions and cannot be edited"
+                  isDisabled={!cat.isUsed}
+                >
+                  <IconButton
+                    aria-label="Edit category"
+                    icon={<Icon as={BsPencil} />}
+                    size="sm"
+                    isDisabled={cat.isUsed}
+                    variant="ghost"
+                    color={cat.type === "income" ? "#1C4532" : "#45241c"}
+                  />
+                </Tooltip>
+                <Tooltip
+                  label="This category is used in transactions and cannot be deleted"
+                  isDisabled={!cat.isUsed}
+                >
+                  <IconButton
+                    aria-label="Delete category"
+                    icon={<Icon as={BsTrash} />}
+                    size="sm"
+                    variant="ghost"
+                    colorScheme="red"
+                    isDisabled={cat.isUsed}
+                    onClick={() => {
+                      setDeleteOpen(true);
+                      setSelected(cat);
+                    }}
+                  />
+                </Tooltip>
               </Flex>
             </Flex>
 
@@ -142,6 +161,20 @@ export default function CategoryPage() {
           </Box>
         ))}
       </Grid>
+      <DeleteCategoryDialog
+        isOpen={isDeleteOpen}
+        onClose={() => {
+          setDeleteOpen(false);
+          setSelected(null);
+        }}
+        onConfirm={async () => {
+          if (!selected) return;
+
+          await removeCategory(selected.id);
+          setDeleteOpen(false);
+          setSelected(null);
+        }}
+      />
     </Container>
   );
 }

@@ -5,4 +5,6 @@ export interface Category {
   emote?: string; 
   user_id: string;
   color: string
+  isUsed: boolean;
 }
+
