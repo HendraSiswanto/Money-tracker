@@ -1,32 +1,60 @@
 import { useEffect, useState } from "react";
 import type { Category } from "../components/types/CategoryTypes";
+import {
+  fetchCategories,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+} from "../api/category";
 
 export default function useCategories() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem("token");
-
-  const headers = {
-    Authorization: `Bearer ${token}`,
-    "Content-Type": "application/json",
+  const loadCategories = async () => {
+    setLoading(true);
+    try {
+      const data = await fetchCategories();
+      setCategories(data);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    const init = async () => {
-      await fetch("http://localhost:3000/categories/seed", {
-        method: "POST",
-        headers,
-      });
-
-      const res = await fetch("http://localhost:3000/categories", { headers });
-      const data = await res.json();
-      setCategories(data);
-      setLoading(false);
-    };
-
-    init();
+    loadCategories();
   }, []);
 
-  return { categories, loading };
+  const addCategory = async (data: {
+    name: string;
+    emote: string;
+    type: "income" | "expense";
+  }) => {
+    const newCategory = await createCategory(data);
+    setCategories((prev) => [...prev, newCategory]);
+  };
+
+  const editCategory = async (
+    id: number,
+    data: Partial<Category>
+  ) => {
+    const updated = await updateCategory(id, data);
+    setCategories((prev) =>
+      prev.map((c) => (c.id === id ? updated : c))
+    );
+  };
+
+  const removeCategory = async (id: number) => {
+    await deleteCategory(id);
+    setCategories((prev) => prev.filter((c) => c.id !== id));
+  };
+
+  return {
+    categories,
+    loading,
+    addCategory,
+    editCategory,
+    removeCategory,
+    reload: loadCategories,
+  };
 }

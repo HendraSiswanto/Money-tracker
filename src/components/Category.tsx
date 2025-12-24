@@ -21,7 +21,8 @@ import { useState } from "react";
 import useCategories from "../hooks/useCategories";
 
 export default function CategoryPage() {
-  const { categories } = useCategories();
+  const { categories, addCategory, editCategory, removeCategory } =
+    useCategories();
   const [activeType, setActiveType] = useState<"income" | "expense">("income");
 
   const filteredCategories = categories.filter(
@@ -30,9 +31,8 @@ export default function CategoryPage() {
 
   return (
     <Container maxW="container.xl" mt={8}>
-
       <Flex justify="space-between" align="center" mb={6} wrap="wrap" gap={4}>
-        <Box borderBottom="1px" borderBottomColor="#1C4532" pb={1} >
+        <Box borderBottom="1px" borderBottomColor="#1C4532" pb={1}>
           <Heading
             size="lg"
             bgGradient="linear(to-r, #1C4532, #38A169)"
@@ -119,11 +119,16 @@ export default function CategoryPage() {
                   size="sm"
                   variant="ghost"
                   colorScheme="red"
+                  onClick={() => removeCategory(cat.id)}
                 />
               </Flex>
             </Flex>
 
-            <Text mt={3} color={cat.type === "income" ? "#1C4532" : "#45241c"} fontWeight="bold">
+            <Text
+              mt={3}
+              color={cat.type === "income" ? "#1C4532" : "#45241c"}
+              fontWeight="bold"
+            >
               {cat.name}
             </Text>
             <Text
