@@ -5,7 +5,6 @@ import {
   updateTransaction,
   getTransactions,
 } from "../api/transaction";
-import type { Data } from "../components/types/types";
 
 export type TransactionType = {
   id?: number;

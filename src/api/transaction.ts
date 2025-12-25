@@ -56,8 +56,13 @@ export async function getSummary() {
 }
 
 export async function deleteTransactions(id: number) {
+  const token = localStorage.getItem("token");
   const res = await fetch(`${API_URL}/transactions/${id}`, {
     method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
   });
   return res.json();
 }
@@ -72,6 +77,7 @@ export async function updateTransaction(data: {
   outcome: string;
   categoryId: number;
 }) {
+  const token = localStorage.getItem("token");
   const safeDate =
     data.date && !isNaN(new Date(data.date).getTime())
       ? new Date(data.date)
@@ -79,7 +85,10 @@ export async function updateTransaction(data: {
 
   const res = await fetch(`${API_URL}/transactions/${data.id}`, {
     method: "PATCH",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
       ...data,
       date: safeDate,

@@ -20,13 +20,28 @@ import {
 } from "react-icons/bs";
 import { useState } from "react";
 import useCategories from "../hooks/useCategories";
-import { DeleteCategoryDialog } from "./categoryComponents/deleteCategoryDialog";
+import { DeleteCategoryDialog } from "./categoryComponents/DeleteCategoryDialog";
+import { CategoryFormModal } from "./categoryComponents/CategoryFormModal";
 
 export default function CategoryPage() {
+  const handleSubmitCategory = async (data: {
+    name: string;
+    emote: string;
+    type: "income" | "expense";
+  }) => {
+    if (editingCategory) {
+      await editCategory(editingCategory.id, data);
+    } else {
+      await addCategory(data);
+    }
+  };
+
   const [selected, setSelected] = useState<any>(null);
   const [isDeleteOpen, setDeleteOpen] = useState(false);
   const { categories, addCategory, editCategory, removeCategory } =
     useCategories();
+  const [isFormOpen, setFormOpen] = useState(false);
+  const [editingCategory, setEditingCategory] = useState<any>(null);
   const [activeType, setActiveType] = useState<"income" | "expense">("income");
 
   const filteredCategories = categories.filter(
@@ -54,6 +69,10 @@ export default function CategoryPage() {
           bg="#1C4532"
           color="white"
           _hover={{ bg: "#1c4532db" }}
+          onClick={() => {
+            setEditingCategory(null);
+            setFormOpen(true);
+          }}
         >
           New Category
         </Button>
@@ -121,6 +140,10 @@ export default function CategoryPage() {
                     isDisabled={cat.isUsed}
                     variant="ghost"
                     color={cat.type === "income" ? "#1C4532" : "#45241c"}
+                    onClick={() => {
+                      setEditingCategory(cat);
+                      setFormOpen(true);
+                    }}
                   />
                 </Tooltip>
                 <Tooltip
@@ -174,6 +197,12 @@ export default function CategoryPage() {
           setDeleteOpen(false);
           setSelected(null);
         }}
+      />
+      <CategoryFormModal
+        isOpen={isFormOpen}
+        onClose={() => setFormOpen(false)}
+        onSubmit={handleSubmitCategory}
+        initialData={editingCategory}
       />
     </Container>
   );

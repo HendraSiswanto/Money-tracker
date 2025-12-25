@@ -32,18 +32,11 @@ import {
 import { useState, useRef } from "react";
 
 import { BsPenFill, BsTrash3Fill } from "react-icons/bs";
-import { useTransactions } from "../hooks/useTransactions";
+import {
+  useTransactions,
+  type TransactionType,
+} from "../hooks/useTransactions";
 import HisSkeleton from "./skeleton/HisSkeleton";
-
-interface allDataIncome {
-  id?: number;
-  outcome: string;
-  type: string;
-  amount: number;
-  date: string;
-  note?: string;
-  timestamp: number;
-}
 
 const History: React.FC = () => {
   const {
@@ -57,7 +50,7 @@ const History: React.FC = () => {
     removeTransaction,
     balance,
   } = useTransactions();
-  const [editData, setEditData] = useState<allDataIncome | null>(null);
+  const [editData, setEditData] = useState<TransactionType | null>(null);
   const [isEditOpen, setEditOpen] = useState(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -80,7 +73,7 @@ const History: React.FC = () => {
     onClose();
   };
 
-  const handleEdit = (item: allDataIncome) => {
+  const handleEdit = (item: TransactionType) => {
     setEditData({
       id: item.id,
       amount: item.amount,
@@ -89,6 +82,7 @@ const History: React.FC = () => {
       type: item.type,
       timestamp: Number(item.timestamp),
       outcome: item.outcome,
+      categoryId: item.categoryId,
     });
     setEditOpen(true);
   };
