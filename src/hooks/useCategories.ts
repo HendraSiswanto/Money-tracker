@@ -17,6 +17,9 @@ export default function useCategories() {
     try {
       const data = await fetchCategories();
       setCategories(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("loadCategories error:", err);
+      setCategories([]);
     } finally {
       setLoading(false);
     }

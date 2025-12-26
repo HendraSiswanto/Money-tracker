@@ -24,33 +24,42 @@ ChartJS.register(
 
 const LineCard: React.FC = () => {
   const { transactions = [] } = useTransactions();
-   const sorted = [...transactions].sort(
+  const sorted = [...transactions].sort(
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
   );
 
+  const labels = sorted.map((t) =>
+    new Date(t.date).toLocaleDateString("en-CA")
+  );
+
+  const incomeData = sorted.map((t) =>
+    t.outcome === "income" ? t.amount : null
+  );
+
+  const expenseData = sorted.map((t) =>
+    t.outcome === "expense" ? t.amount : null
+  );
 
   const chartData = {
-    labels: sorted.map((item) =>
-      new Date(item.date).toLocaleDateString("en-CA")
-    ),
+    labels,
     datasets: [
       {
         label: "Income",
-        data: transactions
-          .filter((t) => t.outcome.toLowerCase() === "income")
-          .map((t) => t.amount),
+        data: incomeData,
         borderColor: "#1c4532db",
         backgroundColor: "#1C4532",
         tension: 0.3,
+        spanGaps: true,
+        pointRadius: 3,
       },
       {
         label: "Expense",
-        data: transactions
-          .filter((t) => t.outcome.toLowerCase() === "expense")
-          .map((t) => t.amount),
+        data: expenseData,
         borderColor: "#45241cd4",
         backgroundColor: "#45241cff",
         tension: 0.3,
+        spanGaps: true,
+        pointRadius: 3,
       },
     ],
   };

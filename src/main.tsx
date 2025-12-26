@@ -8,9 +8,7 @@ import theme from "./theme.ts";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ChakraProvider theme={theme}>
-
-        <App />
-    
+      <App />
     </ChakraProvider>
   </StrictMode>
 );
