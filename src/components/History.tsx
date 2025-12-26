@@ -180,7 +180,7 @@ const History: React.FC = () => {
               border="0 solid"
               boxShadow="1px  1px 2px 2px rgba(0, 0, 0, 0.3)"
               width="150px"
-              bgColor="#f8f8f8"
+          
               _hover={{ bgColor: "#b3b2b2ff" }}
               value={filterOption}
               onChange={(e) => setFilterOption(e.target.value as any)}
@@ -192,11 +192,12 @@ const History: React.FC = () => {
 
             <Select
               color="#696969"
+
               border="0 solid"
               boxShadow="1px  1px 2px 2px rgba(0, 0, 0, 0.3)"
               width="150px"
               value={sortOption}
-              bgColor="#f8f8f8"
+             
               _hover={{ bgColor: "#b3b2b2ff" }}
               onChange={(e) => setSortOption(e.target.value as any)}
             >
@@ -221,12 +222,18 @@ const History: React.FC = () => {
                       border="1px solid"
                       borderColor="gray.300"
                       borderRadius="lg"
+                      position="relative"
                       _hover={{ boxShadow: "md" }}
                     >
-                      <Flex justify="space-between" gap={5} align="center">
-                        <Flex flexDir="column" gap={1}>
+                      <Flex justify="space-between" gap={3} w="100%"  >
+                        <Flex flexDir="column" gap={1} w="100%" pt={5} >
                           <Flex justify="center">
                             <Badge
+                            
+                              position="absolute"
+                              top="18px"
+                              left="50%"
+                              transform="translateX(-50%)"
                               colorScheme={
                                 item.outcome === "income" ? "green" : "red"
                               }
@@ -271,7 +278,7 @@ const History: React.FC = () => {
                           )}
                         </Flex>
 
-                        <Flex align="center" gap={3}>
+                        <Flex align="center" gap={2}>
                           <Text
                             fontWeight="bold"
                             color={
@@ -311,13 +318,19 @@ const History: React.FC = () => {
                   <Box
                     p={4}
                     border="1px solid"
-                    borderColor="green.300"
+                    borderColor="gray.300"
                     borderRadius="lg"
-                    bg="green.50"
                   >
-                    <Flex justify="space-between">
-                      <Text fontWeight="bold">Balance</Text>
-                      <Text fontWeight="bold">
+                    <Flex justify="space-between" align="center">
+                      <Text fontWeight="semibold" color="gray.600">
+                        Balance
+                      </Text>
+
+                      <Text
+                        fontWeight="bold"
+                        fontSize="lg"
+                        color={balance >= 0 ? "#1C4532" : "#45241cff"}
+                      >
                         {rupiahFormat.format(balance)}
                       </Text>
                     </Flex>
@@ -326,7 +339,22 @@ const History: React.FC = () => {
               )}
             </>
           ) : (
-            ""
+            <Box
+              p={10}
+              textAlign="center"
+              border="1px dashed"
+              borderColor="gray.300"
+              borderRadius="lg"
+              color="gray.500"
+            >
+              <Text fontSize="lg" fontWeight="semibold">
+                No transactions yet
+              </Text>
+
+              <Text fontSize="sm" mt={2}>
+                Start by adding your first income or expense
+              </Text>
+            </Box>
           )}
         </Stack>
       </Container>
