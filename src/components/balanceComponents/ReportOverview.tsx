@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, Tooltip as ChakraTooltip } from "@chakra-ui/react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { useTransactions } from "../../hooks/useTransactions";
@@ -64,11 +64,11 @@ export default function ReportOverview({ selectedMonth }: Props) {
       borderRadius="lg"
       border="1px solid #605f5f37"
       boxShadow="5px 5px 10px #605f5f37"
-      
       px={5}
       mt={6}
       h="220px"
       flexDir="column"
+      
     >
       <Flex gap={6} alignItems="center" justifyContent="center">
         <Box
@@ -86,18 +86,56 @@ export default function ReportOverview({ selectedMonth }: Props) {
           <Doughnut data={data} options={options} />
         </Box>
 
-        <Flex flexDir="column" justifyContent="center" gap="2px">
-          <Text fontSize="sm" fontWeight="bold" color="#1C4532">
-            Rp {income.toLocaleString()}
-          </Text>
+        <Flex flexDir="column" w="100px" justifyContent="center" gap="2px" pr={3}>
+          <ChakraTooltip
+            label={`Rp ${income.toLocaleString("id-ID")}`}
+            hasArrow
+          >
+            <Text
+              fontSize="sm"
+              fontWeight="bold"
+              color="#1C4532"
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              isTruncated
+            >
+              Rp {income.toLocaleString("id-ID")}
+            </Text>
+          </ChakraTooltip>
+          <ChakraTooltip
+            label={`Rp ${expense.toLocaleString("id-ID")}`}
+            hasArrow
+          >
+            <Text
+              fontSize="sm"
+              fontWeight="bold"
+              color="#1C4532"
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              isTruncated
+            >
+              Rp {expense.toLocaleString("id-ID")}
+            </Text>
+          </ChakraTooltip>
 
-          <Text fontSize="sm" fontWeight="bold" color="#1C4532">
-            Rp {expense.toLocaleString()}
-          </Text>
-
-          <Text fontSize="sm" fontWeight="bold" color="#1C4532">
-            Rp {balance.toLocaleString()}
-          </Text>
+          <ChakraTooltip
+            label={`Rp ${balance.toLocaleString("id-ID")}`}
+            hasArrow
+          >
+            <Text
+              fontSize="sm"
+              fontWeight="bold"
+              color="#1C4532"
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              isTruncated
+            >
+              Rp {balance.toLocaleString("id-ID")}
+            </Text>
+          </ChakraTooltip>
         </Flex>
       </Flex>
     </Box>

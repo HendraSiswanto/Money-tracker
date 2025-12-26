@@ -164,7 +164,7 @@ const History: React.FC = () => {
         </AlertDialogOverlay>
       </AlertDialog>
 
-      <Container maxW="container.xl" mt={8}>
+      <Container maxW="container.xl" mt={8} mb={10}>
         <Flex justify="space-between" mb={6} gap={4} wrap="wrap">
           <Heading
             size="lg"
@@ -263,7 +263,7 @@ const History: React.FC = () => {
                             {new Date(item.date).toLocaleDateString("id-ID")}
                           </Text>
 
-                          {item.note && (
+                          {item.note ? (
                             <Tooltip label={item.note}>
                               <Text
                                 fontSize="sm"
@@ -275,7 +275,15 @@ const History: React.FC = () => {
                                 {item.note}
                               </Text>
                             </Tooltip>
-                          )}
+                          ) :  <Text
+                                fontSize="sm"
+                                fontWeight="bold"
+                                color="gray.500"
+                                isTruncated
+                                maxW="180px"
+                              >
+                                No Note
+                              </Text>}
                         </Flex>
 
                         <Flex align="center" gap={2}>

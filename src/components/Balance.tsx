@@ -106,7 +106,7 @@ export default function Balance() {
           />
         </Box>
 
-        <Grid templateColumns={{ base: "1fr", md: "400px 1fr" }} gap={5} mt={2}>
+        <Grid templateColumns={{ base: "1fr", md: "420px 1fr" }} gap={5} mt={2}>
           <Box w="100%" h="160px">
             <ReportOverview selectedMonth={selectedMonth} />
           </Box>
