@@ -9,8 +9,7 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import type { ChartEvent, ActiveElement } from "chart.js";
-import dataExpense from "../../data/dataExpense";
-import dataIncome from "../../data/dataIncome";
+import useCategories from "../../hooks/useCategories";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -23,17 +22,18 @@ type BarCardProps = {
 
 export default function BarCard({ active, transactions ,selectedMonth, onMonthChange}: BarCardProps) {
  
-  const categories =
-    active === "income"
-      ? dataIncome.map((c) => c.in)
-      : dataExpense.map((c) => c.out);
+const {categories} = useCategories()
+
+  const category = categories.filter(
+  (c) => c.type === active
+);
 
   const filtered = transactions.filter((t) => {
     const month = new Date(t.date).getMonth();
     return month === selectedMonth;
   });
   const categoryTotals: Record<string, number> = {};
-  categories.forEach((c) => (categoryTotals[c] = 0));
+  category.forEach((c) => (categoryTotals[c.name] = 0));
 
   filtered.forEach((t) => {
     if (categoryTotals[t.type] !== undefined) {
@@ -41,7 +41,7 @@ export default function BarCard({ active, transactions ,selectedMonth, onMonthCh
     }
   });
 
-  const labels = categories;
+ const labels = category.map((c) => c.name);
   const values = labels.map((l) => categoryTotals[l]);
 
   const data = {
