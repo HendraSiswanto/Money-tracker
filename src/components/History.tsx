@@ -33,7 +33,7 @@ import {
   useTransactions,
   type TransactionType,
 } from "../hooks/useTransactions";
-import HisSkeleton from "./skeleton/HisSkeleton";
+import HistorySkeleton from "./skeleton/HistorySkeleton";
 
 const History: React.FC = () => {
   const {
@@ -164,208 +164,198 @@ const History: React.FC = () => {
         </AlertDialogOverlay>
       </AlertDialog>
 
-      <Container maxW="container.xl" mt={8} mb={10}>
-        <Flex justify="space-between" mb={6} gap={4} wrap="wrap">
-          <Heading
-            size="lg"
-            bgGradient="linear(to-r, #54bd8cff, #45241cd4)"
-            bgClip="text"
-          >
-            Transaction History
-          </Heading>
-
-          <Flex gap={3}>
-            <Select
-              color="#696969"
-              border="0 solid"
-              boxShadow="1px  1px 2px 2px rgba(0, 0, 0, 0.3)"
-              width="150px"
-          
-              _hover={{ bgColor: "#b3b2b2ff" }}
-              value={filterOption}
-              onChange={(e) => setFilterOption(e.target.value as any)}
+      {isLoading ? (
+        <HistorySkeleton />
+      ) : (
+        <Container maxW="container.xl" mt={8} mb={10}>
+          <Flex justify="space-between" mb={6} gap={4} wrap="wrap">
+            <Heading
+              size="lg"
+              bgGradient="linear(to-r, #54bd8cff, #45241cd4)"
+              bgClip="text"
             >
-              <option value="all">All</option>
-              <option value="income">Income</option>
-              <option value="expense">Expense</option>
-            </Select>
+              Transaction History
+            </Heading>
 
-            <Select
-              color="#696969"
+            <Flex gap={3}>
+              <Select
+                color="#696969"
+                border="0 solid"
+                boxShadow="1px  1px 2px 2px rgba(0, 0, 0, 0.3)"
+                width="150px"
+                _hover={{ bgColor: "#b3b2b2ff" }}
+                value={filterOption}
+                onChange={(e) => setFilterOption(e.target.value as any)}
+              >
+                <option value="all">All</option>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+              </Select>
 
-              border="0 solid"
-              boxShadow="1px  1px 2px 2px rgba(0, 0, 0, 0.3)"
-              width="150px"
-              value={sortOption}
-             
-              _hover={{ bgColor: "#b3b2b2ff" }}
-              onChange={(e) => setSortOption(e.target.value as any)}
-            >
-              <option value="newest">Newest</option>
-              <option value="oldest">Oldest</option>
-              <option value="high">Highest</option>
-              <option value="low">Lowest</option>
-            </Select>
+              <Select
+                color="#696969"
+                border="0 solid"
+                boxShadow="1px  1px 2px 2px rgba(0, 0, 0, 0.3)"
+                width="150px"
+                value={sortOption}
+                _hover={{ bgColor: "#b3b2b2ff" }}
+                onChange={(e) => setSortOption(e.target.value as any)}
+              >
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="high">Highest</option>
+                <option value="low">Lowest</option>
+              </Select>
+            </Flex>
           </Flex>
-        </Flex>
-        <Stack spacing={4}>
-          {transactions.length > 0 ? (
-            <>
-              {isLoading ? (
-                <HisSkeleton />
-              ) : (
-                <>
-                  {transactions.map((item) => (
-                    <Box
-                      key={item.id}
-                      p={4}
-                      border="1px solid"
-                      borderColor="gray.300"
-                      borderRadius="lg"
-                      position="relative"
-                      _hover={{ boxShadow: "md" }}
-                    >
-                      <Flex justify="space-between" gap={3} w="100%"  >
-                        <Flex flexDir="column" gap={1} w="100%" pt={5} >
-                          <Flex justify="center">
-                            <Badge
-                            
-                              position="absolute"
-                              top="18px"
-                              left="50%"
-                              transform="translateX(-50%)"
-                              colorScheme={
-                                item.outcome === "income" ? "green" : "red"
-                              }
-                              color={
-                                item.outcome === "income"
-                                  ? "#1C4532"
-                                  : "#45241cff"
-                              }
-                              px={3}
-                              py={1}
-                              mb={1}
-                              borderRadius="full"
-                              textTransform="capitalize"
-                            >
-                              {item.outcome.toUpperCase()}
-                            </Badge>
-                          </Flex>
-
-                          <Text
-                            fontWeight="bold"
-                            fontSize="sm"
-                            color="gray.500"
-                          >
-                            {item.type}
-                          </Text>
-                          <Text fontSize="sm" color="gray.500">
-                            {new Date(item.date).toLocaleDateString("id-ID")}
-                          </Text>
-
-                          {item.note ? (
-                            <Tooltip label={item.note}>
-                              <Text
-                                fontSize="sm"
-                                fontWeight="bold"
-                                color="gray.500"
-                                isTruncated
-                                maxW="180px"
-                              >
-                                {item.note}
-                              </Text>
-                            </Tooltip>
-                          ) :  <Text
-                                fontSize="sm"
-                                fontWeight="bold"
-                                color="gray.500"
-                                isTruncated
-                                maxW="180px"
-                              >
-                                No Note
-                              </Text>}
-                        </Flex>
-
-                        <Flex align="center" gap={2}>
-                          <Text
-                            fontWeight="bold"
+          <Stack spacing={4}>
+            {transactions.length > 0 ? (
+              <>
+                {transactions.map((item) => (
+                  <Box
+                    key={item.id}
+                    p={4}
+                    border="1px solid"
+                    borderColor="gray.300"
+                    borderRadius="lg"
+                    position="relative"
+                    _hover={{ boxShadow: "md" }}
+                  >
+                    <Flex justify="space-between" gap={3} w="100%">
+                      <Flex flexDir="column" gap={1} w="100%" pt={5}>
+                        <Flex justify="center">
+                          <Badge
+                            position="absolute"
+                            top="18px"
+                            left="50%"
+                            transform="translateX(-50%)"
+                            colorScheme={
+                              item.outcome === "income" ? "green" : "red"
+                            }
                             color={
                               item.outcome === "income"
                                 ? "#1C4532"
                                 : "#45241cff"
                             }
+                            px={3}
+                            py={1}
+                            mb={1}
+                            borderRadius="full"
+                            textTransform="capitalize"
                           >
-                            {rupiahFormat.format(item.amount)}
-                          </Text>
-
-                          <IconButton
-                            bgColor="green.100"
-                            color="green.600"
-                            _hover={{ bg: "green.50" }}
-                            aria-label="Edit"
-                            icon={<BsPenFill />}
-                            size="sm"
-                            onClick={() => handleEdit(item)}
-                          />
-
-                          <IconButton
-                            aria-label="Delete"
-                            icon={<BsTrash3Fill />}
-                            size="sm"
-                            colorScheme="red"
-                            onClick={() => {
-                              if (item.id !== undefined) {
-                                handleOpenDialog(item.id);
-                              }
-                            }}
-                          />
+                            {item.outcome.toUpperCase()}
+                          </Badge>
                         </Flex>
-                      </Flex>
-                    </Box>
-                  ))}
-                  <Box
-                    p={4}
-                    border="1px solid"
-                    borderColor="gray.300"
-                    borderRadius="lg"
-                  >
-                    <Flex justify="space-between" align="center">
-                      <Text fontWeight="semibold" color="gray.600">
-                        Balance
-                      </Text>
 
-                      <Text
-                        fontWeight="bold"
-                        fontSize="lg"
-                        color={balance >= 0 ? "#1C4532" : "#45241cff"}
-                      >
-                        {rupiahFormat.format(balance)}
-                      </Text>
+                        <Text fontWeight="bold" fontSize="sm" color="gray.500">
+                          {item.type}
+                        </Text>
+                        <Text fontSize="sm" color="gray.500">
+                          {new Date(item.date).toLocaleDateString("id-ID")}
+                        </Text>
+
+                        {item.note ? (
+                          <Tooltip label={item.note}>
+                            <Text
+                              fontSize="sm"
+                              fontWeight="bold"
+                              color="gray.500"
+                              isTruncated
+                              maxW="180px"
+                            >
+                              {item.note}
+                            </Text>
+                          </Tooltip>
+                        ) : (
+                          <Text
+                            fontSize="sm"
+                            fontWeight="bold"
+                            color="gray.500"
+                            isTruncated
+                            maxW="180px"
+                          >
+                            No Note
+                          </Text>
+                        )}
+                      </Flex>
+
+                      <Flex align="center" gap={2}>
+                        <Text
+                          fontWeight="bold"
+                          color={
+                            item.outcome === "income" ? "#1C4532" : "#45241cff"
+                          }
+                        >
+                          {rupiahFormat.format(item.amount)}
+                        </Text>
+
+                        <IconButton
+                          bgColor="green.100"
+                          color="green.600"
+                          _hover={{ bg: "green.50" }}
+                          aria-label="Edit"
+                          icon={<BsPenFill />}
+                          size="sm"
+                          onClick={() => handleEdit(item)}
+                        />
+
+                        <IconButton
+                          aria-label="Delete"
+                          icon={<BsTrash3Fill />}
+                          size="sm"
+                          colorScheme="red"
+                          onClick={() => {
+                            if (item.id !== undefined) {
+                              handleOpenDialog(item.id);
+                            }
+                          }}
+                        />
+                      </Flex>
                     </Flex>
                   </Box>
-                </>
-              )}
-            </>
-          ) : (
-            <Box
-              p={10}
-              textAlign="center"
-              border="1px dashed"
-              borderColor="gray.300"
-              borderRadius="lg"
-              color="gray.500"
-            >
-              <Text fontSize="lg" fontWeight="semibold">
-                No transactions yet
-              </Text>
+                ))}
+                <Box
+                  p={4}
+                  border="1px solid"
+                  borderColor="gray.300"
+                  borderRadius="lg"
+                >
+                  <Flex justify="space-between" align="center">
+                    <Text fontWeight="semibold" color="gray.600">
+                      Balance
+                    </Text>
 
-              <Text fontSize="sm" mt={2}>
-                Start by adding your first income or expense
-              </Text>
-            </Box>
-          )}
-        </Stack>
-      </Container>
+                    <Text
+                      fontWeight="bold"
+                      fontSize="lg"
+                      color={balance >= 0 ? "#1C4532" : "#45241cff"}
+                    >
+                      {rupiahFormat.format(balance)}
+                    </Text>
+                  </Flex>
+                </Box>
+              </>
+            ) : (
+              <Box
+                p={10}
+                textAlign="center"
+                border="1px dashed"
+                borderColor="gray.300"
+                borderRadius="lg"
+                color="gray.500"
+              >
+                <Text fontSize="lg" fontWeight="semibold">
+                  No transactions yet
+                </Text>
+
+                <Text fontSize="sm" mt={2}>
+                  Start by adding your first income or expense
+                </Text>
+              </Box>
+            )}
+          </Stack>
+        </Container>
+      )}
     </>
   );
 };

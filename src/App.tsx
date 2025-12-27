@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import MainPage from "./components/MainPage";
 import Login from "./components/Login";
 import type { Sided } from "./hooks/useImage";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Register from "./components/Register";
 
 export interface moneyQuery {
@@ -19,7 +19,7 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
+ 
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -39,7 +39,6 @@ function App() {
           }
         />
       </Routes>
-    </BrowserRouter>
   );
 }
 

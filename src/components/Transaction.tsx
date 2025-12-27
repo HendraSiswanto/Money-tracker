@@ -11,11 +11,11 @@ import {
 import Expense from "./inputForms/Expense";
 import { useState } from "react";
 import Income from "./inputForms/Income";
-import TrSkeleton from "./skeleton/HisSkeleton";
 import { useTransactions } from "../hooks/useTransactions";
 import BalanceCard from "./charts/UserCard";
 import LineCard from "./charts/LineCard";
 import useCategories from "../hooks/useCategories";
+import TransactionSkeleton from "./skeleton/TransactionSkeleton";
 
 interface allDataIncome {
   id?: number;
@@ -58,88 +58,92 @@ const Transaction: React.FC = () => {
   };
 
   const latestFive = (transactions ?? []).slice(0, 5);
-  const incomeCategories = categories.filter(
-  (c) => c.type === "income"
-);
+  const incomeCategories = categories.filter((c) => c.type === "income");
 
-const expenseCategories = categories.filter(
-  (c) => c.type === "expense"
-);
+  const expenseCategories = categories.filter((c) => c.type === "expense");
   return (
     <>
-      <Container display="flex" flexDirection="row" maxW="container.xl" mt={8}>
-        <Flex flexDirection="column" align="flex-start">
-          <BalanceCard
-            balance={balance}
-            totalIncome={totalIncome}
-            totalExpense={totalExpense}
-            userName="Hendra Giswanto"
-            userImage="/assets/profile.png"
-          ></BalanceCard>
+      {isLoading ? (
+        <TransactionSkeleton />
+      ) : (
+        <Container
+          display="flex"
+          flexDirection="row"
+          maxW="container.xl"
+          mt={8}
+        >
+          <Flex flexDirection="column" align="flex-start">
+            <BalanceCard
+              balance={balance}
+              totalIncome={totalIncome}
+              totalExpense={totalExpense}
+              userName="Hendra Giswanto"
+              userImage="/assets/profile.png"
+            ></BalanceCard>
 
-          <Card
-            width="fit-content"
-            mt={6}
-            px="44px"
-            bgColor="transparent"
-            border="1px solid #605f5f37"
-            boxShadow="5px 5px 10px #605f5f37"
-            alignItems="center"
-            gap={2}
-          >
-            <Heading
-              size="md"
-              mb={4}
-              textAlign="center"
-              color="#1C4532"
-              fontWeight="bold"
-              mt={5}
-            >
-              START TRACKING
-            </Heading>
-
-            <Box
-              display="flex"
-              bg="#E6E6E6"
-              p="6px"
-              borderRadius="full"
+            <Card
+              width="fit-content"
+              mt={6}
+              px="44px"
+              bgColor="transparent"
+              border="1px solid #605f5f37"
+              boxShadow="5px 5px 10px #605f5f37"
+              alignItems="center"
               gap={2}
-              mt={2}
             >
-              <Button
-                flex="1"
-                borderRadius="full"
-                bgColor={selected === "income" ? "#1C4532" : "transparent"}
-                color={selected === "income" ? "white" : "#1C4532"}
-                _hover={{ bgColor: "#1c4532db", color: "white" }}
-                onClick={() => setSelected("income")}
+              <Heading
+                size="md"
+                mb={4}
+                textAlign="center"
+                color="#1C4532"
+                fontWeight="bold"
+                mt={5}
               >
-                Income 💰
-              </Button>
+                START TRACKING
+              </Heading>
 
-              <Button
-                flex="1"
+              <Box
+                display="flex"
+                bg="#E6E6E6"
+                p="6px"
                 borderRadius="full"
-                bgColor={selected === "expense" ? "#45241cff" : "transparent"}
-                color={selected === "expense" ? "white" : "#45241cff"}
-                _hover={{ bgColor: "#45241cd4", color: "white" }}
-                onClick={() => setSelected("expense")}
+                gap={2}
+                mt={2}
               >
-                Expense 💸
-              </Button>
-            </Box>
-            {selected === "income" ? (
-              <Income categories={incomeCategories} saveIncome={handleSave} />
-            ) : (
-              <Expense categories={expenseCategories} saveExpense={handleSave} />
-            )}
-          </Card>
-        </Flex>
-        {transactions.length > 0 ? (
-          <>
-            {isLoading ? (
-              <TrSkeleton />
-            ) : (
+                <Button
+                  flex="1"
+                  borderRadius="full"
+                  bgColor={selected === "income" ? "#1C4532" : "transparent"}
+                  color={selected === "income" ? "white" : "#1C4532"}
+                  _hover={{ bgColor: "#1c4532db", color: "white" }}
+                  onClick={() => setSelected("income")}
+                >
+                  Income 💰
+                </Button>
+
+                <Button
+                  flex="1"
+                  borderRadius="full"
+                  bgColor={selected === "expense" ? "#45241cff" : "transparent"}
+                  color={selected === "expense" ? "white" : "#45241cff"}
+                  _hover={{ bgColor: "#45241cd4", color: "white" }}
+                  onClick={() => setSelected("expense")}
+                >
+                  Expense 💸
+                </Button>
+              </Box>
+              {selected === "income" ? (
+                <Income categories={incomeCategories} saveIncome={handleSave} />
+              ) : (
+                <Expense
+                  categories={expenseCategories}
+                  saveExpense={handleSave}
+                />
+              )}
+            </Card>
+          </Flex>
+          {transactions.length > 0 ? (
+            <>
               <Box mt="2px" width="80%" maxW="900px" ml={10}>
                 <Text
                   fontSize="sm"
@@ -196,21 +200,37 @@ const expenseCategories = categories.filter(
                 ))}
                 <LineCard></LineCard>
               </Box>
-            )}
-          </>
-        ) : (
-          <div
-            style={{
-              height: 260,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            No data yet
-          </div>
-        )}
-      </Container>
+            </>
+          ) : (
+            <Box
+              p={10}
+              textAlign="center"
+              border="1px dashed"
+              borderColor="gray.300"
+              borderRadius="lg"
+            >
+              <Text fontSize="xl" fontWeight="bold" color="gray.600">
+                Start tracking your money 💸
+              </Text>
+
+              <Text mt={2} color="gray.500">
+                Add your first income or expense to see insights, charts, and
+                balance.
+              </Text>
+
+              <Button
+                mt={6}
+                bg="#1C4532"
+                color="white"
+                _hover={{ bg: "#1c4532db" }}
+                onClick={() => setSelected("income")}
+              >
+                Add First Transaction
+              </Button>
+            </Box>
+          )}
+        </Container>
+      )}
     </>
   );
 };
