@@ -12,9 +12,12 @@ const HistorySkeleton = () => {
     <>
       <Container maxW="container.xl" mt={8} mb={10}>
         <Stack spacing={4}>
-          <Flex justify="flex-end" gap={3}>
-            <Skeleton height="40px" w="150px" />
-            <Skeleton height="40px" w="150px" />
+          <Flex justifyContent="space-between">
+            <Skeleton height="40px" ml={4} w="300px" />
+            <Flex justify="flex-end" gap={3}>
+              <Skeleton height="40px" w="150px" />
+              <Skeleton height="40px" w="150px" />
+            </Flex>
           </Flex>
 
           {Array.from({ length: 6 }).map((_, i) => (
