@@ -9,7 +9,7 @@ import {
 
 export default function useCategories() {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
 
   const loadCategories = async () => {
     setLoading(true);
@@ -21,7 +21,9 @@ export default function useCategories() {
       console.error("loadCategories error:", err);
       setCategories([]);
     } finally {
+      setTimeout(() => {
       setLoading(false);
+    }, 500);
     }
   };
 
@@ -50,7 +52,7 @@ export default function useCategories() {
 
   return {
     categories,
-    loading,
+    isLoading,
     addCategory,
     editCategory,
     removeCategory,

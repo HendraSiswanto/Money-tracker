@@ -48,7 +48,7 @@ const TransactionSkeleton = () => {
               ))}
             </Stack>
 
-            <Skeleton mt={10} height="280px" borderRadius="lg" />
+            <Skeleton mt={14} height="280px" borderRadius="lg" />
           </Box>
         </Flex>
       </Container>

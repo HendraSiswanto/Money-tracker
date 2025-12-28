@@ -58,7 +58,9 @@ export function useTransactions() {
       console.error(err);
       setTransactions([]);
     } finally {
+       setTimeout(() => {
       setIsLoading(false);
+    }, 500);
     }
   };
   const saveTransaction = async (
@@ -93,7 +95,9 @@ export function useTransactions() {
 
     setTransactions(latest);
 
-    setIsLoading(false);
+ setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
   };
 
   const removeTransaction = async (id: number) => {
