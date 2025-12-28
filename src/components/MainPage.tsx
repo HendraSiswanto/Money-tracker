@@ -14,6 +14,9 @@ import Transaction from "./Transaction";
 import History from "./History";
 import Balance from "./Balance";
 import Category from "./Category";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { FiLogOut } from "react-icons/fi";
 
 interface Props {
   onSelectImage: (imageData: Sided) => void;
@@ -21,7 +24,24 @@ interface Props {
 }
 
 const MainPage = ({ onSelectImage, selectImage }: Props) => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("activeMenu");
+    onSelectImage(null as any);
+    navigate("/login");
+  };
+
   const { data } = useImage();
+
+  useEffect(() => {
+    const saved = localStorage.getItem("activeMenu");
+    if (!saved || !data.length) return;
+
+    const found = data.find((d) => d.name === saved);
+    if (found) onSelectImage(found);
+  }, [data]);
 
   const renderPage = () => {
     switch (selectImage?.name) {
@@ -46,8 +66,9 @@ const MainPage = ({ onSelectImage, selectImage }: Props) => {
           left="0"
           top="0"
           bottom="0"
+          w="100px"
           bgColor="#1C4532"
-          justifyItems="center"
+          display="flex"
           flexDirection="column"
           alignItems="center"
         >
@@ -70,7 +91,10 @@ const MainPage = ({ onSelectImage, selectImage }: Props) => {
                       : ""
                   }
                   height="80px"
-                  onClick={() => onSelectImage(imageData)}
+                  onClick={() => {
+                    localStorage.setItem("activeMenu", imageData.name);
+                    onSelectImage(imageData);
+                  }}
                   _hover={{
                     bgColor: "#947f7f4b",
                     width: "100px",
@@ -86,6 +110,21 @@ const MainPage = ({ onSelectImage, selectImage }: Props) => {
               </ListItem>
             ))}
           </List>
+
+          <Box mt="auto" mb={4}>
+            <Button
+              width="100%"
+              bg="transparent"
+              color="#d0421eff"
+              _hover={{ bg: "#45241cff", color: "white" }}
+              onClick={handleLogout}
+            >
+              <VStack spacing={1}>
+                <FiLogOut size={18} />
+                <Text fontSize="12px">Logout</Text>
+              </VStack>
+            </Button>
+          </Box>
         </Box>
         <Box flex={1} ml="50px">
           {renderPage()}
