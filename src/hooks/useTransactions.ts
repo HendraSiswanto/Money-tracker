@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   createTransaction,
   deleteTransactions,
@@ -26,7 +26,11 @@ export function useTransactions() {
   const [isLoading, setIsLoading] = useState(false);
   const [sortOption, setSortOption] = useState<SortOption>("newest");
   const [filterOption, setFilterOption] = useState<FilterOption>("all");
-
+  const [filters, setFilters] = useState({
+  month: null as number | null,
+  type: null as "income" | "expense" | null,
+  search: "",
+});
   useEffect(() => {
     loadTransactions();
   }, []);
@@ -58,9 +62,9 @@ export function useTransactions() {
       console.error(err);
       setTransactions([]);
     } finally {
-       setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
     }
   };
   const saveTransaction = async (
@@ -95,7 +99,7 @@ export function useTransactions() {
 
     setTransactions(latest);
 
- setTimeout(() => {
+    setTimeout(() => {
       setIsLoading(false);
     }, 500);
   };
@@ -220,6 +224,26 @@ export function useTransactions() {
       date: maxDate,
     };
   })();
+
+ const filteredTransactions = useMemo(() => {
+  return transactions.filter((t) => {
+    const date = new Date(t.date);
+
+    if (filters.month !== null && date.getMonth() !== filters.month)
+      return false;
+
+    if (filters.type && t.outcome !== filters.type)
+      return false;
+
+    if (
+      filters.search &&
+      !t.outcome.toLowerCase().includes(filters.search.toLowerCase())
+    )
+      return false;
+
+    return true;
+  });
+}, [transactions, filters]);
   return {
     transactions: filtered,
     isLoading,
