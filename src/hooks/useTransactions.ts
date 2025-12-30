@@ -27,10 +27,11 @@ export function useTransactions() {
   const [sortOption, setSortOption] = useState<SortOption>("newest");
   const [filterOption, setFilterOption] = useState<FilterOption>("all");
   const [filters, setFilters] = useState({
-  month: null as number | null,
-  type: null as "income" | "expense" | null,
-  search: "",
-});
+    month: null as number | null,
+    year: new Date().getFullYear(),
+    type: null as "income" | "expense" | null,
+    search: "",
+  });
   useEffect(() => {
     loadTransactions();
   }, []);
@@ -225,25 +226,17 @@ export function useTransactions() {
     };
   })();
 
- const filteredTransactions = useMemo(() => {
-  return transactions.filter((t) => {
-    const date = new Date(t.date);
+  const filteredByDate = useMemo(() => {
+    return transactions.filter((t) => {
+      const date = new Date(t.date);
 
-    if (filters.month !== null && date.getMonth() !== filters.month)
-      return false;
+      if (filters.year && date.getFullYear() !== filters.year) return false;
+      if (filters.month !== null && date.getMonth() !== filters.month)
+        return false;
 
-    if (filters.type && t.outcome !== filters.type)
-      return false;
-
-    if (
-      filters.search &&
-      !t.outcome.toLowerCase().includes(filters.search.toLowerCase())
-    )
-      return false;
-
-    return true;
-  });
-}, [transactions, filters]);
+      return true;
+    });
+  }, [transactions, filters.year, filters.month]);
   return {
     transactions: filtered,
     isLoading,
