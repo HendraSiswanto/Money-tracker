@@ -239,6 +239,7 @@ export function useTransactions() {
   }, [transactions, filters.year, filters.month]);
   return {
     transactions: filtered,
+    filteredByDate,
     isLoading,
     sortOption,
     filterOption,
