@@ -225,21 +225,35 @@ export function useTransactions() {
       date: maxDate,
     };
   })();
+const historyTransactions = useMemo(() => {
+  return transactions
+    .filter((t) => {
+      const d = new Date(t.date);
 
-  const filteredByDate = useMemo(() => {
-    return transactions.filter((t) => {
-      const date = new Date(t.date);
-
-      if (filters.year && date.getFullYear() !== filters.year) return false;
-      if (filters.month !== null && date.getMonth() !== filters.month)
-        return false;
+      if (filters.year && d.getFullYear() !== filters.year) return false;
+      if (filters.month !== null && d.getMonth() !== filters.month) return false;
 
       return true;
+    })
+    .sort((a, b) => {
+      if (sortOption === "newest") return b.timestamp - a.timestamp;
+      if (sortOption === "oldest") return a.timestamp - b.timestamp;
+      if (sortOption === "high") return b.amount - a.amount;
+      if (sortOption === "low") return a.amount - b.amount;
+      return 0;
+    })
+    .filter((item) => {
+      if (filterOption === "income") return item.outcome === "income";
+      if (filterOption === "expense") return item.outcome === "expense";
+      return true;
     });
-  }, [transactions, filters.year, filters.month]);
+}, [transactions, filters, sortOption, filterOption]);
+
   return {
     transactions: filtered,
-    filteredByDate,
+    historyTransactions,
+    setFilters,
+    filters,
     isLoading,
     sortOption,
     filterOption,

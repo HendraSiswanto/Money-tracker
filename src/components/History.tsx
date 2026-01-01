@@ -37,7 +37,9 @@ import HistorySkeleton from "./skeleton/HistorySkeleton";
 
 const History: React.FC = () => {
   const {
-    transactions,
+    historyTransactions,
+    filters,
+    setFilters,
     isLoading,
     sortOption,
     filterOption,
@@ -206,12 +208,31 @@ const History: React.FC = () => {
                 <option value="high">Highest</option>
                 <option value="low">Lowest</option>
               </Select>
+              <Select
+                width="120px"
+                value={filters.year}
+                onChange={(e) =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    year: Number(e.target.value),
+                  }))
+                }
+              >
+                {Array.from({ length: 5 }).map((_, i) => {
+                  const year = new Date().getFullYear() - i;
+                  return (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  );
+                })}
+              </Select>
             </Flex>
           </Flex>
           <Stack spacing={4}>
-            {transactions.length > 0 ? (
+            {historyTransactions.length > 0 ? (
               <>
-                {transactions.map((item) => (
+                {historyTransactions.map((item) => (
                   <Box
                     key={item.id}
                     p={4}
