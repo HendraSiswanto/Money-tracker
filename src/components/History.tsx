@@ -53,7 +53,9 @@ const History: React.FC = () => {
   const [editData, setEditData] = useState<TransactionType | null>(null);
   const [isEditOpen, setEditOpen] = useState(false);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
-
+  const [deleteMode, setDeleteMode] = useState<"single" | "multiple" | null>(
+    null
+  );
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [deletedId, setDeletedId] = useState<number | null>(null);
   const cancelRef = useRef<HTMLButtonElement>(null);
@@ -70,13 +72,23 @@ const History: React.FC = () => {
   };
 
   const handleOpenDialog = (id: number) => {
+    setDeleteMode("single");
     setDeletedId(id);
     onOpen();
   };
 
-  const handleDelete = async () => {
-    if (!deletedId) return;
-    await removeTransaction(deletedId);
+  const handleConfirmDelete = async () => {
+    if (deleteMode === "single" && deletedId) {
+      await removeTransaction(deletedId);
+    }
+
+    if (deleteMode === "multiple") {
+      await Promise.all(selectedIds.map((id) => removeTransaction(id)));
+      setSelectedIds([]);
+    }
+
+    setDeletedId(null);
+    setDeleteMode(null);
     onClose();
   };
 
@@ -155,18 +167,23 @@ const History: React.FC = () => {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Transaction
+              {deleteMode === "multiple"
+                ? "Delete Selected Transactions"
+                : "Delete Transaction"}
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Are you sure you want to delete this transaction?
+              {deleteMode === "multiple"
+                ? `Are you sure you want to delete ${selectedIds.length} transactions?`
+                : "Are you sure you want to delete this transaction?"}
+              ?
             </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button colorScheme="red" onClick={handleDelete} ml={3}>
+              <Button colorScheme="red" onClick={handleConfirmDelete} ml={3}>
                 Delete
               </Button>
             </AlertDialogFooter>
@@ -266,43 +283,43 @@ const History: React.FC = () => {
           <Stack spacing={4}>
             {historyTransactions.length > 0 ? (
               <>
-                <Checkbox
-                  w="fit-content"
-                  ml="10.5px"
-                  fontSize="sm"
-                  fontWeight="bold"
-                  color="#504f4fc4"
-                  borderColor="gray.300"
-                  isChecked={
-                    historyTransactions.length > 0 &&
-                    selectedIds.length === historyTransactions.length
-                  }
-                  isIndeterminate={
-                    selectedIds.length > 0 &&
-                    selectedIds.length < historyTransactions.length
-                  }
-                  onChange={(e) =>
-                    setSelectedIds(
-                      e.target.checked
-                        ? historyTransactions.map((t) => t.id!)
-                        : []
-                    )
-                  }
-                >
-                  Select All
-                </Checkbox>
-                <Button
-                  colorScheme="red"
-                  isDisabled={selectedIds.length === 0}
-                  onClick={async () => {
-                    await Promise.all(
-                      selectedIds.map((id) => removeTransaction(id))
-                    );
-                    setSelectedIds([]);
-                  }}
-                >
-                  Delete Selected ({selectedIds.length})
-                </Button>
+                <Flex justify="space-between">
+                  <Checkbox
+                    w="fit-content"
+                    ml="10.5px"
+                    fontSize="sm"
+                    fontWeight="bold"
+                    color="#504f4fc4"
+                    borderColor="gray.300"
+                    isChecked={
+                      historyTransactions.length > 0 &&
+                      selectedIds.length === historyTransactions.length
+                    }
+                    isIndeterminate={
+                      selectedIds.length > 0 &&
+                      selectedIds.length < historyTransactions.length
+                    }
+                    onChange={(e) =>
+                      setSelectedIds(
+                        e.target.checked
+                          ? historyTransactions.map((t) => t.id!)
+                          : []
+                      )
+                    }
+                  >
+                    Select All
+                  </Checkbox>
+                  <Button
+                    colorScheme="red"
+                    isDisabled={selectedIds.length === 0}
+                    onClick={() => {
+                      setDeleteMode("multiple");
+                      onOpen();
+                    }}
+                  >
+                    Delete Selected ({selectedIds.length})
+                  </Button>
+                </Flex>
                 {historyTransactions.map((item) => (
                   <Box
                     key={item.id}
