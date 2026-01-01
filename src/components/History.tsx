@@ -25,6 +25,7 @@ import {
   Stack,
   Badge,
   IconButton,
+  Checkbox,
 } from "@chakra-ui/react";
 import { useState, useRef } from "react";
 
@@ -51,6 +52,7 @@ const History: React.FC = () => {
   } = useTransactions();
   const [editData, setEditData] = useState<TransactionType | null>(null);
   const [isEditOpen, setEditOpen] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [deletedId, setDeletedId] = useState<number | null>(null);
@@ -60,6 +62,12 @@ const History: React.FC = () => {
     currency: "IDR",
     maximumFractionDigits: 0,
   });
+
+  const toggleSelect = (id: number) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  };
 
   const handleOpenDialog = (id: number) => {
     setDeletedId(id);
@@ -209,7 +217,11 @@ const History: React.FC = () => {
                 <option value="low">Lowest</option>
               </Select>
               <Select
-                width="120px"
+                color="#696969"
+                border="0 solid"
+                boxShadow="1px  1px 2px 2px rgba(0, 0, 0, 0.3)"
+                width="150px"
+                _hover={{ bgColor: "#b3b2b2ff" }}
                 value={filters.year}
                 onChange={(e) =>
                   setFilters((prev) => ({
@@ -228,7 +240,11 @@ const History: React.FC = () => {
                 })}
               </Select>
               <Select
-                width="140px"
+                color="#696969"
+                border="0 solid"
+                boxShadow="1px  1px 2px 2px rgba(0, 0, 0, 0.3)"
+                width="150px"
+                _hover={{ bgColor: "#b3b2b2ff" }}
                 value={filters.month ?? ""}
                 onChange={(e) =>
                   setFilters((prev) => ({
@@ -250,6 +266,43 @@ const History: React.FC = () => {
           <Stack spacing={4}>
             {historyTransactions.length > 0 ? (
               <>
+                <Checkbox
+                  w="fit-content"
+                  ml="10.5px"
+                  fontSize="sm"
+                  fontWeight="bold"
+                  color="#504f4fc4"
+                  borderColor="gray.300"
+                  isChecked={
+                    historyTransactions.length > 0 &&
+                    selectedIds.length === historyTransactions.length
+                  }
+                  isIndeterminate={
+                    selectedIds.length > 0 &&
+                    selectedIds.length < historyTransactions.length
+                  }
+                  onChange={(e) =>
+                    setSelectedIds(
+                      e.target.checked
+                        ? historyTransactions.map((t) => t.id!)
+                        : []
+                    )
+                  }
+                >
+                  Select All
+                </Checkbox>
+                <Button
+                  colorScheme="red"
+                  isDisabled={selectedIds.length === 0}
+                  onClick={async () => {
+                    await Promise.all(
+                      selectedIds.map((id) => removeTransaction(id))
+                    );
+                    setSelectedIds([]);
+                  }}
+                >
+                  Delete Selected ({selectedIds.length})
+                </Button>
                 {historyTransactions.map((item) => (
                   <Box
                     key={item.id}
@@ -260,6 +313,14 @@ const History: React.FC = () => {
                     position="relative"
                     _hover={{ boxShadow: "md" }}
                   >
+                    <Checkbox
+                      position="absolute"
+                      top="10px"
+                      borderColor="gray.300"
+                      left="10px"
+                      isChecked={selectedIds.includes(item.id!)}
+                      onChange={() => toggleSelect(item.id!)}
+                    />
                     <Flex justify="space-between" gap={3} w="100%">
                       <Flex flexDir="column" gap={1} w="100%" pt={5}>
                         <Flex justify="center">
