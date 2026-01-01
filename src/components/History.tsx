@@ -227,6 +227,24 @@ const History: React.FC = () => {
                   );
                 })}
               </Select>
+              <Select
+                width="140px"
+                value={filters.month ?? ""}
+                onChange={(e) =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    month:
+                      e.target.value === "" ? null : Number(e.target.value),
+                  }))
+                }
+              >
+                <option value="">All months</option>
+                {Array.from({ length: 12 }).map((_, i) => (
+                  <option key={i} value={i}>
+                    {new Date(0, i).toLocaleString("en-US", { month: "long" })}
+                  </option>
+                ))}
+              </Select>
             </Flex>
           </Flex>
           <Stack spacing={4}>
