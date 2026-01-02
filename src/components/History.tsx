@@ -213,7 +213,7 @@ const History: React.FC = () => {
                   type="text"
                   color="#696969"
                   border="0 solid"
-                  boxShadow="1px  1px 2px 2px rgba(0, 0, 0, 0.3)"
+                  boxShadow="0  0 0 1px rgba(0, 0, 0, 0.3)"
                   _focus={{
                     outline: "none",
                     borderColor: "#9ecaed",
