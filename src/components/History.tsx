@@ -221,6 +221,7 @@ const History: React.FC = () => {
                   }}
                   _placeholder={{ color: "#615e5e4a" }}
                   placeholder="Search by note…"
+                
                   value={filters.search}
                   onChange={(e) =>
                     setFilters((prev) => ({ ...prev, search: e.target.value }))
@@ -228,7 +229,7 @@ const History: React.FC = () => {
                 />
 
                 {filters.search.length === 0 && (
-                  <InputRightElement>
+                  <InputRightElement mr={2}>
                     <Icon
                       boxSize={4}
                       color="gray.400"
