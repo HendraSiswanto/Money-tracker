@@ -203,6 +203,24 @@ const History: React.FC = () => {
             >
               Transaction History
             </Heading>
+            <Input
+              width="260px"
+              bgColor="transparent"
+              color="black"
+              border="0.5px solid #969696ff"
+              type="text"
+              _focus={{
+                outline: "none",
+                borderColor: "#9ecaed",
+                boxShadow: "0 0 10px #9ecaed",
+              }}
+              _placeholder={{ color: "#615e5e4a" }}
+              placeholder="Search note…"
+              value={filters.search}
+              onChange={(e) =>
+                setFilters((prev) => ({ ...prev, search: e.target.value }))
+              }
+            />
 
             <Flex gap={3}>
               <Select

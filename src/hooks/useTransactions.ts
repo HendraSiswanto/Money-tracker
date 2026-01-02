@@ -225,29 +225,34 @@ export function useTransactions() {
       date: maxDate,
     };
   })();
-const historyTransactions = useMemo(() => {
-  return transactions
-    .filter((t) => {
-      const d = new Date(t.date);
+  const historyTransactions = useMemo(() => {
+    return transactions
+      .filter((t) => {
+        const d = new Date(t.date);
 
-      if (filters.year && d.getFullYear() !== filters.year) return false;
-      if (filters.month !== null && d.getMonth() !== filters.month) return false;
-
-      return true;
-    })
-    .sort((a, b) => {
-      if (sortOption === "newest") return b.timestamp - a.timestamp;
-      if (sortOption === "oldest") return a.timestamp - b.timestamp;
-      if (sortOption === "high") return b.amount - a.amount;
-      if (sortOption === "low") return a.amount - b.amount;
-      return 0;
-    })
-    .filter((item) => {
-      if (filterOption === "income") return item.outcome === "income";
-      if (filterOption === "expense") return item.outcome === "expense";
-      return true;
-    });
-}, [transactions, filters, sortOption, filterOption]);
+        if (filters.year && d.getFullYear() !== filters.year) return false;
+        if (filters.month !== null && d.getMonth() !== filters.month) 
+          return false;
+        if (
+          filters.search &&
+          !t.note?.toLowerCase().includes(filters.search.toLowerCase())
+        )
+          return false;
+        return true;
+      })
+      .sort((a, b) => {
+        if (sortOption === "newest") return b.timestamp - a.timestamp;
+        if (sortOption === "oldest") return a.timestamp - b.timestamp;
+        if (sortOption === "high") return b.amount - a.amount;
+        if (sortOption === "low") return a.amount - b.amount;
+        return 0;
+      })
+      .filter((item) => {
+        if (filterOption === "income") return item.outcome === "income";
+        if (filterOption === "expense") return item.outcome === "expense";
+        return true;
+      });
+  }, [transactions, filters, sortOption, filterOption]);
 
   return {
     transactions: filtered,
