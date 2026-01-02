@@ -26,10 +26,13 @@ import {
   Badge,
   IconButton,
   Checkbox,
+  Icon,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import { useState, useRef } from "react";
 
-import { BsPenFill, BsTrash3Fill } from "react-icons/bs";
+import { BsPenFill, BsSearch, BsTrash3Fill } from "react-icons/bs";
 import {
   useTransactions,
   type TransactionType,
@@ -203,25 +206,38 @@ const History: React.FC = () => {
             >
               Transaction History
             </Heading>
-            <Input
-              width="260px"
-              bgColor="transparent"
-              color="black"
-              border="0.5px solid #969696ff"
-              type="text"
-              _focus={{
-                outline: "none",
-                borderColor: "#9ecaed",
-                boxShadow: "0 0 10px #9ecaed",
-              }}
-              _placeholder={{ color: "#615e5e4a" }}
-              placeholder="Search note…"
-              value={filters.search}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, search: e.target.value }))
-              }
-            />
+            <Flex width="260px">
+              <InputGroup>
+                <Input
+                  bgColor="transparent"
+                  type="text"
+                  color="#696969"
+                  border="0 solid"
+                  boxShadow="1px  1px 2px 2px rgba(0, 0, 0, 0.3)"
+                  _focus={{
+                    outline: "none",
+                    borderColor: "#9ecaed",
+                    boxShadow: "0 0 10px #9ecaed",
+                  }}
+                  _placeholder={{ color: "#615e5e4a" }}
+                  placeholder="Search by note…"
+                  value={filters.search}
+                  onChange={(e) =>
+                    setFilters((prev) => ({ ...prev, search: e.target.value }))
+                  }
+                />
 
+                {filters.search.length === 0 && (
+                  <InputRightElement>
+                    <Icon
+                      boxSize={4}
+                      color="gray.400"
+                      as={BsSearch as React.ElementType}
+                    />
+                  </InputRightElement>
+                )}
+              </InputGroup>
+            </Flex>
             <Flex gap={3}>
               <Select
                 color="#696969"
