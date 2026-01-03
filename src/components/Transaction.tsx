@@ -176,14 +176,14 @@ const Transaction: React.FC = () => {
                       <Text fontWeight="bold" color="#1C4532">
                         {item.type}
                       </Text>
-                      <Text fontSize="sm" color="gray.600" display="flex">
+                      <Box fontSize="sm" color="gray.600" display="flex">
                         {new Date(item.date).toLocaleDateString("en-CA")} •
                         <Tooltip label={item.note} hasArrow>
                           <Text isTruncated maxW="160px" mx="auto" ml={1}>
                             {item.note || "No Note"}
                           </Text>
                         </Tooltip>
-                      </Text>
+                      </Box>
                     </Box>
 
                     <Text
