@@ -25,7 +25,7 @@ export const transactionService = {
     return {
       totalIncome: income._sum.amount || 0,
       totalExpense: expense._sum.amount || 0,
-      balance: (income._sum.amount || 0) - (expense._sum.amount || 0),
+      balance: Number(income._sum.amount || 0) - Number(expense._sum.amount || 0),
     };
   }
 };
