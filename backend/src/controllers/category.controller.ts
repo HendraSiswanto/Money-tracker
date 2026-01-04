@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { CategoryService } from "../services/category.service";
-import { defaultCategories } from "../../data/defaultCategories";
+import { defaultCategories } from "../data/defaultCategories";
 export const CategoryController = {
   getAll: async (req: Request, res: Response) => {
     try {
