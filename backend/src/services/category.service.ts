@@ -30,12 +30,26 @@ export const CategoryService = {
       color?: string | null;
     }[]
   ) {
+    const count = await prisma.category.count({
+      where: { userId },
+    });
+
+    if (count > 0) {
+      console.log("⏭ Categories already exist, skipping seed");
+      return;
+    }
+
     await prisma.category.createMany({
       data: defaults.map((d) => ({
-        ...d,
+        name: d.name,
+        emote: d.emote,
+        type: d.type,
+        color: d.color ?? "",
         userId,
       })),
     });
+
+    console.log("🌱 Categories seeded");
   },
 
   create: (data: {

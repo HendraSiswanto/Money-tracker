@@ -2,7 +2,7 @@ import { PrismaClient, CategoryType } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const defaultCategories = [
+ const defaultCategories = [
   { name: "Salary", emote: "💼", color: "#1C4532", type: CategoryType.income },
   { name: "Bonus", emote: "💰", color: "#1C4532", type: CategoryType.income },
   { name: "Freelance", emote: "👨‍💻", color: "#1C4532", type: CategoryType.income },

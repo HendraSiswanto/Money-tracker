@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { CategoryService } from "../services/category.service";
-import { defaultCategories } from "../data/defaultCategories";
+
 export const CategoryController = {
   getAll: async (req: Request, res: Response) => {
     try {
@@ -15,18 +15,7 @@ export const CategoryController = {
     }
   },
 
-  seedDefaults: async (req: Request, res: Response) => {
-    const userId = req.userId!;
-    const existing = await CategoryService.getAll(userId);
-
-    if (existing.length > 0) {
-      return res.json(existing);
-    }
-
-    await CategoryService.seedDefaults(userId, defaultCategories);
-    const fresh = await CategoryService.getAll(userId);
-    res.json(fresh);
-  },
+  
   create: async (req: Request, res: Response) => {
     try {
       const userId = (req as any).userId;
