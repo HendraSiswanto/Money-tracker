@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MainPage from "./components/MainPage";
 import Login from "./components/Login";
 import type { Sided } from "./hooks/useImage";
@@ -12,7 +12,17 @@ export interface moneyQuery {
 
 function App() {
   const [moneyQuery, setMoneyQuery] = useState<moneyQuery>({} as moneyQuery);
-  const token = localStorage.getItem("token");
+  const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const savedToken = localStorage.getItem("token");
+    setToken(savedToken);
+    setLoading(false);
+  }, []);
+
+  if (loading) return null; 
+
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
