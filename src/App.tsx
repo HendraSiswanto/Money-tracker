@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import MainPage from "./components/MainPage";
 import Login from "./components/Login";
 import type { Sided } from "./hooks/useImage";
 import { Routes, Route } from "react-router-dom";
 import Register from "./components/Register";
-import { Navigate } from "react-router-dom";
+import ProtectedRoot from "./ProtectedRoot";
 
 export interface moneyQuery {
   imageData: Sided | null;
@@ -12,36 +12,23 @@ export interface moneyQuery {
 
 function App() {
   const [moneyQuery, setMoneyQuery] = useState<moneyQuery>({} as moneyQuery);
-  const [token, setToken] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const savedToken = localStorage.getItem("token");
-    setToken(savedToken);
-    setLoading(false);
-  }, []);
-
-  if (loading) return null; 
 
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route
-        path="/"
-        element={
-          token ? (
+
+      <Route element={<ProtectedRoot />}>
+        <Route
+          path="/"
+          element={
             <MainPage
               selectImage={moneyQuery.imageData}
-              onSelectImage={(imageData) =>
-                setMoneyQuery({ ...moneyQuery, imageData })
-              }
+              onSelectImage={(imageData) => setMoneyQuery({ imageData })}
             />
-          ) : (
-            <Navigate to="/login" />
-          )
-        }
-      />
+          }
+        />
+      </Route>
     </Routes>
   );
 }
