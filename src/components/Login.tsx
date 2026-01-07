@@ -1,6 +1,6 @@
 "use client";
 import { Link as RouterLink } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   HStack,
@@ -25,7 +25,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
-
+  const navigate = useNavigate();
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
@@ -34,7 +34,7 @@ const Login = () => {
       localStorage.setItem("token", res.token);
       localStorage.setItem("userId", res.userId);
 
-      window.location.href = "/";
+      navigate("/", { replace: true });
     } catch (err: any) {
       alert("Login failed: " + err.response?.data?.error);
     }
