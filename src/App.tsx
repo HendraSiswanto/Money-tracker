@@ -4,7 +4,7 @@ import Login from "./components/Login";
 import type { Sided } from "./hooks/useImage";
 import { Routes, Route } from "react-router-dom";
 import Register from "./components/Register";
-import ProtectedRoot from "./ProtectedRoot";
+import ProtectedRoute from "./ProtectedRoute";
 
 export interface moneyQuery {
   imageData: Sided | null;
@@ -18,14 +18,16 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      <Route element={<ProtectedRoot />}>
+      <Route>
         <Route
           path="/"
           element={
-            <MainPage
-              selectImage={moneyQuery.imageData}
-              onSelectImage={(imageData) => setMoneyQuery({ imageData })}
-            />
+            <ProtectedRoute>
+              <MainPage
+                selectImage={moneyQuery.imageData}
+                onSelectImage={(imageData) => setMoneyQuery({ imageData })}
+              />
+            </ProtectedRoute>
           }
         />
       </Route>
