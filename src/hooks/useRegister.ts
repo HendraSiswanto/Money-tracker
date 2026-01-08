@@ -1,4 +1,4 @@
-import api from "../api/login";
+import api from "../api/api";
 
 export async function useRegister(
   name: string,
