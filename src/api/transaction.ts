@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL ;
+const API_URL = import.meta.env.VITE_API_URL;
 
 export interface Transaction {
   id: number;
@@ -51,7 +51,15 @@ export async function createTransaction(data: {
 }
 
 export async function getSummary() {
-  const res = await fetch(`${API_URL}/transactions/summary`);
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(`${API_URL}/transactions/summary`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) throw new Error("Unauthorized");
   return res.json();
 }
 
