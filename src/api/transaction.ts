@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL;
+import api from "./api";
 
 export interface Transaction {
   id: number;
@@ -12,67 +12,24 @@ export interface Transaction {
 }
 
 export async function getTransactions(): Promise<Transaction[]> {
-  const token = localStorage.getItem("token");
-  const res = await fetch(`${API_URL}/transactions`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return res.json();
+  const res = await api.get("/transactions");
+  return res.data;
 }
 
 export async function createTransaction(data: {
   type: string;
   amount: number;
-  outcome: string;
+  outcome: "income" | "expense";
   note?: string;
   date?: string | null;
   timestamp?: number;
-
   categoryId: number;
 }) {
-  const token = localStorage.getItem("token");
-  const res = await fetch(`${API_URL}/transactions`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      ...data,
-      amount: Number(data.amount),
-    }),
+  const res = await api.post("/transactions", {
+    ...data,
+    amount: Number(data.amount),
   });
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.error || "Create transaction failed");
-  }
-  return res.json();
-}
-
-export async function getSummary() {
-  const token = localStorage.getItem("token");
-
-  const res = await fetch(`${API_URL}/transactions/summary`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!res.ok) throw new Error("Unauthorized");
-  return res.json();
-}
-
-export async function deleteTransactions(id: number) {
-  const token = localStorage.getItem("token");
-  const res = await fetch(`${API_URL}/transactions/${id}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
-  return res.json();
+  return res.data;
 }
 
 export async function updateTransaction(data: {
@@ -82,30 +39,19 @@ export async function updateTransaction(data: {
   date: string | null;
   note?: string;
   timestamp: number;
-  outcome: string;
+  outcome: "income" | "expense";
   categoryId: number;
 }) {
-  const token = localStorage.getItem("token");
-  const safeDate =
-    data.date && !isNaN(new Date(data.date).getTime())
-      ? new Date(data.date)
-      : undefined;
+  const res = await api.patch(`/transactions/${data.id}`, data);
+  return res.data;
+}
 
-  const res = await fetch(`${API_URL}/transactions/${data.id}`, {
-    method: "PATCH",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      ...data,
-      date: safeDate,
-    }),
-  });
+export async function deleteTransactions(id: number) {
+  const res = await api.delete(`/transactions/${id}`);
+  return res.data;
+}
 
-  if (!res.ok) {
-    throw new Error("Failed to update transaction");
-  }
-
-  return res.json();
+export async function getSummary() {
+  const res = await api.get("/transactions/summary");
+  return res.data;
 }

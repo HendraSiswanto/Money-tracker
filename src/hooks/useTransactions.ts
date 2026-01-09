@@ -21,7 +21,6 @@ export type SortOption = "newest" | "oldest" | "high" | "low";
 export type FilterOption = "all" | "income" | "expense";
 
 export function useTransactions() {
-  const token = localStorage.getItem("token");
   const [transactions, setTransactions] = useState<TransactionType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [sortOption, setSortOption] = useState<SortOption>("newest");
@@ -32,32 +31,11 @@ export function useTransactions() {
     type: null as "income" | "expense" | null,
     search: "",
   });
-  useEffect(() => {
-    loadTransactions();
-  }, []);
 
   const loadTransactions = async () => {
     try {
       setIsLoading(true);
-
-      if (!token) {
-        throw new Error("No token found");
-      }
-
-      const res = await fetch("http://localhost:3000/transactions", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (res.status === 401) {
-        localStorage.removeItem("token");
-
-        return;
-      }
-
-      const data = await res.json();
+      const data = await getTransactions();
       setTransactions(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error(err);
@@ -68,6 +46,12 @@ export function useTransactions() {
       }, 500);
     }
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    loadTransactions();
+  }, []);
   const saveTransaction = async (
     newData: TransactionType,
     typeData: "income" | "expense"
@@ -96,9 +80,7 @@ export function useTransactions() {
         categoryId: newData.categoryId,
       });
     }
-    const latest = await getTransactions();
-
-    setTransactions(latest);
+    await loadTransactions();
 
     setTimeout(() => {
       setIsLoading(false);
@@ -231,7 +213,7 @@ export function useTransactions() {
         const d = new Date(t.date);
 
         if (filters.year && d.getFullYear() !== filters.year) return false;
-        if (filters.month !== null && d.getMonth() !== filters.month) 
+        if (filters.month !== null && d.getMonth() !== filters.month)
           return false;
         if (
           filters.search &&

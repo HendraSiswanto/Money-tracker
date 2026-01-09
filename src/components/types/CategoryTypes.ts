@@ -1,7 +1,10 @@
+export type CategoryType = "income" | "expense";
+
 export interface Category {
+
   id: number;
   name: string;
-  type:string;
+  type:CategoryType;
   emote?: string; 
   user_id: string;
   color: string

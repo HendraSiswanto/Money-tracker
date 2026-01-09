@@ -202,32 +202,68 @@ const Transaction: React.FC = () => {
               </Box>
             </>
           ) : (
-            <Box
+            <Flex
+              alignContent="center"
+              flexDir="column"
               p={10}
               textAlign="center"
-              border="1px dashed"
+              bgColor="transparent"
+              border="1px solid #605f5f37"
+              boxShadow="5px 5px 10px #605f5f37"
               borderColor="gray.300"
-              borderRadius="lg"
+              borderRadius="xl"
+              my="auto"
+              mx="auto"
             >
-              <Text fontSize="xl" fontWeight="bold" color="gray.600">
+              <Heading size="md" color="#1C4532" mb={2}>
                 Start tracking your money 💸
+              </Heading>
+
+              <Text color="gray.600" mb={6}>
+                Track income & expenses to see your balance, trends, and
+                insights.
               </Text>
 
-              <Text mt={2} color="gray.500">
-                Add your first income or expense to see insights, charts, and
-                balance.
-              </Text>
+              <Flex justify="center" gap={4} mb={6} wrap="wrap">
+                <Box fontSize="sm" color="gray.600">
+                  ① Choose type
+                </Box>
+                <Box fontSize="sm" color="gray.600">
+                  ② Pick category
+                </Box>
+                <Box fontSize="sm" color="gray.600">
+                  ③ Save & analyze
+                </Box>
+              </Flex>
 
-              <Button
-                mt={6}
-                bg="#1C4532"
-                color="white"
-                _hover={{ bg: "#1c4532db" }}
-                onClick={() => setSelected("income")}
-              >
-                Add First Transaction
-              </Button>
-            </Box>
+              <Flex gap={4} justify="center">
+                <Card
+                  p={4}
+                  cursor="pointer"
+                  border="1px solid #1C4532"
+                  _hover={{ bg: "#1C4532", color: "white" }}
+                  onClick={() => setSelected("income")}
+                >
+                  <Text fontWeight="bold">+ Add Income</Text>
+                  <Text fontSize="sm">Salary, bonus, etc</Text>
+                </Card>
+
+                <Card
+                  p={4}
+                  cursor="pointer"
+                  border="1px solid #45241cff"
+                  _hover={{ bg: "#45241cff", color: "white" }}
+                  onClick={() => setSelected("expense")}
+                >
+                  <Text fontWeight="bold">− Add Expense</Text>
+                  <Text fontSize="sm">Food, bills, etc</Text>
+                </Card>
+              </Flex>
+              <Text mt={6} fontSize="sm" color="gray.500">
+                You already have <b>{incomeCategories.length}</b> income and{" "}
+                <b>{expenseCategories.length}</b> expense categories
+              </Text>
+            </Flex>
           )}
         </Container>
       )}
