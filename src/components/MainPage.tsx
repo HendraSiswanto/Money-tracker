@@ -62,18 +62,34 @@ const MainPage = ({ onSelectImage, selectImage }: Props) => {
     <>
       <Flex>
         <Box
-          position="fixed"
-          left="0"
-          top="0"
-          bottom="0"
-          w="100px"
-          bgColor="#1C4532"
-          display="flex"
-          flexDirection="column"
+          justifyContent="space-between"
           alignItems="center"
+          position={{ base: "fixed", md: "fixed" }}
+          bottom={{ base: 0, md: 0 }}
+          top={{ base: "auto", md: 0 }}
+          left={0}
+          w={{ base: "100%", md: "100px" }}
+          h={{ base: "80px", md: "auto" }}
+          minH={{ md: "100vh" }}
+          bg="#1C4532"
+          display="flex"
+          flexDir={{ base: "row", md: "column" }}
+          zIndex={100}
         >
-          <Image mt="20px" boxSize="28px" src={Logo} bgColor="#1C4532" />
-          <List mt={6} paddingY="5px">
+          <List
+            display="flex"
+            flexDir={{ sm: "row", md: "column" }}
+            alignItems="center"
+            gap={{ md: 1 }}
+          >
+            <Flex
+              ml={{ base: 5, md: 0 }}
+              mt={{ base: 0, md: 8 }}
+              mb={{ base: 0, md: 5 }}
+              mr={{ base: 20, md: 0 }}
+            >
+              <Image boxSize="28px" src={Logo} bgColor="#1C4532" />
+            </Flex>
             {data.map((imageData) => (
               <ListItem key={imageData.id}>
                 <Button
@@ -111,8 +127,10 @@ const MainPage = ({ onSelectImage, selectImage }: Props) => {
             ))}
           </List>
 
-          <Box mt="auto" mb={4}>
+          <Box>
             <Button
+              mr={{ base: 3, md: 0 }}
+              mb={{ base: 0, md: 7 }}
               width="100%"
               bg="transparent"
               color="#d0421eff"
@@ -126,7 +144,7 @@ const MainPage = ({ onSelectImage, selectImage }: Props) => {
             </Button>
           </Box>
         </Box>
-        <Box flex={1} ml="50px">
+        <Box flex={1} ml={{ base: 0, md: "100px" }} mb={{ base: "80px", md: 0 }}>
           {renderPage()}
         </Box>
       </Flex>

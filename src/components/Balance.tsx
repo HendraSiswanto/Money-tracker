@@ -44,9 +44,9 @@ export default function Balance() {
                 alignItems="stretch"
                 mt={8}
                 mb={4}
-                columns={{ base: 1, md: 4 }}
+                columns={{ base: 1, sm: 2, md: 4 }}
+                spacing={{ base: 4, md: 6 }}
                 w="100%"
-                spacing="50px"
               >
                 <StatCard
                   icon={BsCurrencyBitcoin}
@@ -117,10 +117,10 @@ export default function Balance() {
               gap={5}
               mt={2}
             >
-              <Box w="100%" h="160px">
+              <Box w="100%" h={{ sm: "180px", md: "160px" }}>
                 <ReportOverview selectedMonth={selectedMonth} />
               </Box>
-              <Box w="100%" minH="260px">
+              <Box w="100%" minH={{ sm: "280px", md: "260px" }}>
                 <LineOverview
                   active={active}
                   transactions={transactions}
