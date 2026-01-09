@@ -16,6 +16,7 @@ import BalanceCard from "./charts/UserCard";
 import LineCard from "./charts/LineCard";
 import useCategories from "../hooks/useCategories";
 import TransactionSkeleton from "./skeleton/TransactionSkeleton";
+import { playSound } from "../utils/sound";
 
 interface allDataIncome {
   id?: number;
@@ -55,6 +56,7 @@ const Transaction: React.FC = () => {
       },
       item.outcome as "income" | "expense"
     );
+    playSound(item.outcome as "income" | "expense");
   };
 
   const latestFive = (transactions ?? []).slice(0, 5);

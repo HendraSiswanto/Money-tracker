@@ -38,6 +38,7 @@ import {
   type TransactionType,
 } from "../hooks/useTransactions";
 import HistorySkeleton from "./skeleton/HistorySkeleton";
+import { trashSound } from "../utils/sound";
 
 const History: React.FC = () => {
   const {
@@ -83,13 +84,14 @@ const History: React.FC = () => {
   const handleConfirmDelete = async () => {
     if (deleteMode === "single" && deletedId) {
       await removeTransaction(deletedId);
+
     }
 
     if (deleteMode === "multiple") {
       await Promise.all(selectedIds.map((id) => removeTransaction(id)));
       setSelectedIds([]);
     }
-
+trashSound()
     setDeletedId(null);
     setDeleteMode(null);
     onClose();
