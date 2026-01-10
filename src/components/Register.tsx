@@ -39,27 +39,37 @@ const Register = () => {
   };
 
   return (
-    <Box minH="100vh" bg="#1C4532" display="flex">
+    <Box
+      minH="100vh"
+      bg={{ base: "#F7FAFC", lg: "#1C4532" }}
+      display="flex"
+      flexDir={{ base: "column", lg: "row" }}
+    >
       <Box
-        w={{ base: "100%", md: "45%" }}
+        w={{ base: "100%", lg: "45%" }}
         bg="#F7FAFC"
         minH="100vh"
         borderRightRadius={{ md: "14px" }}
         px={{ base: 4, md: 0 }}
       >
-        <HStack justify="center" pt="98px">
-          <Box display="flex" flexDir={{sm:"column"}}>
-            <Text fontSize="46px" color="#1C4532" fontWeight="900">
-              M
-              <Image display="inline" h="38px" mx="1px" src={Vector1} />
-              N
-              <Image display="inline" h="38px" mx="1px" src={Vector2} />Y
-            </Text>
-          </Box>
-            <Text ml="7" fontSize="46px" color="#1C4532" fontWeight="900">
-              TRACKER
-            </Text>
-        </HStack>
+        <Stack
+          direction={{ base: "column", md: "row" }} // ✅ MONEY / TRACKER stack
+          align="center"
+          justify="center"
+          pt="80px"
+          spacing={2}
+        >
+          <Text fontSize="46px" color="#1C4532" fontWeight="900">
+            M
+            <Image display="inline" h="38px" mx="1px" src={Vector1} />
+            N
+            <Image display="inline" h="38px" mx="1px" src={Vector2} />Y
+          </Text>
+
+          <Text ml={{base:0,md:4}} fontSize="46px" color="#1C4532" fontWeight="900">
+            TRACKER
+          </Text>
+        </Stack>
         <Text
           fontSize="48px"
           color="#171923"
@@ -162,7 +172,7 @@ const Register = () => {
       </Box>
 
       <Box
-        display={{ base: "none", md: "none", lg: "flex" }}
+        display={{ md: "none", lg: "flex" }}
         flex="1"
         alignItems="center"
         justifyContent="center"
