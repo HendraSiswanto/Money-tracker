@@ -53,7 +53,7 @@ const Register = () => {
         px={{ base: 4, md: 0 }}
       >
         <Stack
-          direction={{ base: "column", md: "row" }} // ✅ MONEY / TRACKER stack
+          direction={{ base: "column", md: "row" }}
           align="center"
           justify="center"
           pt="80px"
