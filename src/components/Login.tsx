@@ -42,111 +42,98 @@ const Login = () => {
 
   return (
     <Box
-      bgColor="#1C4532"
-      position="fixed"
-      top={0}
-      left={0}
-      right={0}
-      bottom={0}
-      overflow="hidden"
+      minH="100dvh"
+      bg={{ base: "#F7FAFC", lg: "#1C4532" }}
+      display="flex"
+      flexDir={{ base: "column", lg: "row" }}
+      overflowX="hidden"
+      
     >
       <Box
-        textAlign="center"
-        bgColor="#F7FAFC"
-        position="fixed"
-        width="45%"
-        top="-1"
-        bottom="-1"
-        borderRightRadius="14px"
+        w={{ base: "100%", lg: "45%" }}
+        bg="#F7FAFC"
+        minH="100vh"
+        borderRightRadius={{ md: "14px" }}
+        px={{ base: 4, md: 0 }}
+           py={{ base: 6, md: 10 }}
       >
-        <HStack justifyContent="center" pt="98px" flex="">
-          <Text
-            fontSize="46px"
-            color="#1C4532"
-            fontWeight="900"
-            letterSpacing={2}
-          >
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          align="center"
+          justify="center"
+          pt="80px"
+          spacing={2}
+        >
+          <Text fontSize="46px" color="#1C4532" fontWeight="900">
             M
-            <Image
-              display="inline"
-              height="38px"
-              marginLeft="0.5px"
-              marginRight="-2"
-              pb="-1"
-              pt="3px"
-              src={Vector1}
-            />{" "}
-            N
-            <Image
-              display="inline"
-              height="38px"
-              marginLeft="0.5px"
-              marginRight="-2"
-              pb="-1"
-              pt="3px"
-              src={Vector2}
-            />{" "}
-            Y
+            <Image display="inline" h="38px" mx="1px" src={Vector1} /> N
+            <Image display="inline" h="38px" mx="1px" src={Vector2} /> Y
           </Text>
           <Text
-            ml="7"
+            ml={{ base: 0, md: 4 }}
             fontSize="46px"
             color="#1C4532"
             fontWeight="900"
-            letterSpacing={2}
           >
             TRACKER
           </Text>
-        </HStack>
+        </Stack>
 
-        <Text fontSize="48px" color="#171923" fontWeight="750" pb={3}>
+        <Text
+          fontSize="48px"
+          color="#171923"
+          fontWeight="750"
+          textAlign="center"
+        >
           Sign in
         </Text>
 
-        <Text fontSize="18px" color="#718096" pb={5}>
+        <Text fontSize="18px" color="#718096" textAlign="center" mb={6}>
           Don't have an account?{" "}
           <Link as={RouterLink} to="/Register" fontWeight="500" color="#1C4532">
             Create Now
           </Link>
         </Text>
         <form onSubmit={onSubmit}>
-          <Stack gap="2" align="flex-start" maxW="sm" color="#718096">
-            <Text fontSize="16px" ml="70px">
+          <Stack
+            gap="2"
+            w="100%"
+            maxW={{ base: "100%", md: "480px", xl: "540px" }}
+            mx="auto"
+            color="#718096"
+          >
+            <Text fontSize="16px" >
               E-mail
             </Text>
             <Input
+              w="100%"
+              borderColor="#CBD5E0"
+              borderRadius="12px"
               _placeholder={{ color: "#4A5568" }}
               _hover={{ borderColor: "#CBD5E0" }}
-              ml="73px"
-              bgColor="#F7FAFC"
-              borderColor="#CBD5E0"
-              textColor="#4A5568"
-              type="email"
-              borderRadius="12px"
+              h="50px"
               placeholder="me@example.com"
-              height="50px"
-              width="528px"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <Text fontSize="16px" ml="70px">
+            <Text fontSize="16px">
               Password
             </Text>
             <InputGroup
-              ml="73px"
-              bgColor="#F7FAFC"
+              borderRadius="12px"
               borderColor="#CBD5E0"
-              textColor="#4A5568"
-              width="528px"
+              _placeholder={{ color: "#4A5568" }}
+              _hover={{ borderColor: "#CBD5E0" }}
+              w="100%"
+              h="50px"
             >
               <InputRightElement
+                mr={2}
+                mt={1}
                 pl={2}
-                mr={5}
-                display="flex"
-                alignItems="center"
+                borderLeft="1px solid #CBD5E0"
+                h="80%"
                 justifyContent="center"
-                fontSize={20}
-                height="100%"
               >
                 <Box h="35px" mr={2} borderLeft="1px solid #CBD5E0" />
                 <IconButton
@@ -173,15 +160,13 @@ const Login = () => {
               />
             </InputGroup>
             <Button
-              _hover={{ bgColor: "#173929ff", color: "#F7FAFC" }}
-              onClick={onSubmit}
               mt={5}
+              h="50px"
               borderRadius="20px"
-              width="528px"
-              height="50px"
-              ml="73px"
-              bgColor="#1C4532"
+              bg="#1C4532"
               color="#F7FAFC"
+              _hover={{ bg: "#173929" }}
+              type="submit"
             >
               Sign In
             </Button>
@@ -190,86 +175,66 @@ const Login = () => {
       </Box>
 
       <Box
+        display={{  base:"none",md: "none", lg: "flex" }}
+        flex="1"
+        alignItems="center"
         justifyContent="center"
-        position="absolute"
-        bgColor="#F7FAFC"
-        textAlign="center"
-        width="540px"
-        height="335px"
-        display="inline-block"
-        right="110px"
-        mt={145}
-        borderRadius="10px"
+        flexDir="column"
+        gap={6}
+        flexWrap="wrap"
       >
-        <Text
-          color="#1C4532"
-          fontSize="32px"
-          fontWeight="bold"
-          mt="42px"
-          lineHeight="40px"
+        <Box
+          bg="#F7FAFC"
+          w={{ lg: "420px", xl: "540px" }}
+          h="335px"
+          borderRadius="10px"
+          textAlign="center"
         >
-          Reach financial <br />
-          goals faster
-        </Text>
-        <Text
-          pt={10}
-          fontSize="14px"
-          fontWeight="550"
-          color="#718096"
-          lineHeight="25px"
-          pb={10}
+          <Text fontSize="32px" color="#1C4532" fontWeight="bold" mt="42px">
+            Reach financial <br /> goals faster
+          </Text>
+          <Text mt={6} fontSize="14px" color="#718096">
+            reach your financial freedom <br />
+            using this money tracker!
+          </Text>
+          <Button
+            mt={6}
+            w="168px"
+            h="46px"
+            borderRadius="70px"
+            bg="#1C4532"
+            color="#F7FAFC"
+          >
+            Learn More
+          </Button>
+        </Box>
+
+        <Box
+          bg="#F7FAFC"
+          w={{ lg: "220px", xl: "275px" }}
+          h="85px"
+          borderRadius="10px"
+          display="flex"
+          alignItems="center"
+          px={5}
         >
-          reach your financial freedom <br />
-          using this money tracker!
-        </Text>
-        <Button
-          _hover={{ bgColor: "#173929ff", color: "#F7FAFC" }}
-          fontSize="14px"
-          fontWeight="medium"
-          color="#F7FAFC"
-          width="168px"
-          height="46px"
-          bgColor="#1C4532"
-          borderRadius="70px"
-        >
-          Learn More
-        </Button>
-      </Box>
-      <Box
-        position="absolute"
-        bgColor="#F7FAFC"
-        textAlign="center"
-        width="275px"
-        height="85px"
-        display="inline"
-        right="242px"
-        mt={497}
-        alignContent="center"
-        borderRadius="10px"
-      >
-        <Box pl={7} display="flex" flex="inline" alignItems="center">
           <Image src={Icon} />
-          <Box display="inline-block" ml="30px" justifyItems="left">
-            <Text fontSize="14px" fontWeight="medium" color="#1C4532">
+          <Box ml={10}>
+            <Text fontSize="14px" color="#1C4532">
               Earning
             </Text>
-            <Text fontWeight="bold" fontSize="24px" color="#1C4532">
+            <Text fontSize="24px" fontWeight="bold" color="#1C4532">
               $999.99
             </Text>
           </Box>
         </Box>
         <Box
-          position="absolute"
+          color="#a2acbaff"
           textAlign="center"
-          width="275px"
-          height="85px"
-          display="inline"
-          right="88px"
-          mt={5}
-          alignContent="center"
-          borderRadius="10px"
+          maxW={{ lg: "320px", xl: "450px" }}
+          fontSize="20px"
         >
-          <Text color="#a2acbaff" width="450px" fontSize="20px">
+          <Text color="#a2acbaff" fontSize="20px">
             Analyzing your money expense and track it for comfortable money
           </Text>
         </Box>

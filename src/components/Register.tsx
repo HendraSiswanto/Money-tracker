@@ -40,17 +40,19 @@ const Register = () => {
 
   return (
     <Box
-      minH="100vh"
+      minH="100dvh"
       bg={{ base: "#F7FAFC", lg: "#1C4532" }}
       display="flex"
       flexDir={{ base: "column", lg: "row" }}
+      overflow="hidden"
     >
       <Box
         w={{ base: "100%", lg: "45%" }}
         bg="#F7FAFC"
-        minH="100vh"
+        minH="100dvh"
         borderRightRadius={{ md: "14px" }}
         px={{ base: 4, md: 0 }}
+        py={{ base: 6, md: 10 }}
       >
         <Stack
           direction={{ base: "column", md: "row" }}
@@ -66,7 +68,12 @@ const Register = () => {
             <Image display="inline" h="38px" mx="1px" src={Vector2} />Y
           </Text>
 
-          <Text ml={{base:0,md:4}} fontSize="46px" color="#1C4532" fontWeight="900">
+          <Text
+            ml={{ base: 0, md: 4 }}
+            fontSize="46px"
+            color="#1C4532"
+            fontWeight="900"
+          >
             TRACKER
           </Text>
         </Stack>
@@ -172,7 +179,7 @@ const Register = () => {
       </Box>
 
       <Box
-        display={{ md: "none", lg: "flex" }}
+        display={{ base: "none", md: "none", lg: "flex" }}
         flex="1"
         alignItems="center"
         justifyContent="center"
