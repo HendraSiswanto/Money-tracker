@@ -2,7 +2,6 @@
 
 import {
   Box,
-  HStack,
   Image,
   Link,
   Stack,
