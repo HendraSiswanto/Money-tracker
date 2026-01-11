@@ -17,7 +17,7 @@ import {
 import Vector1 from "../assets/Vector.svg";
 import Vector2 from "../assets/Vector1.svg";
 import Icon from "../assets/Icon.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { useLogin } from "../hooks/useLogin";
 
@@ -39,7 +39,14 @@ const Login = () => {
       alert("Login failed: " + err.response?.data?.error);
     }
   };
+  useEffect(() => {
+    const original = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
 
+    return () => {
+      document.body.style.overflow = original;
+    };
+  }, []);
   return (
     <Box
       minH="100dvh"
@@ -47,7 +54,6 @@ const Login = () => {
       display="flex"
       flexDir={{ base: "column", lg: "row" }}
       overflowX="hidden"
-      
     >
       <Box
         w={{ base: "100%", lg: "45%" }}
@@ -55,7 +61,7 @@ const Login = () => {
         minH="100vh"
         borderRightRadius={{ md: "14px" }}
         px={{ base: 4, md: 0 }}
-           py={{ base: 6, md: 10 }}
+        py={{ base: 6, md: 10 }}
       >
         <Stack
           direction={{ base: "column", md: "row" }}
@@ -102,9 +108,7 @@ const Login = () => {
             mx="auto"
             color="#718096"
           >
-            <Text fontSize="16px" >
-              E-mail
-            </Text>
+            <Text fontSize="16px">E-mail</Text>
             <Input
               w="100%"
               borderColor="#CBD5E0"
@@ -116,9 +120,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <Text fontSize="16px">
-              Password
-            </Text>
+            <Text fontSize="16px">Password</Text>
             <InputGroup
               borderRadius="12px"
               borderColor="#CBD5E0"
@@ -175,7 +177,7 @@ const Login = () => {
       </Box>
 
       <Box
-        display={{  base:"none",md: "none", lg: "flex" }}
+        display={{ base: "none", md: "none", lg: "flex" }}
         flex="1"
         alignItems="center"
         justifyContent="center"

@@ -13,7 +13,7 @@ import {
   InputRightElement,
   IconButton,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 
 import Vector1 from "../assets/Vector.svg";
@@ -38,6 +38,14 @@ const Register = () => {
     }
   };
 
+  useEffect(() => {
+  const original = document.body.style.overflow;
+  document.body.style.overflow = "hidden";
+
+  return () => {
+    document.body.style.overflow = original;
+  };
+}, []);
   return (
     <Box
       minH="100dvh"

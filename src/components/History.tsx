@@ -84,14 +84,14 @@ const History: React.FC = () => {
   const handleConfirmDelete = async () => {
     if (deleteMode === "single" && deletedId) {
       await removeTransaction(deletedId);
-
+      trashSound();
     }
 
     if (deleteMode === "multiple") {
       await Promise.all(selectedIds.map((id) => removeTransaction(id)));
       setSelectedIds([]);
     }
-trashSound()
+    trashSound();
     setDeletedId(null);
     setDeleteMode(null);
     onClose();
@@ -223,7 +223,6 @@ trashSound()
                   }}
                   _placeholder={{ color: "#615e5e4a" }}
                   placeholder="Search by note…"
-                
                   value={filters.search}
                   onChange={(e) =>
                     setFilters((prev) => ({ ...prev, search: e.target.value }))
