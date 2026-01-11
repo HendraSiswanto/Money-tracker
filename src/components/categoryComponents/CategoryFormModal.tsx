@@ -29,7 +29,7 @@ type Props = {
   } | null;
 };
 
-export function CategoryFormModal({
+export default function CategoryFormModal({
   isOpen,
   onClose,
   onSubmit,
@@ -39,7 +39,6 @@ export function CategoryFormModal({
   const [emote, setEmote] = useState("");
   const [type, setType] = useState<"income" | "expense">("income");
 
-  // fill form when editing
   useEffect(() => {
     if (initialData) {
       setName(initialData.name);

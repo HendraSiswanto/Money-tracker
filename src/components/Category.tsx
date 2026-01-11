@@ -20,8 +20,8 @@ import {
 } from "react-icons/bs";
 import { useState } from "react";
 import useCategories from "../hooks/useCategories";
-import { DeleteCategoryDialog } from "./categoryComponents/DeleteCategoryDialog";
-import { CategoryFormModal } from "./categoryComponents/CategoryFormModal";
+import  DeleteCategoryDialog  from "./categoryComponents/DeleteCategoryDialog";
+import  CategoryFormModal  from "./categoryComponents/CategoryFormModal";
 import CategorySkeleton from "./skeleton/CategorySkeleton";
 
 export default function CategoryPage() {

@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useRef } from "react";
 
-export function DeleteCategoryDialog({
+export default function DeleteCategoryDialog({
   isOpen,
   onClose,
   onConfirm,
