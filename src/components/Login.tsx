@@ -129,14 +129,15 @@ const Login = () => {
               h="50px"
             >
               <InputRightElement
+              pr={1}
                 mr={2}
                 mt={1}
                 pl={2}
-                borderLeft="1px solid #CBD5E0"
+              
                 h="80%"
                 justifyContent="center"
               >
-                <Box h="35px" mr={2} borderLeft="1px solid #CBD5E0" />
+                <Box h="35px" borderLeft="1px solid #CBD5E0" />
                 <IconButton
                   aria-label={show ? "Hide Password" : "Show Password"}
                   icon={
