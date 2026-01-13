@@ -1,60 +1,86 @@
 # 💰 Money Tracker App
 
-A simple and modern Money Tracker web application to help users track income, expenses, balances, and categories in real time.
+A modern full‑stack **Money Tracker web application** that helps users manage income, expenses, balances, and categories in real time.
 
-Built as a full‑stack project using React, Chakra UI, and a REST API, then deployed on Vercel.
+This project was built for learning, real‑world practice, and portfolio purposes.
 
-## 🎬 Live Demo
+---
 
-### 🔗 Production:
+## 🚀 Live Demo
+
+🔗 **Production**  
 https://moneytracker-project.vercel.app
 
+---
 
-## 🎓 Features
+## ✨ Features
 
-- 🔐 Authentication (Login & Register)
-
-- ➕ Add Income and Expense
-
-- 🗂️ Manage Categories (Income / Expense)
-
+- 🔐 User Authentication (Register & Login)
+- ➕ Add Income & Expenses
+- 🗂️ Category Management (Income / Expense)
 - 📊 Dashboard with balance & recent transactions
-
-- 🍩 Chart visualization (Income vs Expense)
-
-- 🔄 Auto logout on expired token (401 handling)
-
+- 🍩 Income vs Expense chart visualization
+- 🔄 Auto logout on expired token (401 interceptor)
 - 🎨 Consistent UI with Chakra UI
+- 🌐 Deployed to production
 
--  🌐 Deployed on Vercel
+---
 
-# 🛠️ Tech Stack
+## 🛠️ Tech Stack
 
-## Frontend
+### Frontend
 - React (Vite + TypeScript)
 - Chakra UI
 - React Router
 - Axios
 
-## Backend
-- REST API (JWT Authentication)
-- Token-based authorization (Bearer Token)
-- Schema
+### Backend
+- REST API
+- JWT Authentication
+- Bearer Token Authorization
 
-## Deployment
+### Deployment
 - Vercel (Frontend)
 - Railway (Backend)
 
-## Preview
-![Authentication Page](<Desain tanpa judul (1).png>)
-![Transaction Page](image.png)
-![Balance Page](<Desain tanpa judul.png>)
-![Category Page](image-1.png)
-![History Page](image-2.png)
+---
+
+## 📸 Screenshots
+
+> Screenshots are taken from the production version
+
+### Authentication
+![Authentication Page](./screenshots/auth.png)
+
+### Transactions
+![Transactions](./screenshots/transaction.png)
+
+  
+### Balance
+![Balance](./screenshots/balance.png)
+
+### Categories
+![Categories](./screenshots/categories.png)
+
+### History
+![History](./screenshots/history.png)
+
+---
+
 ## 👨‍💻 Author
-Hendra Siswanto
 
-- GitHub: https://github.com/HendraSiswanto
-- LinkedIn: https://www.linkedin.com/in/hendrasiswanto/ 
-- Project built for learning, portfolio, and real-world practice
+**Hendra Siswanto**
 
+- GitHub: https://github.com/HendraSiswanto  
+- LinkedIn: https://www.linkedin.com/in/hendrasiswanto/
+
+---
+
+## 📌 Notes
+
+This project demonstrates:
+- Clean UI design
+- API integration
+- Authentication flow
+- State management
+- Production deployment
