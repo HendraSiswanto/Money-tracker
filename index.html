@@ -6,6 +6,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="/Vector1.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        try {
+          var mode = localStorage.getItem("chakra-ui-color-mode");
+          if (!mode) {
+            document.documentElement.style.background = "#f2f2f6fa";
+          }
+        } catch (e) {}
+      })();
+    </script>
     <title>Money Tracker</title>
   </head>
   <body>

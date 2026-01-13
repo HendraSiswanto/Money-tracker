@@ -83,6 +83,7 @@ const Expense = ({ saveExpense, categories }: Props) => {
       <Flex flexDirection="column" gap={2}>
         <Menu>
           <MenuButton
+          
             _active={{ bgColor: "#45241cd4" }}
             _hover={{ bgColor: "#45241cd4" }}
             bgColor="#45241cff"
