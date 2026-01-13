@@ -16,17 +16,22 @@ ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 type BarCardProps = {
   active: "income" | "expense" | "balance";
   transactions: any[];
-   selectedMonth: number;
+  selectedMonth: number;
   onMonthChange: (m: number) => void;
 };
 
-export default function BarCard({ active, transactions ,selectedMonth, onMonthChange}: BarCardProps) {
- 
-const {categories} = useCategories()
+export default function BarCard({
+  active,
+  transactions,
+  selectedMonth,
+  onMonthChange,
+}: BarCardProps) {
+  const { categories } = useCategories();
 
-  const category = categories.filter(
-  (c) => c.type === active
-);
+  const category =
+    active === "balance"
+      ? categories
+      : categories.filter((c) => c.type === active);
 
   const filtered = transactions.filter((t) => {
     const month = new Date(t.date).getMonth();
@@ -36,14 +41,20 @@ const {categories} = useCategories()
   category.forEach((c) => (categoryTotals[c.name] = 0));
 
   filtered.forEach((t) => {
+    const cat = categories.find((c) => c.name === t.type);
+    if (!cat) return;
+
     if (categoryTotals[t.type] !== undefined) {
-      categoryTotals[t.type] += t.amount;
+      categoryTotals[t.type] +=
+        active === "balance" && cat.type === "expense" ? -t.amount : t.amount;
     }
   });
+  const sorted = Object.entries(categoryTotals)
+    .sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))
+    .slice(0, 5);
 
- const labels = category.map((c) => c.name);
-  const values = labels.map((l) => categoryTotals[l]);
-
+  const labels = sorted.map(([name]) => name);
+  const values = sorted.map(([, value]) => value);
   const data = {
     labels,
     datasets: [
@@ -56,11 +67,11 @@ const {categories} = useCategories()
             : "Balance",
         data: values,
         backgroundColor:
-          active === "income"
+          active === "balance"
+            ? values.map((v) => (v >= 0 ? "#1C4532" : "#45241cff"))
+            : active === "income"
             ? "#1C4532"
-            : active === "expense"
-            ? "#45241cff"
-            : "#4A5568",
+            : "#45241cff",
         borderRadius: 6,
         categoryPercentage: 0.3,
         barPercentage: 0.6,
@@ -122,7 +133,7 @@ const {categories} = useCategories()
             ? "Income By Category"
             : active === "expense"
             ? "Expense By Category"
-            : "Balance By Category"}
+            : "Net Balance by Category"}
         </Text>
         <Select
           cursor="pointer"
