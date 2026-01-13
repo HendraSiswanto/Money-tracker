@@ -109,6 +109,7 @@ const Income = ({
             bgColor="#1C4532"
             as={Button}
             width="260px"
+            color="white"
           >
             <Box display="flex" justifyContent="space-between">
               {selectedCategoryId
@@ -124,7 +125,7 @@ const Income = ({
               </Box>
             </Box>
           </MenuButton>
-          <MenuList bg="#1C4532">
+          <MenuList color="white" bg="#1C4532">
             {categories.map((cat) => (
               <MenuItem
                 _hover={{ bgColor: "#94b0a3db" }}
@@ -210,7 +211,7 @@ const Income = ({
             onChange={handleNote}
           ></Input>
 
-          <Box display="flex" justifyContent="center" gap={3}>
+          <Box color="white" display="flex" justifyContent="center" gap={3}>
             <Button
               bgColor="#45241cff"
               _hover={{ bgColor: "#45241cd4" }}
