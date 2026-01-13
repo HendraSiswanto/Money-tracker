@@ -148,7 +148,12 @@ export default function CategoryPage() {
                   _hover={{ boxShadow: "md", transform: "translateY(-2px)" }}
                 >
                   <Flex justify="space-between" align="center">
-                    <Text fontSize="2xl">{cat.emote}</Text>
+                    <Text
+                      color={cat.type === "income" ? "#1C4532" : "#45241c"}
+                      fontSize="2xl"
+                    >
+                      {cat.emote}
+                    </Text>
 
                     <Flex gap={1}>
                       <Tooltip

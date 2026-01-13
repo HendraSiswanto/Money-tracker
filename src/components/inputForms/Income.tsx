@@ -30,10 +30,7 @@ interface Props {
   ) => void;
 }
 
-const Income = ({
-  saveIncome,
-  categories,
-}: Props) => {
+const Income = ({ saveIncome, categories }: Props) => {
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
     null
   );
@@ -64,19 +61,17 @@ const Income = ({
     setValue("");
     setInputValue("");
     setInputNote("");
-  
   };
 
   const handleSaveIncome = async () => {
-  const selectedCategory = categories.find(
-  (c) => c.id === selectedCategoryId
-)!;
+    const selectedCategory = categories.find(
+      (c) => c.id === selectedCategoryId
+    )!;
 
     if (!selectedCategoryId) {
       console.log("NO CATEGORY");
       return;
     }
-
 
     if (!rawAmount || rawAmount <= 0n) {
       console.log("INVALID AMOUNT");
@@ -211,8 +206,9 @@ const Income = ({
             onChange={handleNote}
           ></Input>
 
-          <Box color="white" display="flex" justifyContent="center" gap={3}>
+          <Box display="flex" justifyContent="center" gap={3}>
             <Button
+              color="white"
               bgColor="#45241cff"
               _hover={{ bgColor: "#45241cd4" }}
               onClick={handleReset}
@@ -220,6 +216,7 @@ const Income = ({
               Reset
             </Button>
             <Button
+              color="white"
               bgColor="#1C4532"
               _hover={{ bgColor: "#1c4532db" }}
               isDisabled={!selectedCategoryId || !inputValue || !value}

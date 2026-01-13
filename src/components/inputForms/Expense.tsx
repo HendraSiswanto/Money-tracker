@@ -83,7 +83,7 @@ const Expense = ({ saveExpense, categories }: Props) => {
       <Flex flexDirection="column" gap={2}>
         <Menu>
           <MenuButton
-          
+          color="white"
             _active={{ bgColor: "#45241cd4" }}
             _hover={{ bgColor: "#45241cd4" }}
             bgColor="#45241cff"
@@ -104,7 +104,7 @@ const Expense = ({ saveExpense, categories }: Props) => {
               </Box>
             </Box>
           </MenuButton>
-          <MenuList bg="#45241cff">
+          <MenuList color="white" bg="#45241cff">
             {categories.map((cat) => (
               <MenuItem
                 _hover={{ bgColor: "#584642d4" }}
@@ -190,6 +190,7 @@ const Expense = ({ saveExpense, categories }: Props) => {
           ></Input>
           <Box display="flex" justifyContent="center" gap={3}>
             <Button
+            color="white"
               bgColor="#45241cff"
               _hover={{ bgColor: "#45241cd4" }}
               onClick={handleReset}
@@ -198,6 +199,7 @@ const Expense = ({ saveExpense, categories }: Props) => {
             </Button>
             <Button
               bgColor="#1C4532"
+              color="white"
               _hover={{ bgColor: "#1c4532db" }}
               isDisabled={!selectedCategoryId || !inputValue || !value}
               onClick={handleSaveExpense}

@@ -346,7 +346,7 @@ const History: React.FC = () => {
                     Select All
                   </Checkbox>
                   <Button
-                    colorScheme="red"
+                    colorScheme="pink"
                     isDisabled={selectedIds.length === 0}
                     onClick={() => {
                       setDeleteMode("multiple");
@@ -456,7 +456,7 @@ const History: React.FC = () => {
                           aria-label="Delete"
                           icon={<BsTrash3Fill />}
                           size="sm"
-                          colorScheme="red"
+                          colorScheme="pink"
                           onClick={() => {
                             if (item.id !== undefined) {
                               handleOpenDialog(item.id);
