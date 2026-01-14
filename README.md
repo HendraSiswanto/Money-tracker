@@ -50,20 +50,20 @@ https://moneytracker-project.vercel.app
 > Screenshots are taken from the production version
 
 ### Authentication
-![Authentication Page](./screenshots/auth.png)
+![Authentication Page](./src/screenshots/auth.png)
 
 ### Transactions
-![Transactions](./screenshots/transaction.png)
+![Transactions](./src/screenshots/transaction.png)
 
   
 ### Balance
-![Balance](./screenshots/balance.png)
+![Balance](./src/screenshots/balance.png)
 
 ### Categories
-![Categories](./screenshots/categories.png)
+![Categories](./src/screenshots/categories.png)
 
 ### History
-![History](./screenshots/history.png)
+![History](./src/screenshots/history.png)
 
 ---
 
