@@ -8,6 +8,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import type { Chart as ChartJSInstance } from "chart.js";
 import type { ChartEvent, ActiveElement } from "chart.js";
 import useCategories from "../../hooks/useCategories";
 
@@ -93,6 +94,19 @@ export default function BarCard({
 
     plugins: {
       legend: {
+        labels: {
+          color: active === "balance" ? "#555" : "#555",
+          generateLabels: (chart: ChartJSInstance) => {
+            const labels =
+              ChartJS.defaults.plugins.legend.labels.generateLabels(chart);
+
+            return labels.map((item) => ({
+              ...item,
+              fillStyle: active === "balance" ? "#999" : item.fillStyle,
+              strokeStyle: active === "balance" ? "#999" : item.strokeStyle,
+            }));
+          },
+        },
         onHover: (event: ChartEvent) => {
           (event.native?.target as HTMLElement).style.cursor = "pointer";
         },
