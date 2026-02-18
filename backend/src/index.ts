@@ -6,7 +6,15 @@ import authRoutes from "./routes/auth.routes";
 import dotenv from "dotenv";
 dotenv.config();
 const app = express();
-app.use(cors());
+
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 app.use(express.json());
 app.use("/transactions", transactionRoutes);
 app.use("/auth", authRoutes);
