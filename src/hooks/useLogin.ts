@@ -1,9 +1,12 @@
-import api from "../api/api";
+import { supabase } from "../libs/supabase";
 
 export async function useLogin(email: string, password: string) {
-  const res = await api.post("/auth/login", { email, password });
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
-  localStorage.setItem("token", res.data.token);
+  if (error) throw error;
 
-  return res.data;
+  return data;
 }

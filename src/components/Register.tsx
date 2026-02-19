@@ -30,21 +30,24 @@ const Register = () => {
     e.preventDefault();
     try {
       await useRegister(name, email, password);
-      alert("Account created! Please log in.");
+
+      alert(
+        "Account created! Please check your email if confirmation is required.",
+      );
       window.location.href = "/login";
     } catch (err: any) {
-      alert("Register failed: " + err.response?.data?.error);
+      alert("Register failed: " + err.message);
     }
   };
 
   useEffect(() => {
-  const original = document.body.style.overflow;
-  document.body.style.overflow = "hidden";
+    const original = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
 
-  return () => {
-    document.body.style.overflow = original;
-  };
-}, []);
+    return () => {
+      document.body.style.overflow = original;
+    };
+  }, []);
   return (
     <Box
       minH="100dvh"

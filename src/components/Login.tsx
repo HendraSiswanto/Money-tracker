@@ -29,15 +29,15 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await useLogin(email, password);
-      localStorage.setItem("token", res.token);
-      localStorage.setItem("userId", res.userId);
+    const { user } = await useLogin(email, password);
 
+    if (user) {
       navigate("/", { replace: true });
-    } catch (err: any) {
-      alert("Login failed: " + err.response?.data?.error);
     }
-  };
+  } catch (err: any) {
+    alert("Login failed: " + err.message);
+  }
+};
   useEffect(() => {
     const original = document.body.style.overflow;
     document.body.style.overflow = "hidden";
