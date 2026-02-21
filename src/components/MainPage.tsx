@@ -17,6 +17,7 @@ import Category from "./Category";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
+import { supabase } from "../libs/supabase";
 
 interface Props {
   onSelectImage: (imageData: Sided) => void;
@@ -26,12 +27,25 @@ interface Props {
 const MainPage = ({ onSelectImage, selectImage }: Props) => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     localStorage.removeItem("activeMenu");
     onSelectImage(null as any);
     navigate("/login");
   };
+  useEffect(() => {
+    const checkUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        navigate("/login");
+      }
+    };
+
+    checkUser();
+  }, []);
 
   const { data } = useImage();
 
@@ -144,7 +158,11 @@ const MainPage = ({ onSelectImage, selectImage }: Props) => {
             </Button>
           </Box>
         </Box>
-        <Box flex={1} ml={{ base: 0, md: "100px" }} mb={{ base: "80px", md: 0 }}>
+        <Box
+          flex={1}
+          ml={{ base: 0, md: "100px" }}
+          mb={{ base: "80px", md: 0 }}
+        >
           {renderPage()}
         </Box>
       </Flex>

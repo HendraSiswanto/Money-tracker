@@ -26,17 +26,22 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
 
-  const onSubmit = async (e: any) => {
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
+
+    setLoading(true);
+
     try {
       await useRegister(name, email, password);
-
-      alert(
-        "Account created! Please check your email if confirmation is required.",
-      );
+      alert("Account created!");
       window.location.href = "/login";
     } catch (err: any) {
       alert("Register failed: " + err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -181,6 +186,7 @@ const Register = () => {
               color="#F7FAFC"
               _hover={{ bg: "#173929" }}
               type="submit"
+              isLoading={loading}
             >
               Create Account
             </Button>

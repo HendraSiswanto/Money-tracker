@@ -25,19 +25,25 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
-  const onSubmit = async (e: any) => {
-    e.preventDefault();
+ const onSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    try {
-    const { user } = await useLogin(email, password);
+  try {
+    const { user, session } = await useLogin(email, password);
+
+    console.log("USER:", user);
+    console.log("SESSION:", session);
 
     if (user) {
       navigate("/", { replace: true });
+    } else {
+      console.log("No user returned");
     }
   } catch (err: any) {
     alert("Login failed: " + err.message);
   }
 };
+
   useEffect(() => {
     const original = document.body.style.overflow;
     document.body.style.overflow = "hidden";
