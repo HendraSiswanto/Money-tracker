@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { supabase } from "./libs/supabase";
 import type { ReactNode } from "react";
 
 interface Props {
@@ -6,11 +8,22 @@ interface Props {
 }
 
 const ProtectedRoute = ({ children }: Props) => {
-  const token = localStorage.getItem("token");
+  const [session, setSession] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      setSession(data.session);
+      setLoading(false);
+    };
+
+    checkSession();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+
+  if (!session) return <Navigate to="/login" replace />;
 
   return <>{children}</>;
 };

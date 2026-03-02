@@ -1,6 +1,8 @@
 "use client";
 import { Link as RouterLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../libs/supabase";
+
 import {
   Box,
   Image,
@@ -25,24 +27,36 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
- const onSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
 
-  try {
-    const { user, session } = await useLogin(email, password);
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        navigate("/", { replace: true });
+      }
+    };
 
-    console.log("USER:", user);
-    console.log("SESSION:", session);
+    checkSession();
+  }, [navigate]);
 
-    if (user) {
-      navigate("/", { replace: true });
-    } else {
-      console.log("No user returned");
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+
+      if (data.user) {
+        navigate("/", { replace: true });
+      }
+    } catch (err: any) {
+      alert("Login failed: " + err.message);
     }
-  } catch (err: any) {
-    alert("Login failed: " + err.message);
-  }
-};
+  };
 
   useEffect(() => {
     const original = document.body.style.overflow;
@@ -116,6 +130,10 @@ const Login = () => {
             <Text fontSize="16px">E-mail</Text>
             <Input
               w="100%"
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
               borderColor="#CBD5E0"
               borderRadius="12px"
               _placeholder={{ color: "#4A5568" }}
@@ -135,11 +153,10 @@ const Login = () => {
               h="50px"
             >
               <InputRightElement
-              pr={1}
+                pr={1}
                 mr={2}
                 mt={1}
                 pl={2}
-              
                 h="80%"
                 justifyContent="center"
               >
@@ -157,6 +174,9 @@ const Login = () => {
                 />
               </InputRightElement>
               <Input
+                id="password"
+                name="password"
+                autoComplete="current-password"
                 borderRadius="12px"
                 _placeholder={{ color: "#4A5568" }}
                 _hover={{ borderColor: "#CBD5E0" }}

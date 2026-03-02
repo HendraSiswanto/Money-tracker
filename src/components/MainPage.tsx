@@ -14,7 +14,7 @@ import Transaction from "./Transaction";
 import History from "./History";
 import Balance from "./Balance";
 import Category from "./Category";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
 import { supabase } from "../libs/supabase";
@@ -26,6 +26,7 @@ interface Props {
 
 const MainPage = ({ onSelectImage, selectImage }: Props) => {
   const navigate = useNavigate();
+  const [checking, setChecking] = useState(true);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -33,21 +34,21 @@ const MainPage = ({ onSelectImage, selectImage }: Props) => {
     onSelectImage(null as any);
     navigate("/login");
   };
-  useEffect(() => {
-    const checkUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+  const { data } = useImage();
 
-      if (!user) {
-        navigate("/login");
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+
+      if (!data.session) {
+        navigate("/login", { replace: true });
+      } else {
+        setChecking(false);
       }
     };
 
-    checkUser();
-  }, []);
-
-  const { data } = useImage();
+    checkSession();
+  }, [navigate]);
 
   useEffect(() => {
     const saved = localStorage.getItem("activeMenu");
@@ -56,6 +57,8 @@ const MainPage = ({ onSelectImage, selectImage }: Props) => {
     const found = data.find((d) => d.name === saved);
     if (found) onSelectImage(found);
   }, [data]);
+
+  if (checking) return <Box p={10}>Loading...</Box>;
 
   const renderPage = () => {
     switch (selectImage?.name) {
