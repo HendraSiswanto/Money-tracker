@@ -50,7 +50,7 @@ const Login = () => {
 
       if (error) throw error;
 
-      if (data.user) {
+      if (data.session) {
         navigate("/", { replace: true });
       }
     } catch (err: any) {
