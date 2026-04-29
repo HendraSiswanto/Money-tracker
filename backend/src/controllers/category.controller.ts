@@ -1,9 +1,12 @@
 import { Request, Response } from "express";
 import { CategoryService } from "../services/category.service";
+import { defaultCategories } from "../data/defaultCategories";
 
 export const CategoryController = {
   getAll: async (req: Request, res: Response) => {
     try {
+      console.log("USER ID:", (req as any).userId);
+
       const userId = (req as any).userId;
 
       if (!userId) return res.status(400).json({ error: "Missing userId" });
@@ -11,11 +14,22 @@ export const CategoryController = {
       const categories = await CategoryService.getAll(userId);
       return res.json(categories);
     } catch (error) {
+      console.error("GET CATEGORIES ERROR:", error);
       return res.status(500).json({ error: "Failed to fetch categories" });
     }
   },
 
-  
+  seed: async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+
+      await CategoryService.seedDefaults(userId, defaultCategories);
+
+      return res.json({ message: "Default categories seeded" });
+    } catch (error) {
+      return res.status(500).json({ error: "Failed to seed categories" });
+    }
+  },
   create: async (req: Request, res: Response) => {
     try {
       const userId = (req as any).userId;

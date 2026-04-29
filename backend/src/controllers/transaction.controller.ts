@@ -12,7 +12,7 @@ function convertBigInt(obj: any) {
 export const transactionController = {
   getAll: async (_req: Request, res: Response) => {
     try {
-      const userId = _req.userId;
+    const userId = (_req as any).userId;
       if (!userId) {
         return res.status(400).json({ error: "Missing userId" });
       }
@@ -29,11 +29,12 @@ export const transactionController = {
   },
 
   create: async (req: Request, res: Response) => {
+     const userId = (req as any).userId;
     try {
       const { outcome, type, amount, note, date, timestamp, categoryId } =
         req.body;
 
-      if (!req.userId || !categoryId) {
+      if (!userId || !categoryId) {
         return res.status(400).json({ error: "Missing userId or categoryId" });
       }
 
@@ -53,7 +54,7 @@ export const transactionController = {
           note: note ?? "",
           date: date ? new Date(date) : new Date(),
           timestamp: timestamp ? BigInt(timestamp) : BigInt(Date.now()),
-          userId: req.userId,
+          userId: (req as any).userId,
           categoryId,
         },
       });
@@ -113,7 +114,7 @@ export const transactionController = {
   },
   summary: async (_req: Request, res: Response) => {
     try {
-      const userId = _req.userId;
+      const userId = (_req as any).userId;
       if (!userId) return res.status(400).json({ error: "Missing userId" });
       const income = await prisma.transaction.aggregate({
         where: { userId, type: "Income" },

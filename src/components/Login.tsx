@@ -30,25 +30,25 @@ const Login = () => {
 
   useEffect(() => {
     const checkSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      if (data.session) {
+      const {
+        data: { session },
+
+      } = await supabase.auth.getSession();
+
+      if (session) {
+        console.log("SESSION:", data.session);
         navigate("/", { replace: true });
       }
     };
 
     checkSession();
-  }, [navigate]);
+  }, []);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) throw error;
+      const data = await useLogin(email, password);
 
       if (data.session) {
         navigate("/", { replace: true });

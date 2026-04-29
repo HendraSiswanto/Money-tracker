@@ -8,6 +8,7 @@ router.get("/", authMiddleware, CategoryController.getAll);
 router.post("/", authMiddleware, CategoryController.create);
 router.patch("/:id", authMiddleware, CategoryController.update);
 router.delete("/:id", authMiddleware, CategoryController.delete);
+router.post("/seed", authMiddleware, CategoryController.seed);
 
 
 export default router;

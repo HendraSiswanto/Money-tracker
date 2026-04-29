@@ -1,35 +1,44 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import { createClient } from "@supabase/supabase-js";
+import { prisma } from "../utils/prisma";
 
-declare global {
-  namespace Express {
-    interface Request {
-      userId?: string;
-    }
-  }
-}
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
-interface JwtPayloadWithUserId extends jwt.JwtPayload {
-  userId: string;
-}
-
-export const authMiddleware = (
+export const authMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) return res.status(401).json({ error: "Unauthorized" });
-
   try {
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET!
-    ) as JwtPayloadWithUserId;
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) return res.status(401).json({ error: "No token" });
 
-    req.userId = decoded.userId; 
+    const { data, error } = await supabase.auth.getUser(token);
+
+    if (error || !data.user) {
+      return res.status(401).json({ error: "Invalid token" });
+    }
+
+    const user = data.user;
+
+    await prisma.user.upsert({
+      where: { id: user.id },
+      update: {},
+      create: {
+        id: user.id,
+        email: user.email!,
+        password: "",
+        name: user.user_metadata?.name ?? null,
+      },
+    });
+
+    (req as any).userId = user.id;
     next();
   } catch (err) {
-    return res.status(401).json({ error: "Invalid token" });
+    console.error("AUTH ERROR:", err);
+    return res.status(500).json({ error: "Auth failed" });
   }
 };

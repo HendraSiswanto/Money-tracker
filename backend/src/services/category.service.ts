@@ -1,8 +1,16 @@
 import { prisma } from "../utils/prisma";
 import { CategoryType } from "@prisma/client";
+import { defaultCategories } from "../data/defaultCategories";
 
 export const CategoryService = {
   getAll: async (userId: string) => {
+    const count = await prisma.category.count({
+      where: { userId },
+    });
+
+    if (count === 0) {
+      await CategoryService.seedDefaults(userId, defaultCategories);
+    }
     const categories = await prisma.category.findMany({
       where: { userId },
       include: {
@@ -28,7 +36,7 @@ export const CategoryService = {
       emote: string;
       type: CategoryType;
       color?: string | null;
-    }[]
+    }[],
   ) {
     const count = await prisma.category.count({
       where: { userId },
