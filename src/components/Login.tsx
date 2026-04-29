@@ -36,7 +36,7 @@ const Login = () => {
       } = await supabase.auth.getSession();
 
       if (session) {
-        console.log("SESSION:", data.session);
+        console.log("SESSION:", session);
         navigate("/", { replace: true });
       }
     };
