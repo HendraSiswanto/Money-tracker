@@ -1,5 +1,6 @@
 import { PrismaClient, CategoryType } from "@prisma/client";
 
+
 const prisma = new PrismaClient();
 
  const defaultCategories = [
