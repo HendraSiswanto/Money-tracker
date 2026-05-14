@@ -6,6 +6,7 @@ import {
   updateCategory,
   deleteCategory,
 } from "../api/category";
+import { supabase } from "../libs/supabase";
 
 
 export default function useCategories() {
@@ -25,9 +26,19 @@ export default function useCategories() {
     }
   };
 
-  useEffect(() => {
-    loadCategories();
-  }, []);
+useEffect(() => {
+  const init = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session) return;
+
+    await loadCategories(); // or categories
+  };
+
+  init();
+}, []);
 
   const addCategory = async (data: {
     name: string;

@@ -1,10 +1,12 @@
 import { useState, useEffect, useMemo } from "react";
+
 import {
   createTransaction,
   deleteTransactions,
   updateTransaction,
   getTransactions,
 } from "../api/transaction";
+import { supabase } from "../libs/supabase";
 
 export type TransactionType = {
   id?: number;
@@ -47,11 +49,20 @@ export function useTransactions() {
     }
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-    loadTransactions();
-  }, []);
+useEffect(() => {
+  const init = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session) return;
+
+    await loadTransactions(); 
+  };
+
+  init();
+}, []);
+
   const saveTransaction = async (
     newData: TransactionType,
     typeData: "income" | "expense"
