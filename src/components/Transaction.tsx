@@ -9,7 +9,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import Expense from "./inputForms/Expense";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Income from "./inputForms/Income";
 import { useTransactions } from "../hooks/useTransactions";
 import BalanceCard from "./charts/UserCard";
@@ -17,6 +17,8 @@ import LineCard from "./charts/LineCard";
 import useCategories from "../hooks/useCategories";
 import TransactionSkeleton from "./skeleton/TransactionSkeleton";
 import { playSound } from "../utils/sound";
+import { supabase } from "../libs/supabase";
+import { useNavigate } from "react-router-dom";
 
 interface allDataIncome {
   id?: number;
@@ -31,6 +33,7 @@ interface allDataIncome {
 }
 
 const Transaction: React.FC = () => {
+  const navigate = useNavigate();
   const {
     transactions,
     saveTransaction,
@@ -41,7 +44,7 @@ const Transaction: React.FC = () => {
   } = useTransactions();
   const [selected, setSelected] = useState("income");
   const { categories } = useCategories();
-
+  const [user,setUser] = useState<any>(null);
   const rupiahFormat = new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
@@ -59,13 +62,29 @@ const Transaction: React.FC = () => {
     playSound(item.outcome as "income" | "expense");
   };
 
+     useEffect(() => {
+      const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+
+      if (!data.session) {
+        navigate("/login", { replace: true });
+      } else {
+        setUser(data.session.user);
+      }
+
+    };
+
+    checkSession();
+  }, [navigate]);
+
+    
   const latestFive = (transactions ?? []).slice(0, 5);
   const incomeCategories = categories.filter((c) => c.type === "income");
 
   const expenseCategories = categories.filter((c) => c.type === "expense");
   return (
     <>
-      {isLoading ? (
+      {isLoading && !user ? (
         <TransactionSkeleton />
       ) : (
         <Container
@@ -79,7 +98,7 @@ const Transaction: React.FC = () => {
               balance={balance}
               totalIncome={totalIncome}
               totalExpense={totalExpense}
-              userName="Hendra Giswanto"
+              userName={user?.user_metadata?.name || "User"}
               userImage="/assets/profile.png"
             ></BalanceCard>
 
