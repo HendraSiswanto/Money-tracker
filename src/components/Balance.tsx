@@ -8,7 +8,7 @@ import {
   BsPiggyBank,
 } from "react-icons/bs";
 import { HighestCard } from "./balanceComponents/HighestCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReportOverview from "./balanceComponents/ReportOverview";
 import LineOverview from "./balanceComponents/LineOverview";
 import BalanceSkeleton from "./skeleton/BalanceSkeleton";
@@ -31,11 +31,20 @@ export default function Balance() {
     "income"
   );
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
+const [ready, setReady] = useState(false);
 
+useEffect(() => {
+  if (!isLoading) {
+    const t = setTimeout(() => setReady(true), 200);
+    return () => clearTimeout(t);
+  } else {
+    setReady(false);
+  }
+}, [isLoading]);
   return (
     <>
       <Container maxW="container.xl" px={0}>
-        {isLoading ? (
+        {!ready && isLoading ? (
           <BalanceSkeleton />
         ) : (
           <Flex flexDirection="column" p={1}>
