@@ -25,7 +25,7 @@ ChartJS.register(
 const LineCard: React.FC = () => {
   const { transactions = [] } = useTransactions();
   const sorted = [...transactions].sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    (a, b) =>  a.timestamp - b.timestamp
   );
 
   const labels = sorted.map((t) =>
