@@ -44,7 +44,7 @@ const Transaction: React.FC = () => {
   } = useTransactions();
   const [selected, setSelected] = useState("income");
   const { categories } = useCategories();
-  const [user,setUser] = useState<any>(null);
+  const [user, setUser] = useState<any>(null);
   const rupiahFormat = new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
@@ -57,13 +57,13 @@ const Transaction: React.FC = () => {
         ...item,
         categoryId: item.categoryId,
       },
-      item.outcome as "income" | "expense"
+      item.outcome as "income" | "expense",
     );
     playSound(item.outcome as "income" | "expense");
   };
 
-     useEffect(() => {
-      const checkSession = async () => {
+  useEffect(() => {
+    const checkSession = async () => {
       const { data } = await supabase.auth.getSession();
 
       if (!data.session) {
@@ -71,17 +71,16 @@ const Transaction: React.FC = () => {
       } else {
         setUser(data.session.user);
       }
-
     };
 
     checkSession();
   }, [navigate]);
 
-    
   const latestFive = (transactions ?? []).slice(0, 5);
   const incomeCategories = categories.filter((c) => c.type === "income");
-
+  const [show, setShow] = useState(false);
   const expenseCategories = categories.filter((c) => c.type === "expense");
+  const isEmpty = transactions.length === 0 && !show;
   return (
     <>
       {isLoading && !user ? (
@@ -89,83 +88,111 @@ const Transaction: React.FC = () => {
       ) : (
         <Container
           display="flex"
-          flexDirection="row"
+          flexDirection={isEmpty ? "row" : "row"}
+          height="90vh"
           maxW="container.xl"
-          mt={8}
+          mt={2}
+          justifyContent={isEmpty ? "center" : "flex-start"}
+          alignItems={isEmpty ? "center" : "flex-start"}
         >
-          <Flex flexDirection="column" align="flex-start">
-            <BalanceCard
-              balance={balance}
-              totalIncome={totalIncome}
-              totalExpense={totalExpense}
-              userName={user?.user_metadata?.name || "User"}
-              userImage="/assets/profile.png"
-            ></BalanceCard>
-
-            <Card
-              width="fit-content"
-              mt={6}
-              px="44px"
-              bgColor="transparent"
-              border="1px solid #605f5f37"
-              boxShadow="5px 5px 10px #605f5f37"
-              alignItems="center"
-              gap={2}
+          <Flex
+            flex="1"
+            justifyContent={isEmpty ? "center" : "flex-start"}
+            alignItems={isEmpty ? "center" : "flex-start"}
+          >
+            <Flex
+              flexDirection={isEmpty ? "row" : "column"}
+              gap={6}
+              align={isEmpty ? "center" : "flex-start"}
             >
-              <Heading
-                size="md"
-                mb={4}
-                textAlign="center"
-                color="#1C4532"
-                fontWeight="bold"
-                mt={5}
-              >
-                START TRACKING
-              </Heading>
-
-              <Box
-                display="flex"
-                bg="#E6E6E6"
-                p="6px"
-                borderRadius="full"
-                gap={2}
-                mt={2}
-              >
-                <Button
-                  flex="1"
-                  borderRadius="full"
-                  bgColor={selected === "income" ? "#1C4532" : "transparent"}
-                  color={selected === "income" ? "white" : "#1C4532"}
-                  _hover={{ bgColor: "#1c4532db", color: "white" }}
-                  onClick={() => setSelected("income")}
+              <BalanceCard
+                balance={balance}
+                totalIncome={totalIncome}
+                totalExpense={totalExpense}
+                userName={user?.user_metadata?.name || "User"}
+                userImage="/assets/profile.png"
+              ></BalanceCard>
+              {transactions.length > 0 || show ? (
+                <Card
+                  width="fit-content"
+                  mt={6}
+                  px="44px"
+                  bgColor="transparent"
+                  border="1px solid #605f5f37"
+                  boxShadow="5px 5px 10px #605f5f37"
+                  alignItems="center"
+                  gap={2}
                 >
-                  Income 💰
-                </Button>
+                  <Heading
+                    size="md"
+                    mb={4}
+                    textAlign="center"
+                    color="#1C4532"
+                    fontWeight="bold"
+                    mt={5}
+                  >
+                    START TRACKING
+                  </Heading>
 
-                <Button
-                  flex="1"
-                  borderRadius="full"
-                  bgColor={selected === "expense" ? "#45241cff" : "transparent"}
-                  color={selected === "expense" ? "white" : "#45241cff"}
-                  _hover={{ bgColor: "#45241cd4", color: "white" }}
-                  onClick={() => setSelected("expense")}
-                >
-                  Expense 💸
-                </Button>
-              </Box>
-              {selected === "income" ? (
-                <Income categories={incomeCategories} saveIncome={handleSave} />
-              ) : (
-                <Expense
-                  categories={expenseCategories}
-                  saveExpense={handleSave}
-                />
-              )}
-            </Card>
+                  <Box
+                    display="flex"
+                    bg="#E6E6E6"
+                    p="6px"
+                    borderRadius="full"
+                    gap={2}
+                    mt={2}
+                  >
+                    <Button
+                      flex="1"
+                      borderRadius="full"
+                      bgColor={
+                        selected === "income" ? "#1C4532" : "transparent"
+                      }
+                      color={selected === "income" ? "white" : "#1C4532"}
+                      _hover={{ bgColor: "#1c4532db", color: "white" }}
+                      onClick={() => setSelected("income")}
+                    >
+                      Income 💰
+                    </Button>
+
+                    <Button
+                      flex="1"
+                      borderRadius="full"
+                      bgColor={
+                        selected === "expense" ? "#45241cff" : "transparent"
+                      }
+                      color={selected === "expense" ? "white" : "#45241cff"}
+                      _hover={{ bgColor: "#45241cd4", color: "white" }}
+                      onClick={() => setSelected("expense")}
+                    >
+                      Expense 💸
+                    </Button>
+                  </Box>
+                  {selected === "income" ? (
+                    <Income
+                      categories={incomeCategories}
+                      saveIncome={handleSave}
+                    />
+                  ) : (
+                    <Expense
+                      categories={expenseCategories}
+                      saveExpense={handleSave}
+                    />
+                  )}
+                </Card>
+              ) : null}
+            </Flex>
           </Flex>
           {transactions.length > 0 ? (
             <>
-              <Box mt="2px" width="80%" maxW="900px" ml={10}>
+              <Box
+                display="flex"
+                flexDir="column"
+                mt="2px"
+                width="80%"
+                maxW="900px"
+                ml={10}
+              >
                 <Text
                   fontSize="sm"
                   fontWeight="bold"
@@ -223,68 +250,77 @@ const Transaction: React.FC = () => {
               </Box>
             </>
           ) : (
-            <Flex
-              alignContent="center"
-              flexDir="column"
-              p={10}
-              textAlign="center"
-              bgColor="transparent"
-              border="1px solid #605f5f37"
-              boxShadow="5px 5px 10px #605f5f37"
-              borderColor="gray.300"
-              borderRadius="xl"
-              my="auto"
-              mx="auto"
-            >
-              <Heading size="md" color="#1C4532" mb={2}>
-                Start tracking your money 💸
-              </Heading>
-
-              <Text color="gray.600" mb={6}>
-                Track income & expenses to see your balance, trends, and
-                insights.
-              </Text>
-
-              <Flex justify="center" gap={4} mb={6} wrap="wrap">
-                <Box fontSize="sm" color="gray.600">
-                  ① Choose type
-                </Box>
-                <Box fontSize="sm" color="gray.600">
-                  ② Pick category
-                </Box>
-                <Box fontSize="sm" color="gray.600">
-                  ③ Save & analyze
-                </Box>
-              </Flex>
-
-              <Flex gap={4} justify="center">
-                <Card
-                  p={4}
-                  cursor="pointer"
-                  border="1px solid #1C4532"
-                  _hover={{ bg: "#1C4532", color: "white" }}
-                  onClick={() => setSelected("income")}
+            <>
+              {show === false ? (
+                <Flex
+                  alignContent="center"
+                  flexDir="column"
+                  p={16}
+                  textAlign="center"
+                  bgColor="transparent"
+                  border="1px solid #605f5f37"
+                  boxShadow="5px 5px 10px #605f5f37"
+                  borderColor="gray.300"
+                  borderRadius="xl"
+                  mx="auto"
                 >
-                  <Text fontWeight="bold">+ Add Income</Text>
-                  <Text fontSize="sm">Salary, bonus, etc</Text>
-                </Card>
+                  <Heading size="md" color="#1C4532" mb={2}>
+                    Start tracking your money 💸
+                  </Heading>
 
-                <Card
-                  p={4}
-                  cursor="pointer"
-                  border="1px solid #45241cff"
-                  _hover={{ bg: "#45241cff", color: "white" }}
-                  onClick={() => setSelected("expense")}
-                >
-                  <Text fontWeight="bold">− Add Expense</Text>
-                  <Text fontSize="sm">Food, bills, etc</Text>
-                </Card>
-              </Flex>
-              <Text mt={6} fontSize="sm" color="gray.500">
-                You already have <b>{incomeCategories.length}</b> income and{" "}
-                <b>{expenseCategories.length}</b> expense categories
-              </Text>
-            </Flex>
+                  <Text color="gray.600" mb={6}>
+                    Track income & expenses to see your balance, trends, and
+                    insights.
+                  </Text>
+
+                  <Flex justify="center" gap={4} mb={6} wrap="wrap">
+                    <Box fontSize="sm" color="gray.600">
+                      ① Choose type
+                    </Box>
+                    <Box fontSize="sm" color="gray.600">
+                      ② Pick category
+                    </Box>
+                    <Box fontSize="sm" color="gray.600">
+                      ③ Save & analyze
+                    </Box>
+                  </Flex>
+
+                  <Flex gap={4} justify="center">
+                    <Card
+                      p={4}
+                      cursor="pointer"
+                      border="1px solid #1C4532"
+                      _hover={{ bg: "#1C4532", color: "white" }}
+                      onClick={() => {
+                        setSelected("income");
+                        setShow(true);
+                      }}
+                    >
+                      <Text fontWeight="bold">+ Add Income</Text>
+                      <Text fontSize="sm">Salary, bonus, etc</Text>
+                    </Card>
+
+                    <Card
+                      p={4}
+                      cursor="pointer"
+                      border="1px solid #45241cff"
+                      _hover={{ bg: "#45241cff", color: "white" }}
+                      onClick={() => {
+                        setSelected("expense");
+                        setShow(true);
+                      }}
+                    >
+                      <Text fontWeight="bold">− Add Expense</Text>
+                      <Text fontSize="sm">Food, bills, etc</Text>
+                    </Card>
+                  </Flex>
+                  <Text mt={6} fontSize="sm" color="gray.500">
+                    You already have <b>{incomeCategories.length}</b> income and{" "}
+                    <b>{expenseCategories.length}</b> expense categories
+                  </Text>
+                </Flex>
+              ) : null}
+            </>
           )}
         </Container>
       )}
