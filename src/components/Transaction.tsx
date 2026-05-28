@@ -45,6 +45,7 @@ const Transaction: React.FC = () => {
   const [selected, setSelected] = useState("income");
   const { categories } = useCategories();
   const [user, setUser] = useState<any>(null);
+  const [hasLoaded, setHasLoaded] = useState(false);
   const rupiahFormat = new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
@@ -76,6 +77,14 @@ const Transaction: React.FC = () => {
     checkSession();
   }, [navigate]);
 
+
+useEffect(() => {
+  if (!isLoading && user) {
+    const t = setTimeout(() => setHasLoaded(true), 150);
+    return () => clearTimeout(t);
+  }
+}, [isLoading, user]);
+
   const latestFive = (transactions ?? []).slice(0, 5);
   const incomeCategories = categories.filter((c) => c.type === "income");
   const [show, setShow] = useState(false);
@@ -83,12 +92,12 @@ const Transaction: React.FC = () => {
   const isEmpty = transactions.length === 0 && !show;
   return (
     <>
-      {isLoading && !user ? (
+      {!hasLoaded ? (
         <TransactionSkeleton />
       ) : (
         <Container
           display="flex"
-          flexDirection={isEmpty ? "row" : "row"}
+         flexDirection="row"
           height="90vh"
           maxW="container.xl"
           mt={2}
